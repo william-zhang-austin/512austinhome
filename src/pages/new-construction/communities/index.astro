@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../../components/SchemaMarkup.astro';
+import { COMMUNITIES, communitiesByCity, priceRangeLabel, sqftRangeLabel, bedsLabel } from '../../../data/communities';
+import { PHONE } from '../../../consts';
+
+const pflugerville = communitiesByCity('Pflugerville');
+const leander = communitiesByCity('Leander');
+
+const title = 'New Construction Communities in Pflugerville & Leander, TX | 512 Austin Home';
+const description = 'Current new construction home communities in Pflugerville and Leander, Texas — prices, floor plans, builders, and an agent\'s honest take. Updated monthly.';
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'New Construction', url: '/new-construction' },
+		{ name: 'Communities', url: '/new-construction/communities' },
+	] }} />
+
+	<div class="max-w-6xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">New Construction</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">New Construction Communities in Pflugerville &amp; Leander</h1>
+			<p class="text-lg text-text-muted max-w-3xl">Current new build communities I tour and represent buyers at. Pricing, floor plans, and builder details below. Every listing includes my honest take — highlights and what to push back on. Register me as your agent before you visit a sales office and representation costs you nothing.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Summary stats -->
+		<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+			<div class="bg-surface rounded-xl border border-border p-5">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Communities</p>
+				<p class="text-2xl font-bold text-primary">{COMMUNITIES.length}</p>
+			</div>
+			<div class="bg-surface rounded-xl border border-border p-5">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Pflugerville</p>
+				<p class="text-2xl font-bold text-primary">{pflugerville.length}</p>
+			</div>
+			<div class="bg-surface rounded-xl border border-border p-5">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Leander</p>
+				<p class="text-2xl font-bold text-primary">{leander.length}</p>
+			</div>
+			<div class="bg-surface rounded-xl border border-border p-5">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Price From</p>
+				<p class="text-2xl font-bold text-primary">$270K</p>
+			</div>
+		</div>
+
+		<!-- Pflugerville section -->
+		<section class="mb-16">
+			<div class="flex items-end justify-between mb-6">
+				<div>
+					<h2 class="font-display text-2xl sm:text-3xl font-bold text-primary">Pflugerville</h2>
+					<p class="text-text-muted text-sm mt-1">Central north metro — best commute to Apple, Samsung, Dell, and Tesla.</p>
+				</div>
+				<a href="/neighborhoods/pflugerville" class="hidden sm:inline text-accent font-semibold text-sm no-underline hover:underline">Pflugerville guide &rarr;</a>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				{pflugerville.map((c) => (
+					<a href={`/new-construction/communities/${c.slug}`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
+						<div class="aspect-[16/9] overflow-hidden bg-warm-dark relative">
+							{c.heroImage ? (
+								<img src={c.heroImage} alt={`${c.name} by ${c.builder} — ${c.city}, TX`} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+							) : (
+								<div class="w-full h-full bg-gradient-to-br from-accent-light to-warm-dark flex items-center justify-center">
+									<span class="font-display text-xl font-bold text-accent">{c.name}</span>
+								</div>
+							)}
+							<div class="absolute top-3 left-3 bg-white/95 backdrop-blur text-primary text-xs font-semibold px-3 py-1.5 rounded-full">{c.builder}</div>
+						</div>
+						<div class="p-6 flex-1 flex flex-col">
+							<h3 class="font-display text-xl font-bold text-primary mb-1 group-hover:text-accent transition-colors">{c.name}</h3>
+							<p class="text-sm text-text-muted mb-3">{c.tagline}</p>
+							<div class="flex flex-wrap gap-2 mb-4">
+								<span class="text-xs bg-accent-light text-accent px-2.5 py-1 rounded-full font-semibold">{priceRangeLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{bedsLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{sqftRangeLabel(c)}</span>
+							</div>
+							<div class="flex items-center justify-between pt-4 border-t border-border mt-auto">
+								<p class="text-xs text-text-muted">{c.schoolDistrict}</p>
+								<span class="text-accent font-semibold text-sm">View details &rarr;</span>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<!-- Leander section -->
+		<section class="mb-16">
+			<div class="flex items-end justify-between mb-6">
+				<div>
+					<h2 class="font-display text-2xl sm:text-3xl font-bold text-primary">Leander</h2>
+					<p class="text-text-muted text-sm mt-1">Top-rated Leander ISD schools — strong family appeal, wide price range.</p>
+				</div>
+				<a href="/neighborhoods/cedar-park" class="hidden sm:inline text-accent font-semibold text-sm no-underline hover:underline">Area guide &rarr;</a>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				{leander.map((c) => (
+					<a href={`/new-construction/communities/${c.slug}`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
+						<div class="aspect-[16/9] overflow-hidden bg-warm-dark relative">
+							{c.heroImage ? (
+								<img src={c.heroImage} alt={`${c.name} by ${c.builder} — ${c.city}, TX`} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+							) : (
+								<div class="w-full h-full bg-gradient-to-br from-accent-light to-warm-dark flex items-center justify-center">
+									<span class="font-display text-xl font-bold text-accent">{c.name}</span>
+								</div>
+							)}
+							<div class="absolute top-3 left-3 bg-white/95 backdrop-blur text-primary text-xs font-semibold px-3 py-1.5 rounded-full">{c.builder}</div>
+						</div>
+						<div class="p-6 flex-1 flex flex-col">
+							<h3 class="font-display text-xl font-bold text-primary mb-1 group-hover:text-accent transition-colors">{c.name}</h3>
+							<p class="text-sm text-text-muted mb-3">{c.tagline}</p>
+							<div class="flex flex-wrap gap-2 mb-4">
+								<span class="text-xs bg-accent-light text-accent px-2.5 py-1 rounded-full font-semibold">{priceRangeLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{bedsLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{sqftRangeLabel(c)}</span>
+							</div>
+							<div class="flex items-center justify-between pt-4 border-t border-border mt-auto">
+								<p class="text-xs text-text-muted">{c.schoolDistrict}</p>
+								<span class="text-accent font-semibold text-sm">View details &rarr;</span>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 text-center">
+			<h2 class="font-display text-2xl font-bold text-primary mb-3">Touring any of these? Register me first.</h2>
+			<p class="text-text-muted mb-6 max-w-xl mx-auto">Builders pay my commission from their marketing budget, so representation costs you nothing — but only if I'm registered as your agent <em>before</em> your first sales office visit. Text me the community and I'll handle it in 60 seconds.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="/contact" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Register Before You Visit
+				</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+
+		<p class="text-xs text-text-muted text-center mt-10 max-w-2xl mx-auto">Community details compiled from public builder information and my on-site tours. Prices, floor plans, and incentives change frequently — always confirm current numbers with me before making decisions. Photos are property of the respective builders.</p>
+	</div>
+</BaseLayout>

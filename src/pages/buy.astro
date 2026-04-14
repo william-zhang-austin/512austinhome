@@ -3,23 +3,93 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { IDX_URL, PHONE } from '../consts';
+
+const faqs = [
+	{
+		question: "How much does it cost to buy a home in Austin?",
+		answer: "The median home price in Austin, TX is approximately $450,000-$550,000 as of 2026, though prices vary significantly by neighborhood. Areas like Cedar Park and Pflugerville offer more affordable options starting in the $300,000s, while central Austin, Westlake, and Lakeway homes often exceed $700,000. Budget an additional 2-3% of the purchase price for closing costs.",
+	},
+	{
+		question: "Do I need a real estate agent to buy a home in Austin?",
+		answer: "While not legally required, working with a local Austin real estate agent gives you access to MLS listings, market expertise, and negotiation support. As your buyer's agent, I help you navigate the process from search to closing. After the 2024 NAR settlement, buyer-agent compensation is negotiable and must be disclosed in writing before you tour homes.",
+	},
+	{
+		question: "What are the best neighborhoods to buy in Austin?",
+		answer: "The best neighborhood depends on your priorities. Cedar Park, Round Rock, and Leander are great for families with top-rated schools. Pflugerville offers strong value. Central Austin, South Congress, and East Austin have walkability and culture. Lakeway, Bee Cave, and Westlake provide luxury and Hill Country views. Mueller is popular with young professionals.",
+	},
+	{
+		question: "How long does it take to buy a home in Austin?",
+		answer: "The typical home buying timeline in Austin is 30-60 days from accepted offer to closing. However, the full process including pre-approval, searching, and touring can take 2-4 months. In a competitive situation, being prepared with pre-approval and a clear wish list helps you move quickly when the right home appears.",
+	},
+	{
+		question: "How much do I need for a down payment to buy in Austin?",
+		answer: "Conventional loans typically require 5-20% down. FHA loans allow as little as 3.5% down for qualified buyers, and VA loans offer 0% down for eligible veterans. On a $500,000 Austin home, a 5% down payment is $25,000, while 20% is $100,000. Putting less than 20% down means you'll pay private mortgage insurance (PMI) until you build enough equity.",
+	},
+	{
+		question: "What are the property taxes like in Austin, TX?",
+		answer: "Texas has no state income tax, but property taxes are high. Austin-area property tax rates typically range from 1.8% to 2.8% of assessed value depending on the city, school district, and MUD (Municipal Utility District). On a $500,000 home, expect $9,000-$14,000 per year in property taxes. Texas homeowners can apply for a homestead exemption to reduce their tax bill.",
+	},
+	{
+		question: "What closing costs should I expect when buying a home in Austin?",
+		answer: "Buyer closing costs in Austin typically run 2-3% of the purchase price. This includes loan origination fees, appraisal, title insurance (owner's policy is paid by the seller in Texas, but lender's policy is the buyer's cost), survey, escrow, prepaid taxes and insurance, and HOA transfer fees. On a $500,000 home, budget $10,000-$15,000 for closing costs.",
+	},
+	{
+		question: "Should I buy a new construction home or a resale home in Austin?",
+		answer: "Both have advantages. New construction homes in Austin suburbs like Leander, Manor, Hutto, Kyle, and Georgetown offer modern floor plans, energy efficiency, and builder warranties. Resale homes in established neighborhoods typically have mature trees, larger lots, and better locations closer to downtown. New construction pricing is often negotiable through builder incentives rather than list price — having a buyer's agent represent you at the builder's sales office is free to you and often saves thousands.",
+	},
+	{
+		question: "Can I use a buyer's agent when buying new construction in Austin?",
+		answer: "Yes, and you should. Builders in Austin — including Lennar, DR Horton, Pulte, Taylor Morrison, Meritage, Perry Homes, and Highland Homes — typically pay buyer-agent commissions from their marketing budget, meaning representation costs you nothing extra. However, you must register your agent on your first visit to the builder's sales office. If you walk in alone and sign anything, you may lose the ability to bring in representation later.",
+	},
+	{
+		question: "What are the best school districts in Austin for home buyers?",
+		answer: "Top-rated Austin-area school districts include Eanes ISD (Westlake), Lake Travis ISD, Leander ISD, Round Rock ISD, Dripping Springs ISD, and portions of Austin ISD (especially near Tarrytown and Circle C). Home prices generally track school district quality, so budget accordingly. If schools matter, verify the attendance zone for the specific address — boundaries change.",
+	},
+	{
+		question: "Is Austin a good place to invest in real estate?",
+		answer: "Austin's long-term fundamentals remain strong: population growth, job growth (tech, healthcare, state government), and a steady stream of corporate relocations. The market corrected from 2022 highs but has stabilized. For a 5-10 year hold, Austin remains attractive. Short-term speculation is riskier now than it was in 2020-2021.",
+	},
+	{
+		question: "What's the difference between FHA, VA, and conventional loans in Austin?",
+		answer: "Conventional loans require better credit (usually 620+) and 3-20% down, with no PMI at 20% down. FHA loans allow lower credit (580+) and 3.5% down, but require mortgage insurance for the life of the loan in most cases. VA loans are for eligible veterans and active-duty military — 0% down, no PMI, and competitive rates. I can connect you with local Austin lenders who specialize in each type.",
+	},
+	{
+		question: "Should I waive my inspection contingency when buying in Austin?",
+		answer: "No — almost never. Austin's market has shifted from the bidding wars of 2021. Today, buyers have enough leverage to keep their inspection contingency in most cases. Waiving it means taking on unknown risk for foundation issues, HVAC problems, hidden water damage, or roof damage that can cost tens of thousands to repair. A standard inspection in Austin costs $400-$600 and is worth every penny.",
+	},
+	{
+		question: "What should I watch for when inspecting an Austin home?",
+		answer: "Austin-specific issues include foundation movement (Texas clay soil shifts with moisture), HVAC capacity (summers are brutal), roof condition (hail damage is common), tree health (oak wilt is a regional issue), drainage and grading (flash flooding happens), and plumbing in older homes (cast iron or galvanized pipes). Always get a general inspection, a WDI/termite inspection, and consider a structural engineer if the inspector flags anything.",
+	},
+	{
+		question: "How competitive is the Austin housing market in 2026?",
+		answer: "Austin is far more balanced than it was in 2021-2022. Inventory has increased, days on market have grown, and sellers are once again negotiating on price, closing costs, and repairs. In most segments, buyers have meaningful leverage — though desirable homes in top school districts and close-in neighborhoods still move quickly and sometimes receive multiple offers.",
+	},
+	{
+		question: "Can I buy a home in Austin if I'm relocating from another state?",
+		answer: "Absolutely — relocation buyers are a big part of my business. I work with buyers moving from California, New York, Washington, Illinois, and elsewhere. I can do virtual tours, handle paperwork electronically, coordinate home inspections while you're still out of state, and help you understand Texas-specific items like property taxes, homestead exemptions, and no state income tax. See my relocation guide for more.",
+	},
+	{
+		question: "How do I start the home buying process in Austin?",
+		answer: "Start with three things: (1) get pre-approved with a reputable lender so you know your budget, (2) write down your must-haves versus nice-to-haves including commute, schools, and lifestyle, and (3) schedule a no-pressure call with me so we can talk through your timeline and the specific Austin neighborhoods that fit. From there, we'll set up a custom MLS search and start touring.",
+	},
+];
 ---
 
-<BaseLayout title="Buy a Home in Austin, TX — Buyer's Guide | 512 Austin Home" description="Looking to buy a home in Austin, Texas? William Zhang is an Austin real estate agent who guides buyers through the entire process — from neighborhood selection to closing.">
+<BaseLayout title="Buy a Home in Austin, TX — Buyer's Guide | 512 Austin Home" description="Looking to buy a home in Austin, Texas? William Zhang is an Austin real estate agent who guides buyers through the entire process — from neighborhood selection to closing. New construction, resale, and relocation buyers welcome.">
 	<SchemaMarkup type="agent" />
-	<SchemaMarkup type="faq" data={{ questions: [
-		{ question: "How much does it cost to buy a home in Austin?", answer: "The median home price in Austin, TX is approximately $450,000-$550,000 as of 2026, though prices vary significantly by neighborhood. Areas like Cedar Park and Pflugerville offer more affordable options starting in the $300,000s, while central Austin and Lakeway homes often exceed $700,000." },
-		{ question: "Do I need a real estate agent to buy a home in Austin?", answer: "While not legally required, working with a local Austin real estate agent gives you access to MLS listings, market expertise, and negotiation support. As your buyer's agent, I help you navigate the process from search to closing at no additional cost to you — the seller typically pays agent commissions." },
-		{ question: "What are the best neighborhoods to buy in Austin?", answer: "The best neighborhood depends on your priorities. Cedar Park and Round Rock are great for families with top-rated schools. Pflugerville offers strong value. Central Austin and South Austin have walkability and culture. Lakeway and Bee Cave provide luxury and Hill Country views. I can help you find the right fit." },
-		{ question: "How long does it take to buy a home in Austin?", answer: "The typical home buying timeline in Austin is 30-60 days from accepted offer to closing. However, the full process including search and pre-approval can take 2-4 months. In a competitive market, being prepared with pre-approval and a clear wish list helps you move quickly when the right home appears." },
-	]}} />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Buy a Home in Austin', url: '/buy' },
+	] }} />
 
 	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
 		<!-- Header -->
 		<header class="mb-12">
 			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">For Buyers</p>
 			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Buy a Home in Austin, Texas</h1>
-			<p class="text-lg text-text-muted max-w-2xl">Looking to buy a home in Austin? I'll guide you through every step — from finding the right neighborhood to negotiating the best deal and closing with confidence.</p>
+			<p class="text-lg text-text-muted max-w-2xl">Looking to buy a home in Austin? I'll guide you through every step — from finding the right neighborhood to negotiating the best deal and closing with confidence. First-time buyers, relocation buyers, and new construction buyers all welcome.</p>
 			<span class="accent-bar mt-6"></span>
 		</header>
 
@@ -31,7 +101,7 @@ import { IDX_URL, PHONE } from '../consts';
 			<p>Before you start touring homes, get pre-approved for a mortgage. This tells you exactly what you can afford and shows sellers you're serious. I can connect you with trusted local lenders who know the Austin market.</p>
 
 			<h3>2. Define Your Priorities</h3>
-			<p>Austin is a big metro with very different neighborhoods. Do you want top-rated schools? A short commute downtown? Hill Country views? Walkability? Let's figure out what matters most so we're looking in the right places.</p>
+			<p>Austin is a big metro with very different neighborhoods. Do you want top-rated schools? A short commute downtown? Hill Country views? Walkability? Let's figure out what matters most so we're looking in the right places. See my <a href="/neighborhoods">Austin neighborhood guides</a> to start narrowing it down.</p>
 
 			<h3>3. Tour Homes</h3>
 			<p>I'll set up your search on our <a href={IDX_URL} target="_blank" rel="noopener">home search portal</a> and schedule tours based on your criteria. I'll share honest feedback on each property — including things you might not notice on your own.</p>
@@ -44,6 +114,22 @@ import { IDX_URL, PHONE } from '../consts';
 
 			<h3>6. Close on Your New Home</h3>
 			<p>I'll coordinate with your lender, title company, and the seller's agent to make sure closing goes smoothly. You'll sign the paperwork and get the keys — that's it.</p>
+		</div>
+
+		<!-- Buyer types -->
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
+			<a href="/relocate" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<h3 class="font-display text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors">Relocating to Austin</h3>
+				<p class="text-sm text-text-muted">Moving from out of state? I work with relocation buyers every week.</p>
+			</a>
+			<a href="/new-construction" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<h3 class="font-display text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors">New Construction</h3>
+				<p class="text-sm text-text-muted">Builder representation at Lennar, DR Horton, Pulte, Perry Homes, and more — free to you.</p>
+			</a>
+			<a href="/neighborhoods" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<h3 class="font-display text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors">Neighborhood Guides</h3>
+				<p class="text-sm text-text-muted">Detailed breakdowns of Austin and the surrounding suburbs.</p>
+			</a>
 		</div>
 
 		<!-- CTA -->
@@ -62,36 +148,17 @@ import { IDX_URL, PHONE } from '../consts';
 
 		<!-- FAQ -->
 		<section class="mb-16">
-			<h2 class="font-display text-2xl font-bold text-primary mb-8">Frequently Asked Questions</h2>
-			<div class="space-y-6">
-				<details class="bg-surface rounded-xl border border-border p-6 group" open>
-					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
-						How much does it cost to buy a home in Austin?
-						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
-					</summary>
-					<p class="mt-3 text-text-muted text-sm leading-relaxed">The median home price in Austin, TX is approximately $450,000-$550,000 as of 2026, though prices vary significantly by neighborhood. Areas like Cedar Park and Pflugerville offer more affordable options starting in the $300,000s, while central Austin and Lakeway homes often exceed $700,000.</p>
-				</details>
-				<details class="bg-surface rounded-xl border border-border p-6 group">
-					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
-						Do I need a real estate agent to buy a home in Austin?
-						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
-					</summary>
-					<p class="mt-3 text-text-muted text-sm leading-relaxed">While not legally required, working with a local Austin real estate agent gives you access to MLS listings, market expertise, and negotiation support. As your buyer's agent, I help you navigate the process from search to closing at no additional cost to you — the seller typically pays agent commissions.</p>
-				</details>
-				<details class="bg-surface rounded-xl border border-border p-6 group">
-					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
-						What are the best neighborhoods to buy in Austin?
-						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
-					</summary>
-					<p class="mt-3 text-text-muted text-sm leading-relaxed">The best neighborhood depends on your priorities. Cedar Park and Round Rock are great for families with top-rated schools. Pflugerville offers strong value. Central Austin and South Austin have walkability and culture. Lakeway and Bee Cave provide luxury and Hill Country views. I can help you find the right fit.</p>
-				</details>
-				<details class="bg-surface rounded-xl border border-border p-6 group">
-					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
-						How long does it take to buy a home in Austin?
-						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
-					</summary>
-					<p class="mt-3 text-text-muted text-sm leading-relaxed">The typical home buying timeline in Austin is 30-60 days from accepted offer to closing. However, the full process including search and pre-approval can take 2-4 months. In a competitive market, being prepared with pre-approval and a clear wish list helps you move quickly when the right home appears.</p>
-				</details>
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Austin Home Buying FAQ</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
 			</div>
 		</section>
 

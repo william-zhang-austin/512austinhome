@@ -1,5 +1,5 @@
 ---
-import { YOUTUBE_URL, IDX_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
+import { YOUTUBE_URL, GBP_URL, IDX_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
 const year = new Date().getFullYear();
 ---
 
@@ -22,8 +22,11 @@ const year = new Date().getFullYear();
 				<ul class="space-y-2.5 text-sm">
 					<li><a href="/buy" class="hover:text-accent transition-colors duration-200 no-underline">Buy a Home</a></li>
 					<li><a href="/sell" class="hover:text-accent transition-colors duration-200 no-underline">Sell Your Home</a></li>
+					<li><a href="/relocate" class="hover:text-accent transition-colors duration-200 no-underline">Moving to Austin</a></li>
+					<li><a href="/new-construction" class="hover:text-accent transition-colors duration-200 no-underline">New Construction</a></li>
 					<li><a href="/neighborhoods" class="hover:text-accent transition-colors duration-200 no-underline">Neighborhoods</a></li>
 					<li><a href="/blog" class="hover:text-accent transition-colors duration-200 no-underline">Blog</a></li>
+					<li><a href="/reviews" class="hover:text-accent transition-colors duration-200 no-underline">Reviews</a></li>
 					<li><a href={IDX_URL} target="_blank" rel="noopener" class="hover:text-accent transition-colors duration-200 no-underline">Search Homes</a></li>
 				</ul>
 			</div>
@@ -35,6 +38,7 @@ const year = new Date().getFullYear();
 					<li><a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="hover:text-accent transition-colors duration-200 no-underline">{PHONE}</a></li>
 					<li><a href={`mailto:${EMAIL}`} class="hover:text-accent transition-colors duration-200 no-underline">{EMAIL}</a></li>
 					<li><a href={YOUTUBE_URL} target="_blank" rel="noopener" class="hover:text-accent transition-colors duration-200 no-underline">YouTube</a></li>
+					<li><a href={GBP_URL} target="_blank" rel="noopener" class="hover:text-accent transition-colors duration-200 no-underline">Google Business Profile</a></li>
 					<li><a href="/rss.xml" class="hover:text-accent transition-colors duration-200 no-underline">RSS Feed</a></li>
 				</ul>
 			</div>
@@ -44,7 +48,7 @@ const year = new Date().getFullYear();
 				<h3 class="text-xs font-semibold text-white uppercase tracking-widest mb-4">Ready to Move?</h3>
 				<p class="text-sm mb-4">Get personalized guidance for your Austin home search or sale.</p>
 				<a
-					href="/about#contact"
+					href="/contact"
 					class="inline-block px-5 py-2.5 text-sm font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-colors duration-200 no-underline"
 				>
 					Get in Touch

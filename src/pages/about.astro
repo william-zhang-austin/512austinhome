@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { YOUTUBE_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
+import { YOUTUBE_URL, YOUTUBE_ZH_URL, GBP_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
 ---
 
 <BaseLayout title="About William Zhang — Austin Real Estate Agent | 512 Austin Home" description="William Zhang is a licensed real estate agent in Austin, Texas specializing in helping buyers and sellers navigate the Austin housing market. eXp Realty, TREC #811948.">
@@ -60,12 +60,20 @@ import { YOUTUBE_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
 					<p class="font-semibold text-primary"><a href={`mailto:${EMAIL}`} class="text-accent no-underline hover:text-accent-hover">{EMAIL}</a></p>
 				</div>
 				<div>
-					<p class="text-text-muted mb-1">YouTube</p>
-					<p class="font-semibold text-primary"><a href={YOUTUBE_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:text-accent-hover">@WilliamTexasHomes</a></p>
+					<p class="text-text-muted mb-1">YouTube (English)</p>
+					<p class="font-semibold text-primary"><a href={YOUTUBE_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:text-accent-hover">Austin Real Estate Channel</a></p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">YouTube (Mandarin)</p>
+					<p class="font-semibold text-primary"><a href={YOUTUBE_ZH_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:text-accent-hover">@WilliamTexasHomes</a></p>
 				</div>
 				<div>
 					<p class="text-text-muted mb-1">Education</p>
 					<p class="font-semibold text-primary">University of Texas at Austin</p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">Google Business Profile</p>
+					<p class="font-semibold text-primary"><a href={GBP_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:text-accent-hover">View on Google</a></p>
 				</div>
 			</div>
 		</div>

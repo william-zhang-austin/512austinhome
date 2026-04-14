@@ -22,7 +22,8 @@ const ogImage = image || new URL('/og-default.jpg', Astro.site).href;
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
@@ -44,13 +45,18 @@ const ogImage = image || new URL('/og-default.jpg', Astro.site).href;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="author" content="William Zhang" />
+<meta name="publisher" content="512 Austin Home" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
+<meta property="og:site_name" content="512 Austin Home" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
+{type === 'article' && <meta property="article:author" content="William Zhang" />}
+{type === 'article' && <meta property="article:publisher" content="https://512austinhome.com" />}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />

@@ -4,12 +4,20 @@ import { PHONE, IDX_URL } from '../consts';
 const pathname = new URL(Astro.request.url).pathname;
 const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/');
 
+// Primary nav — keep compact enough for desktop. New Construction is cross-linked from Buy and Footer.
 const navLinks = [
 	{ href: '/buy', label: 'Buy' },
 	{ href: '/sell', label: 'Sell' },
+	{ href: '/relocate', label: 'Relocate' },
 	{ href: '/neighborhoods', label: 'Neighborhoods' },
 	{ href: '/blog', label: 'Blog' },
 	{ href: '/about', label: 'About' },
+];
+
+// Mobile-only additional links
+const mobileExtraLinks = [
+	{ href: '/new-construction', label: 'New Construction' },
+	{ href: '/reviews', label: 'Reviews' },
 ];
 ---
 
@@ -44,10 +52,10 @@ const navLinks = [
 				Search Homes
 			</a>
 			<a
-				href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`}
+				href="/contact"
 				class="ml-2 px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline"
 			>
-				{PHONE}
+				Contact
 			</a>
 		</div>
 
@@ -70,7 +78,7 @@ const navLinks = [
 	<!-- Mobile menu -->
 	<div id="mobile-menu" class="lg:hidden hidden border-t border-border/60 bg-surface/95 backdrop-blur-lg">
 		<div class="px-5 py-6 space-y-1">
-			{navLinks.map(({ href, label }) => (
+			{[...navLinks, ...mobileExtraLinks].map(({ href, label }) => (
 				<a
 					href={href}
 					class:list={[
@@ -94,9 +102,15 @@ const navLinks = [
 				</a>
 				<a
 					href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`}
-					class="block text-center px-5 py-3 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline"
+					class="block text-center px-5 py-3 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline"
 				>
 					Call {PHONE}
+				</a>
+				<a
+					href="/contact"
+					class="block text-center px-5 py-3 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline"
+				>
+					Contact William
 				</a>
 			</div>
 		</div>

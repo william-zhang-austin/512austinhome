@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { PHONE, EMAIL, YOUTUBE_URL, GBP_URL, BROKERAGE, TREC_LICENSE } from '../consts';
+---
+
+<BaseLayout title="Contact William Zhang — Austin Real Estate Agent | 512 Austin Home" description="Contact William Zhang, a licensed Austin, TX real estate agent with eXp Realty. Call (512) 766-3188 or send a message to get started with buying, selling, or relocating to Austin.">
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Contact', url: '/contact' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Contact</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Contact William Zhang</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Thinking about buying, selling, or moving to Austin? I'd love to hear from you. No pressure, no obligation — just honest guidance from a local Austin real estate agent.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Quick contact grid -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+			<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<p class="text-xs text-text-muted uppercase tracking-widest mb-2">Call or text</p>
+				<p class="font-display text-xl font-bold text-primary group-hover:text-accent transition-colors">{PHONE}</p>
+				<p class="text-sm text-text-muted mt-1">Fastest response</p>
+			</a>
+			<a href={`mailto:${EMAIL}`} class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<p class="text-xs text-text-muted uppercase tracking-widest mb-2">Email</p>
+				<p class="font-display text-xl font-bold text-primary group-hover:text-accent transition-colors break-all">{EMAIL}</p>
+				<p class="text-sm text-text-muted mt-1">Best for detailed questions</p>
+			</a>
+			<a href={GBP_URL} target="_blank" rel="noopener" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<p class="text-xs text-text-muted uppercase tracking-widest mb-2">Google Business Profile</p>
+				<p class="font-display text-xl font-bold text-primary group-hover:text-accent transition-colors">Find me on Google</p>
+				<p class="text-sm text-text-muted mt-1">Reviews, hours, directions</p>
+			</a>
+			<a href={YOUTUBE_URL} target="_blank" rel="noopener" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+				<p class="text-xs text-text-muted uppercase tracking-widest mb-2">YouTube</p>
+				<p class="font-display text-xl font-bold text-primary group-hover:text-accent transition-colors">Austin Real Estate Channel</p>
+				<p class="text-sm text-text-muted mt-1">Market updates and neighborhood tours</p>
+			</a>
+		</div>
+
+		<!-- Credentials strip -->
+		<div class="bg-warm-dark rounded-2xl p-6 mb-16 text-sm text-text-muted">
+			<p><strong class="text-primary">William Zhang</strong> &middot; Licensed Real Estate Agent &middot; {BROKERAGE} &middot; TREC #{TREC_LICENSE} &middot; Austin, Texas &middot; Serving the greater Austin metro area including Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, and Leander.</p>
+		</div>
+
+		<!-- Form -->
+		<ContactForm heading="Send me a message" subheading="Tell me about your timeline, budget, and what you're looking for. I'll get back to you within one business day." />
+	</div>
+</BaseLayout>

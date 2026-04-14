@@ -32,7 +32,9 @@ Built with Astro + Tailwind. Optimized for local SEO and AI/LLM discoverability 
 
 ## Key URLs
 - IDX/home search: lifeinaustintx.com (Real Geeks) — link to it, don't replicate
-- YouTube: @WilliamTexasHomes (Mandarin), @aiforrealtors (English)
+- YouTube (English, primary for this site): https://www.youtube.com/channel/UCun_gJQ6zg3q3Uc8avyOq6w
+- YouTube (Mandarin): https://www.youtube.com/@WilliamTexasHomes
+- Google Business Profile: https://share.google/trv8A42Hs8vMpUjyS
 - Phone: (512) 766-3188
 - Brokerage: eXp Realty, TREC #811948
 

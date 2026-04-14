@@ -1,16 +1,86 @@
 ---
-import { SITE_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL } from '../consts';
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES } from '../consts';
+import { REVIEWS } from '../data/reviews';
 
 interface Props {
-	type: 'agent' | 'article' | 'faq' | 'neighborhood';
+	type: 'agent' | 'article' | 'faq' | 'neighborhood' | 'service' | 'breadcrumb' | 'website' | 'reviews';
 	data?: Record<string, any>;
 }
 
+const hasReviews = REVIEWS.length > 0;
+const aggregateRating = hasReviews
+	? {
+		"@type": "AggregateRating",
+		"ratingValue": (REVIEWS.reduce((sum, r) => sum + r.rating, 0) / REVIEWS.length).toFixed(2),
+		"reviewCount": REVIEWS.length,
+		"bestRating": 5,
+		"worstRating": 1,
+	}
+	: null;
+
+const reviewSchemas = REVIEWS.map((r) => ({
+	"@type": "Review",
+	"author": { "@type": "Person", "name": r.author },
+	"reviewRating": {
+		"@type": "Rating",
+		"ratingValue": r.rating,
+		"bestRating": 5,
+		"worstRating": 1,
+	},
+	"reviewBody": r.reviewBody,
+	"datePublished": r.datePublished,
+	"itemReviewed": { "@id": `${SITE_URL}#agent` },
+}));
+
 const { type, data = {} } = Astro.props;
+
+const personSchema = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	"@id": `${SITE_URL}/about#william-zhang`,
+	"name": "William Zhang",
+	"givenName": "William",
+	"familyName": "Zhang",
+	"jobTitle": "Licensed Real Estate Agent",
+	"url": `${SITE_URL}/about`,
+	"image": `${SITE_URL}/william-zhang.jpg`,
+	"telephone": PHONE,
+	"email": EMAIL,
+	"description": "William Zhang is a licensed Austin, TX real estate agent helping buyers and sellers with local expertise, data-driven guidance, and honest advice.",
+	"alumniOf": {
+		"@type": "CollegeOrUniversity",
+		"name": "University of Texas at Austin",
+	},
+	"knowsLanguage": ["English", "Mandarin Chinese"],
+	"knowsAbout": [
+		"Austin real estate market",
+		"Home buying in Austin, TX",
+		"Home selling in Austin, TX",
+		"Austin neighborhoods and school districts",
+		"Relocation to Austin",
+		"Real estate market analysis",
+	],
+	"hasOccupation": {
+		"@type": "Occupation",
+		"name": "Real Estate Agent",
+		"occupationLocation": { "@type": "City", "name": "Austin, TX" },
+		"qualifications": `Texas Real Estate Commission (TREC) License #${TREC_LICENSE}`,
+	},
+	"hasCredential": {
+		"@type": "EducationalOccupationalCredential",
+		"credentialCategory": "license",
+		"name": "Texas Real Estate Sales Agent License",
+		"recognizedBy": { "@type": "Organization", "name": "Texas Real Estate Commission (TREC)" },
+		"identifier": TREC_LICENSE,
+	},
+	"memberOf": { "@type": "Organization", "name": BROKERAGE },
+	"sameAs": SAME_AS,
+};
 
 const agentSchema = {
 	"@context": "https://schema.org",
 	"@type": "RealEstateAgent",
+	"@id": `${SITE_URL}#agent`,
 	"name": "William Zhang",
 	"jobTitle": "Licensed Real Estate Agent",
 	"url": SITE_URL,
@@ -27,10 +97,8 @@ const agentSchema = {
 		{ "@type": "City", "name": "Georgetown", "containedInPlace": { "@type": "State", "name": "Texas" } },
 		{ "@type": "City", "name": "Leander", "containedInPlace": { "@type": "State", "name": "Texas" } },
 	],
-	"worksFor": {
-		"@type": "RealEstateAgent",
-		"name": BROKERAGE,
-	},
+	"worksFor": { "@type": "RealEstateAgent", "name": BROKERAGE },
+	"employee": { "@id": `${SITE_URL}/about#william-zhang` },
 	"hasCredential": {
 		"@type": "EducationalOccupationalCredential",
 		"credentialCategory": "license",
@@ -38,14 +106,10 @@ const agentSchema = {
 		"recognizedBy": { "@type": "Organization", "name": "Texas Real Estate Commission (TREC)" },
 		"identifier": TREC_LICENSE,
 	},
-	"alumniOf": {
-		"@type": "CollegeOrUniversity",
-		"name": "University of Texas at Austin",
-	},
 	"knowsLanguage": ["English", "Mandarin Chinese"],
-	"sameAs": [
-		YOUTUBE_URL,
-	],
+	"sameAs": SAME_AS,
+	...(aggregateRating && { "aggregateRating": aggregateRating }),
+	...(hasReviews && { "review": reviewSchemas }),
 };
 
 const localBusinessSchema = {
@@ -68,6 +132,7 @@ const localBusinessSchema = {
 	},
 	"openingHours": "Mo-Su 09:00-18:00",
 	"priceRange": "$$",
+	"sameAs": SAME_AS,
 };
 
 function buildArticleSchema(d: Record<string, any>) {
@@ -81,8 +146,11 @@ function buildArticleSchema(d: Record<string, any>) {
 		...(d.image && { "image": d.image }),
 		"author": {
 			"@type": "Person",
+			"@id": `${SITE_URL}/about#william-zhang`,
 			"name": "William Zhang",
 			"url": `${SITE_URL}/about`,
+			"jobTitle": "Licensed Real Estate Agent",
+			"sameAs": [YOUTUBE_URL, YOUTUBE_ZH_URL],
 		},
 		"publisher": {
 			"@type": "Organization",
@@ -121,6 +189,54 @@ function buildFaqSchema(d: Record<string, any>) {
 	};
 }
 
+const websiteSchema = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"@id": `${SITE_URL}#website`,
+	"url": SITE_URL,
+	"name": SITE_TITLE,
+	"description": SITE_DESCRIPTION,
+	"publisher": { "@id": `${SITE_URL}/about#william-zhang` },
+	"potentialAction": {
+		"@type": "SearchAction",
+		"target": `${IDX_URL}/?q={search_term_string}`,
+		"query-input": "required name=search_term_string",
+	},
+};
+
+const serviceSchemas = SERVICES.map((s) => ({
+	"@context": "https://schema.org",
+	"@type": "Service",
+	"name": s.name,
+	"description": s.description,
+	"serviceType": s.serviceType,
+	"url": s.url,
+	"provider": { "@id": `${SITE_URL}/about#william-zhang` },
+	"areaServed": [
+		{ "@type": "City", "name": "Austin", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Cedar Park", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Round Rock", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Pflugerville", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Lakeway", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Georgetown", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Leander", "containedInPlace": { "@type": "State", "name": "Texas" } },
+	],
+}));
+
+function buildBreadcrumbSchema(d: Record<string, any>) {
+	const items: { name: string; url: string }[] = d.items || [];
+	return {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": items.map((item, idx) => ({
+			"@type": "ListItem",
+			"position": idx + 1,
+			"name": item.name,
+			"item": item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
+		})),
+	};
+}
+
 function buildNeighborhoodSchema(d: Record<string, any>) {
 	return {
 		"@context": "https://schema.org",
@@ -139,8 +255,26 @@ function buildNeighborhoodSchema(d: Record<string, any>) {
 const schemas: string[] = [];
 
 if (type === 'agent') {
+	schemas.push(JSON.stringify(personSchema));
 	schemas.push(JSON.stringify(agentSchema));
 	schemas.push(JSON.stringify(localBusinessSchema));
+	schemas.push(JSON.stringify(websiteSchema));
+	for (const s of serviceSchemas) schemas.push(JSON.stringify(s));
+}
+if (type === 'website') {
+	schemas.push(JSON.stringify(websiteSchema));
+}
+if (type === 'service') {
+	for (const s of serviceSchemas) schemas.push(JSON.stringify(s));
+}
+if (type === 'breadcrumb') {
+	schemas.push(JSON.stringify(buildBreadcrumbSchema(data)));
+}
+if (type === 'reviews' && hasReviews) {
+	// Emit as standalone Review entities linked to the agent
+	for (const r of reviewSchemas) {
+		schemas.push(JSON.stringify({ "@context": "https://schema.org", ...r }));
+	}
 }
 if (type === 'article') {
 	schemas.push(JSON.stringify(buildArticleSchema(data)));

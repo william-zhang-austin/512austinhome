@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { REVIEWS } from '../data/reviews';
+import { GBP_URL, PHONE } from '../consts';
+
+const hasReviews = REVIEWS.length > 0;
+const avgRating = hasReviews
+	? (REVIEWS.reduce((sum, r) => sum + r.rating, 0) / REVIEWS.length).toFixed(1)
+	: null;
+
+function formatDate(iso: string) {
+	const d = new Date(iso);
+	return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+}
+---
+
+<BaseLayout title="Client Reviews & Testimonials — William Zhang | 512 Austin Home" description="Reviews and testimonials from William Zhang's Austin, TX real estate clients. Buyers, sellers, and relocation clients share their experience working with an eXp Realty agent.">
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="reviews" />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Reviews', url: '/reviews' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Reviews</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Client Reviews & Testimonials</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Honest feedback from the buyers, sellers, and relocation clients I've worked with across Austin, Cedar Park, Round Rock, and the surrounding area.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		{hasReviews ? (
+			<>
+				<!-- Summary -->
+				<div class="bg-warm-dark rounded-2xl p-8 mb-12 flex items-center justify-between gap-6 flex-wrap">
+					<div>
+						<p class="font-display text-5xl font-bold text-primary">{avgRating} <span class="text-accent text-3xl">&#9733;</span></p>
+						<p class="text-text-muted text-sm mt-1">Based on {REVIEWS.length} client {REVIEWS.length === 1 ? 'review' : 'reviews'}</p>
+					</div>
+					<a href={GBP_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
+						Read on Google &rarr;
+					</a>
+				</div>
+
+				<!-- Reviews list -->
+				<section class="space-y-6 mb-16">
+					{REVIEWS.map((r) => (
+						<article class="bg-surface rounded-xl border border-border p-6 sm:p-8">
+							<div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+								<p class="font-display font-semibold text-primary">{r.author}</p>
+								<p class="text-xs text-text-muted">{formatDate(r.datePublished)}</p>
+							</div>
+							<div class="text-accent mb-3" aria-label={`${r.rating} out of 5 stars`}>
+								{'★'.repeat(r.rating)}<span class="text-border">{'★'.repeat(5 - r.rating)}</span>
+							</div>
+							<p class="text-text-muted leading-relaxed">{r.reviewBody}</p>
+							{(r.location || r.transactionType) && (
+								<p class="text-xs text-text-muted mt-4">
+									{r.location}{r.location && r.transactionType ? ' — ' : ''}{r.transactionType && <span class="capitalize">{r.transactionType.replace('-', ' ')}</span>}
+								</p>
+							)}
+						</article>
+					))}
+				</section>
+			</>
+		) : (
+			<!-- Empty state -->
+			<div class="bg-warm-dark rounded-2xl p-10 mb-12 text-center">
+				<h2 class="font-display text-2xl font-bold text-primary mb-3">Reviews are being collected</h2>
+				<p class="text-text-muted mb-6 max-w-lg mx-auto">Client testimonials will appear here as they come in. In the meantime, you can read reviews on my Google Business Profile.</p>
+				<a href={GBP_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Read Reviews on Google &rarr;
+				</a>
+			</div>
+		)}
+
+		<!-- Work with me CTA -->
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 mb-16 text-center">
+			<h2 class="font-display text-2xl font-bold text-primary mb-3">Want to be my next success story?</h2>
+			<p class="text-text-muted mb-6 max-w-lg mx-auto">Whether you're buying, selling, or relocating, I'd love to earn your business.</p>
+			<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+				Call {PHONE}
+			</a>
+		</div>
+
+		<ContactForm heading="Start the conversation" subheading="No pressure, no obligation — just honest guidance." />
+	</div>
+</BaseLayout>

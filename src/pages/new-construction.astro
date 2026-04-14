@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { IDX_URL, PHONE } from '../consts';
+
+const faqs = [
+	{
+		question: "Can I use a real estate agent when buying new construction in Austin?",
+		answer: "Yes — and you should. Nearly every major Austin-area builder pays buyer-agent commissions from their marketing budget, meaning representation costs you nothing. However, you must register your agent on your first visit to the builder's sales office. If you walk in alone and sign anything, you may lose the ability to bring in representation later. Always bring your agent or register them before you visit.",
+	},
+	{
+		question: "Which builders build new construction homes in Austin?",
+		answer: "Major Austin-area builders include Lennar, DR Horton, Pulte Homes, Taylor Morrison, Meritage Homes, Perry Homes, Highland Homes, David Weekley Homes, KB Home, Brohn Homes, Chesmar Homes, Ashton Woods, Scott Felder Homes, and Coventry Homes. Luxury custom builders and semi-custom builders serve Westlake, Lakeway, and Dripping Springs. I work with buyers across all of them.",
+	},
+	{
+		question: "Where are the new construction communities in Austin?",
+		answer: "Most new construction activity is in the fast-growing outer suburbs: Leander, Liberty Hill, Georgetown, Hutto, Manor, Pflugerville (north), Kyle, Buda, Dripping Springs, Lago Vista, and parts of Cedar Park and Round Rock. New construction in central Austin is limited to infill projects, custom builds, and a small number of condo towers. Prices range from the $300Ks in outer suburbs to $1M+ in Dripping Springs and Lakeway.",
+	},
+	{
+		question: "Is new construction or a resale home better in Austin?",
+		answer: "Both have real advantages. New construction offers modern floor plans, energy efficiency (big deal in Austin summers), low maintenance, builder warranties (typically 1/2/10 year), smart home features, and fresh finishes. Resale homes in established neighborhoods typically offer mature trees, larger lots, better locations closer to downtown, more established schools, and often lower price per square foot. For relocation buyers who want to move in without projects, new construction is often appealing; for buyers prioritizing location and character, resale usually wins.",
+	},
+	{
+		question: "How much do new construction homes cost in Austin?",
+		answer: "New construction pricing in Austin varies widely by location and builder. Entry-level production builders in Kyle, Hutto, Manor, and Liberty Hill start in the $300Ks for 3-4 bedroom homes around 2,000 sq ft. Mid-range in Leander, Georgetown, and Pflugerville runs $400K-$600K. Premium new construction in Lakeway, Dripping Springs, and Westlake runs $700K to well over $1M. Builder incentives shift monthly, so current pricing isn't always what the builder will actually accept.",
+	},
+	{
+		question: "Can I negotiate with new construction builders in Austin?",
+		answer: "Yes, but builders rarely move on base price — that would affect comparables for other homes in the community. Instead, they negotiate through incentives: design center credits, closing cost contributions, rate buydowns through their preferred lender, upgrade packages, and sometimes appliances or window coverings. An experienced buyer's agent knows what each builder is currently offering and how to stack incentives. On a $500,000 new home, total builder incentives can easily reach $15,000-$30,000.",
+	},
+	{
+		question: "Do new construction homes in Austin include a lot premium?",
+		answer: "Most do. The base price is usually for the smallest or least desirable lot; premium lots (greenbelt backing, cul-de-sac, corner, oversized, or views) add anywhere from $5,000 to $100,000+. Some builders publish lot premiums; others negotiate them privately. Factor this into your total budget when comparing new construction to resale.",
+	},
+	{
+		question: "How long does it take to build a new home in Austin?",
+		answer: "Production builder homes typically take 5-9 months from contract to closing if you're building from scratch. Spec homes (already under construction or completed) can close in 30-60 days. Custom and semi-custom homes take 10-18 months. Austin builders have had supply chain and labor issues in recent years; always build a buffer into your timeline, especially if you're selling another home or coordinating a lease end.",
+	},
+	{
+		question: "Should I use the builder's preferred lender for new construction?",
+		answer: "Sometimes. Builders typically offer meaningful incentives (often $5,000-$15,000 in closing costs or rate buydowns) if you finance through their preferred lender. That's real money. However, the preferred lender's rate or fees may not be the best available. The answer is to shop rates from at least one outside lender and compare total cost over 3-5 years, not just rate. I can walk you through the math.",
+	},
+	{
+		question: "What warranties come with new construction homes in Austin?",
+		answer: "Most Texas production builders offer a 1/2/10 warranty: 1 year on workmanship and materials, 2 years on systems (plumbing, electrical, HVAC, mechanical), and 10 years on major structural components. Some builders offer longer coverage. Always get the warranty terms in writing before signing. Note: the warranty does not cover normal settling, landscaping, or items caused by homeowner action.",
+	},
+	{
+		question: "Do I need a home inspection on new construction?",
+		answer: "Yes, absolutely. Even brand-new homes can have framing issues, plumbing mistakes, HVAC sizing problems, roofing defects, and cosmetic issues. I always recommend at least a pre-drywall inspection (before insulation and drywall hide everything) and a final inspection before closing. Many buyers also get an 11-month inspection right before the builder warranty expires, so any issues can be submitted under warranty. Inspections run $400-$800 each and are among the best money you'll spend.",
+	},
+	{
+		question: "Can I make changes to a new construction home in Austin?",
+		answer: "It depends on how early you're in the process and which builder you're working with. Production builders allow structural options (bonus room, extra bedroom, covered patio, etc.) only at the contract signing phase. After that, you're limited to design center selections (flooring, countertops, cabinets, paint, fixtures, appliances). Semi-custom and custom builders offer more flexibility but cost more. If you want full control, look at custom builders or resale homes you can renovate.",
+	},
+	{
+		question: "How are property taxes calculated on new construction in Austin?",
+		answer: "Here's a common surprise: your first-year property tax estimate is based on the unimproved lot, not the finished home. Your actual tax bill the following year (and every year after) will be based on the appraised value of the home and land combined — typically 2-3x the first-year estimate. Many new construction communities in Austin are also in MUDs (Municipal Utility Districts), which add an extra tax rate of 0.5-1.0%. Always ask for the MUD disclosure and estimate your Year 2 taxes before you buy.",
+	},
+	{
+		question: "What is a MUD and why does it matter in Austin new construction?",
+		answer: "A Municipal Utility District (MUD) is a special taxing district created to fund water, sewer, drainage, and roads in new developments. MUDs add an extra property tax rate (typically 0.5% to 1.0%) on top of the city and school district rates. MUD rates decrease over time as the infrastructure debt is paid off, but initially they can push total tax rates to 3%+ on new construction. Texas law requires a MUD disclosure before closing. I'll help you understand whether a community is in a MUD and what that means for your total cost.",
+	},
+	{
+		question: "How do I get started buying new construction in Austin?",
+		answer: "Start by scheduling a no-pressure call. Tell me your budget, desired location, timeline, and must-haves. I'll send you a shortlist of builders and communities that fit, and we'll tour them together. Remember: register me as your agent before you walk into any builder's sales office, or you may lose the ability to have representation at that community. The first visit is the key moment.",
+	},
+];
+---
+
+<BaseLayout title="New Construction Homes in Austin, TX — Builder Buyer Representation | 512 Austin Home" description="Buying a new construction home in Austin? William Zhang represents buyers at Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, and every major Austin-area builder — at no cost to you.">
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Buy a Home in Austin', url: '/buy' },
+		{ name: 'New Construction', url: '/new-construction' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">New Construction</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">New Construction Homes in Austin, Texas</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Buying a new construction home in Austin? I represent buyers at every major Austin-area builder — Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, Highland Homes, and more — at no cost to you. Most builders pay buyer-agent commissions from their marketing budget.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Key callout -->
+		<div class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-10 border-l-4 border-accent">
+			<h2 class="font-display text-xl font-bold text-primary mb-3">Register Me Before Your First Builder Visit</h2>
+			<p class="text-text-muted text-sm leading-relaxed">Builder representation only works if your agent is registered on your first visit. If you walk into a sales office alone and sign anything — even a sign-in sheet — you may lose the ability to bring in a buyer's agent at that community. Text me the builder and community name before you visit, and I'll register you in 60 seconds. It's free and it protects you.</p>
+		</div>
+
+		<!-- Communities feature -->
+		<div class="mb-16 bg-surface border border-border rounded-2xl overflow-hidden">
+			<div class="p-6 sm:p-8">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">Browse Current Communities</p>
+				<h2 class="font-display text-2xl font-bold text-primary mb-3">Active New Construction in Pflugerville &amp; Leander</h2>
+				<p class="text-text-muted text-sm leading-relaxed mb-5">I tour new construction communities every week. Browse current Pflugerville and Leander communities with pricing, floor plans, amenities, and my honest take — what to love and what to push back on during your visit.</p>
+				<a href="/new-construction/communities" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
+					Browse Communities &rarr;
+				</a>
+			</div>
+		</div>
+
+		<!-- Builders we work with -->
+		<div class="prose mb-16">
+			<h2>Austin-Area Builders I Work With</h2>
+			<p>I represent buyers at essentially every production builder operating in the Austin metro area, plus many semi-custom and custom builders. That includes:</p>
+			<ul>
+				<li><strong>Production builders:</strong> Lennar, DR Horton, Pulte Homes, Taylor Morrison, Meritage Homes, Perry Homes, Highland Homes, David Weekley Homes, KB Home, Brohn Homes, Chesmar Homes, Ashton Woods, Scott Felder Homes, Coventry Homes, Castlerock Communities</li>
+				<li><strong>Semi-custom builders:</strong> Drees Custom Homes, Trendmaker, Partners in Building, Sitterle Homes</li>
+				<li><strong>Custom builders:</strong> Local luxury builders serving Westlake, Lakeway, Barton Creek, and Dripping Springs</li>
+			</ul>
+
+			<h2>Where New Construction Is Happening in Austin</h2>
+			<p>Most of Austin's new construction activity is concentrated in the fast-growing outer suburbs where land is still available:</p>
+			<ul>
+				<li><strong>Leander &amp; Liberty Hill</strong> — heavy new build activity, top-rated Leander ISD schools, popular with families</li>
+				<li><strong>Georgetown</strong> — historic downtown plus large new communities, Sun City retirement, strong appreciation</li>
+				<li><strong>Hutto &amp; Manor</strong> — entry-level pricing, close to Tesla Gigafactory and Samsung Taylor</li>
+				<li><strong>Kyle &amp; Buda</strong> — south metro value plays, growing fast</li>
+				<li><strong>Pflugerville</strong> — north-central location with new communities still coming online</li>
+				<li><strong>Dripping Springs</strong> — Hill Country lifestyle, luxury and semi-custom, Dripping Springs ISD</li>
+				<li><strong>Lago Vista &amp; Jonestown</strong> — Lake Travis views at more accessible prices</li>
+			</ul>
+
+			<h2>Why Use a Buyer's Agent for New Construction</h2>
+			<p>Here's the surprise most first-time new construction buyers don't realize: the nice person at the builder's sales office works for the builder, not you. Their job is to sell the builder's inventory at the best terms for the builder. Having your own representation means you get:</p>
+			<ul>
+				<li>An advocate who knows what incentives each builder is currently offering and how to stack them</li>
+				<li>Help reviewing the builder's contract (which is heavily builder-favorable and different from a TREC resale contract)</li>
+				<li>An independent inspection recommendation (pre-drywall, final, and 11-month)</li>
+				<li>Lender comparison so you don't overpay on the preferred lender's rate</li>
+				<li>Guidance on upgrade selection — which design center options add resale value and which don't</li>
+				<li>Coordination of closing, walkthrough, and punch list</li>
+			</ul>
+			<p>And again: in almost all cases, the builder pays the buyer-agent commission from their marketing budget. It costs you nothing.</p>
+		</div>
+
+		<!-- CTA -->
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 mb-16 text-center">
+			<h2 class="font-display text-2xl font-bold text-primary mb-3">Thinking About New Construction in Austin?</h2>
+			<p class="text-text-muted mb-6 max-w-lg mx-auto">Tell me which builders or communities you're considering. I'll register you as a client and share current incentives — at no cost to you.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href={IDX_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Browse Austin Homes
+				</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Austin New Construction FAQ</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<ContactForm heading="Questions about Austin new construction?" subheading="I'll walk you through builders, incentives, and the gotchas nobody mentions at the sales office." />
+	</div>
+</BaseLayout>

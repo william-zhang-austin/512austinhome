@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../../components/SchemaMarkup.astro';
+import ContactForm from '../../../components/ContactForm.astro';
+import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel, type Community } from '../../../data/communities';
+import { PHONE, SITE_URL } from '../../../consts';
+
+export async function getStaticPaths() {
+	return COMMUNITIES.map((c) => ({
+		params: { slug: c.slug },
+		props: { community: c },
+	}));
+}
+
+interface Props {
+	community: Community;
+}
+
+const { community: c } = Astro.props;
+
+const title = `${c.name} by ${c.builder} — New Construction in ${c.city}, TX | 512 Austin Home`;
+const description = `${c.name} by ${c.builder} in ${c.city}, Texas. ${priceRangeLabel(c)}, ${c.sqftMin.toLocaleString()}–${c.sqftMax.toLocaleString()} sqft, ${c.schoolDistrict}. ${c.tagline}`;
+const canonical = `${SITE_URL}/new-construction/communities/${c.slug}`;
+
+const residenceSchema = {
+	"@context": "https://schema.org",
+	"@type": "Residence",
+	"name": c.name,
+	"description": c.summary,
+	"address": {
+		"@type": "PostalAddress",
+		"addressLocality": c.city,
+		"addressRegion": "TX",
+		"addressCountry": "US",
+		...(c.address && { "streetAddress": c.address }),
+	},
+	...(c.heroImage && c.heroImage.startsWith('http') && { "image": c.heroImage }),
+	"numberOfBedrooms": { "@type": "QuantitativeValue", "minValue": c.bedsMin, "maxValue": c.bedsMax },
+	"numberOfBathroomsTotal": { "@type": "QuantitativeValue", "minValue": c.bathsMin, "maxValue": c.bathsMax },
+	"floorSize": { "@type": "QuantitativeValue", "minValue": c.sqftMin, "maxValue": c.sqftMax, "unitCode": "FTK" },
+	"offers": {
+		"@type": "Offer",
+		"priceCurrency": "USD",
+		"lowPrice": c.priceFrom,
+		...(c.priceTo && { "highPrice": c.priceTo }),
+		"availability": "https://schema.org/InStock",
+		"seller": { "@type": "Organization", "name": c.builder },
+	},
+};
+
+const jsonLdString = JSON.stringify(residenceSchema);
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} image={c.heroImage}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'New Construction', url: '/new-construction' },
+		{ name: 'Communities', url: '/new-construction/communities' },
+		{ name: c.name, url: `/new-construction/communities/${c.slug}` },
+	] }} />
+	<script is:inline type="application/ld+json" set:html={jsonLdString} />
+
+	<article class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Breadcrumb trail -->
+		<nav class="text-sm text-text-muted mb-6">
+			<a href="/new-construction" class="hover:text-accent no-underline">New Construction</a>
+			<span class="mx-2">/</span>
+			<a href="/new-construction/communities" class="hover:text-accent no-underline">Communities</a>
+			<span class="mx-2">/</span>
+			<span class="text-primary">{c.name}</span>
+		</nav>
+
+		<!-- Header -->
+		<header class="mb-8">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">{c.city}, Texas · {c.builder}</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">{c.name}</h1>
+			<p class="text-lg text-text-muted max-w-2xl">{c.tagline}</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Hero image -->
+		{c.heroImage && (
+			<div class="rounded-2xl overflow-hidden mb-10 border border-border aspect-[16/9] bg-warm-dark">
+				<img src={c.heroImage} alt={`${c.name} by ${c.builder} in ${c.city}, TX`} class="w-full h-full object-cover" />
+			</div>
+		)}
+		{!c.heroImage && (
+			<div class="rounded-2xl overflow-hidden mb-10 border border-border aspect-[16/9] bg-gradient-to-br from-accent-light via-warm to-warm-dark flex items-center justify-center">
+				<div class="text-center">
+					<p class="font-display text-3xl font-bold text-accent mb-2">{c.name}</p>
+					<p class="text-text-muted text-sm">Tour photos coming soon</p>
+				</div>
+			</div>
+		)}
+
+		<!-- Key facts card -->
+		<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+			<div class="bg-surface border border-border rounded-xl p-4">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Price</p>
+				<p class="text-lg font-bold text-primary">{priceRangeLabel(c)}</p>
+			</div>
+			<div class="bg-surface border border-border rounded-xl p-4">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Size</p>
+				<p class="text-lg font-bold text-primary">{c.sqftMin.toLocaleString()}–{c.sqftMax.toLocaleString()}</p>
+				<p class="text-xs text-text-muted">sqft</p>
+			</div>
+			<div class="bg-surface border border-border rounded-xl p-4">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Beds / Baths</p>
+				<p class="text-lg font-bold text-primary">{bedsLabel(c)}</p>
+				<p class="text-xs text-text-muted">{c.bathsMin === c.bathsMax ? `${c.bathsMin} bath` : `${c.bathsMin}–${c.bathsMax} bath`}</p>
+			</div>
+			<div class="bg-surface border border-border rounded-xl p-4">
+				<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Schools</p>
+				<p class="text-sm font-bold text-primary leading-tight">{c.schoolDistrict}</p>
+			</div>
+		</div>
+
+		<!-- Incentive callout -->
+		{c.incentives && (
+			<div class="bg-accent-light rounded-2xl p-6 mb-10 border-l-4 border-accent">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">Current Incentives</p>
+				<p class="text-primary text-sm leading-relaxed">{c.incentives}</p>
+				<p class="text-text-muted text-xs mt-3">Builder incentives change monthly. Text me before you visit so I can confirm what's currently stackable — on a $500K new build, combined incentives often reach $15K–$30K.</p>
+			</div>
+		)}
+
+		<!-- Summary -->
+		<section class="prose mb-10">
+			<h2>About {c.name}</h2>
+			<p>{c.summary}</p>
+		</section>
+
+		<!-- Highlights -->
+		<section class="grid md:grid-cols-2 gap-6 mb-10">
+			<div class="bg-surface border border-border rounded-xl p-6">
+				<h3 class="font-display text-lg font-bold text-primary mb-4">What I like</h3>
+				<ul class="space-y-2.5">
+					{c.highlights.map((h) => (
+						<li class="text-sm text-text-muted flex gap-3">
+							<span class="text-accent font-bold flex-shrink-0">+</span>
+							<span>{h}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+			<div class="bg-surface border border-border rounded-xl p-6">
+				<h3 class="font-display text-lg font-bold text-primary mb-4">What to push back on</h3>
+				<ul class="space-y-2.5">
+					{c.watchOuts.map((w) => (
+						<li class="text-sm text-text-muted flex gap-3">
+							<span class="text-accent font-bold flex-shrink-0">&middot;</span>
+							<span>{w}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<!-- Amenities + details table -->
+		<section class="bg-surface border border-border rounded-xl p-6 mb-10">
+			<h3 class="font-display text-lg font-bold text-primary mb-4">Community Details</h3>
+			<dl class="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+				<div>
+					<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Builder</dt>
+					<dd class="text-primary font-semibold">{c.builder}</dd>
+				</div>
+				<div>
+					<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Location</dt>
+					<dd class="text-primary font-semibold">{c.city}, TX</dd>
+				</div>
+				{c.address && (
+					<div class="sm:col-span-2">
+						<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Sales Office</dt>
+						<dd class="text-primary font-semibold">{c.address}</dd>
+					</div>
+				)}
+				{c.garage && (
+					<div>
+						<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Garage</dt>
+						<dd class="text-primary font-semibold">{c.garage}</dd>
+					</div>
+				)}
+				{c.hoa && (
+					<div>
+						<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">HOA</dt>
+						<dd class="text-primary font-semibold">{c.hoa}</dd>
+					</div>
+				)}
+				<div class="sm:col-span-2">
+					<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Home Types</dt>
+					<dd class="text-primary font-semibold">{c.homeTypes.join(', ')}</dd>
+				</div>
+				<div class="sm:col-span-2">
+					<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Amenities</dt>
+					<dd class="text-primary">
+						<div class="flex flex-wrap gap-2 mt-1">
+							{c.amenities.map((a) => (
+								<span class="text-xs bg-accent-light text-accent px-2.5 py-1 rounded-full">{a}</span>
+							))}
+						</div>
+					</dd>
+				</div>
+			</dl>
+		</section>
+
+		<!-- Gallery -->
+		{c.gallery && c.gallery.length > 0 && (
+			<section class="mb-10">
+				<h3 class="font-display text-lg font-bold text-primary mb-4">More from {c.name}</h3>
+				<div class="grid sm:grid-cols-2 gap-4">
+					{c.gallery.map((img) => (
+						<div class="aspect-[4/3] rounded-xl overflow-hidden border border-border bg-warm-dark">
+							<img src={img} alt={`${c.name} community`} loading="lazy" class="w-full h-full object-cover" />
+						</div>
+					))}
+				</div>
+			</section>
+		)}
+
+		<!-- Related blog link -->
+		{c.relatedBlogSlug && (
+			<div class="bg-surface border border-border rounded-2xl p-6 mb-10">
+				<p class="text-xs uppercase tracking-wider text-accent font-semibold mb-2">Full tour</p>
+				<h3 class="font-display text-lg font-bold text-primary mb-2">I wrote a detailed tour breakdown on the blog</h3>
+				<p class="text-sm text-text-muted mb-4">Floor plan walkthroughs, pricing details, and what to watch out for during your visit.</p>
+				<a href={`/blog/${c.relatedBlogSlug}`} class="inline-flex items-center text-accent font-semibold text-sm no-underline hover:underline">Read the full tour &rarr;</a>
+			</div>
+		)}
+
+		<!-- Register callout -->
+		<div class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-10 border-l-4 border-accent">
+			<h3 class="font-display text-xl font-bold text-primary mb-3">Register Me Before You Visit {c.name}</h3>
+			<p class="text-text-muted text-sm leading-relaxed mb-4">Builder representation only works if your agent is registered on your first visit. If you walk into the {c.builder} sales office alone and sign a visitor sheet, you may lose the ability to bring in a buyer's agent at this community. Text me the community name before you go — I'll register you in 60 seconds. It's free and it protects you.</p>
+			<div class="flex flex-col sm:flex-row gap-3">
+				<a href="/contact" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
+					Register Me as Your Agent
+				</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border-2 border-accent rounded-lg hover:bg-white transition-all no-underline">
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+
+		<!-- Contact form -->
+		<ContactForm heading={`Questions about ${c.name}?`} subheading={`Tell me what you're looking for and I'll send current inventory, incentives, and my notes on the best lots.`} />
+
+		<p class="text-xs text-text-muted text-center mt-10">Community data last updated {c.updatedDate}. Prices, floor plans, and incentives change frequently — confirm current numbers before making decisions. Photos are property of {c.builder}.</p>
+	</article>
+</BaseLayout>

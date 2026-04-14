@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { IDX_URL, PHONE } from '../consts';
+
+const faqs = [
+	{
+		question: "Is Austin a good place to move to in 2026?",
+		answer: "Austin remains one of the strongest relocation destinations in the country thanks to no state income tax, a large and diversified job market (tech, healthcare, state government, manufacturing), warm weather, outdoor lifestyle, and a lower cost of living than California, New York, or Seattle. The housing market has cooled from 2021-2022 highs, making it a more reasonable time to buy than it was a few years ago.",
+	},
+	{
+		question: "How much does it cost to live in Austin compared to California?",
+		answer: "Cost of living in Austin is roughly 30-50% lower than coastal California cities. A $1.5M home in the San Francisco Bay Area buys roughly a $600,000-$800,000 home in Austin. Texas has no state income tax (California tops out at 13.3%), though Texas property taxes are higher (1.8-2.8% vs California's Prop 13-capped rates). For most high earners relocating from CA, the net tax savings are substantial.",
+	},
+	{
+		question: "How much does it cost to live in Austin compared to New York?",
+		answer: "Austin is significantly cheaper than NYC for housing, food, transportation, and taxes. Manhattan and Brooklyn rents are roughly double Austin rents, and home prices in most of NYC are 2-3x Austin prices. Texas has no state or local income tax, while NYC residents pay both NY state (up to 10.9%) and NYC city income tax (up to 3.876%). The tradeoff is Austin is car-dependent — plan on 1-2 cars per household.",
+	},
+	{
+		question: "What are the best Austin suburbs for people relocating?",
+		answer: "Popular relocation suburbs include Cedar Park and Leander (top schools, family-friendly, closer to north Austin tech employers), Round Rock (value, schools, established), Pflugerville (best value, growing), Lakeway and Bee Cave (luxury, Hill Country views, Lake Travis ISD), Westlake (premium, Eanes ISD), Dripping Springs (Hill Country, growing fast), and Georgetown (historic downtown, Sun City retirement community). Which is best depends on your budget, commute, and lifestyle.",
+	},
+	{
+		question: "Where do tech workers live in Austin?",
+		answer: "Most Austin tech workers cluster in areas that balance commute to major employers (Domain, downtown, Apple campus, Tesla Gigafactory, Samsung Taylor) with lifestyle. Popular neighborhoods include Mueller, East Austin, South Congress, and Zilker for younger workers who want walkability; Cedar Park, Leander, and Round Rock for families who work at the Domain or Apple; Pflugerville and Manor for those working at Tesla or Samsung; and Bee Cave, Lakeway, and Westlake for senior/executive levels.",
+	},
+	{
+		question: "What are the best school districts in Austin for families relocating here?",
+		answer: "Top-rated Austin-area school districts include Eanes ISD (Westlake), Lake Travis ISD (Lakeway, Bee Cave), Leander ISD (Cedar Park, Leander), Round Rock ISD (Round Rock, northwest Austin), Dripping Springs ISD, and Lake Travis-adjacent portions of Austin ISD. If schools matter, verify the exact attendance zone for any address you consider — boundaries change and school quality varies within a district.",
+	},
+	{
+		question: "How do Texas property taxes work for someone moving from California?",
+		answer: "Texas has no state income tax but higher property taxes to compensate — rates typically 1.8% to 2.8% of assessed value. A $600,000 Austin home might cost $11,000-$16,000/year in property tax. The good news: Texas has a homestead exemption for your primary residence and caps annual assessed value increases at 10% once you've claimed it. For most California relocators, the total tax burden is still lower than California once you factor in the income tax savings.",
+	},
+	{
+		question: "Can I buy a home in Austin without visiting first?",
+		answer: "Yes. I work with virtual relocation buyers regularly. We can do video tours, neighborhood walk-throughs on FaceTime, and review every detail electronically. I'll also drive neighborhoods for you, send honest feedback, and represent you at inspections. That said, I always recommend at least one in-person visit before closing if possible, so you can confirm the commute, neighborhood feel, and home condition in person.",
+	},
+	{
+		question: "What's the Austin job market like?",
+		answer: "Austin's economy is diversified across tech (Apple, Tesla, Samsung, Google, Oracle, Dell, Meta, Amazon), state government (Texas capital), University of Texas, healthcare (Ascension, St. David's, Dell Medical), manufacturing, and a growing life sciences sector. Unemployment has historically been lower than national averages. The 2022-2024 tech layoff wave affected Austin but the market has stabilized.",
+	},
+	{
+		question: "How's the weather in Austin?",
+		answer: "Austin has long, hot summers (June-September with many days over 100°F), mild winters (rare freezes), and pleasant springs and falls. Humidity is moderate — much less than Houston. The city gets around 230 sunny days per year. Plan for high AC bills in summer and occasional severe weather like hailstorms and the rare ice event.",
+	},
+	{
+		question: "How long does a typical Austin relocation home search take?",
+		answer: "Most relocation buyers spend 1-3 months from starting the search to closing. Pre-approval takes 1-2 weeks, narrowing down neighborhoods and touring takes 2-4 weeks, offer to close takes 30-45 days. If you're on a tight timeline (job start date), we can compress this — I've helped relocating buyers close in under 30 days when needed.",
+	},
+	{
+		question: "Should I rent first or buy right away in Austin?",
+		answer: "If you're unsure which neighborhood fits your lifestyle and commute, renting for 6-12 months is a reasonable way to learn the city. If you already know where you want to be (or can visit a few times before the move), buying directly is usually the better financial choice — you avoid renting and then paying closing costs twice. I can help you think through the tradeoffs.",
+	},
+	{
+		question: "What should I know about Austin traffic before moving?",
+		answer: "Austin's traffic has worsened significantly with population growth. I-35 is the biggest bottleneck, especially between Round Rock and downtown during rush hour. MoPac (Loop 1) is congested but moves better. When choosing a neighborhood, test-drive your actual commute at rush hour if you can, not just off-peak. Remote or hybrid workers have much more flexibility on location.",
+	},
+	{
+		question: "Is Austin dog-friendly and outdoors-friendly?",
+		answer: "Extremely. Austin has 300+ parks, countless greenbelts and hiking trails, Lady Bird Lake for kayaking and paddleboarding, Barton Springs Pool, the Hill Country for hiking and swimming holes, and a large number of dog-friendly restaurants and patios. Many neighborhoods have dog parks, and the climate supports outdoor activity most of the year.",
+	},
+	{
+		question: "How do I start the relocation process with you?",
+		answer: "Schedule a free intro call and tell me where you're moving from, your target timeline, budget, must-haves (schools, commute, lifestyle), and any specific questions. From there, I'll send neighborhood recommendations, set up a custom MLS search, and we'll start exploring — virtually or in person. No pressure, no obligation.",
+	},
+];
+---
+
+<BaseLayout title="Moving to Austin, TX — Relocation Guide & Agent | 512 Austin Home" description="Relocating to Austin, Texas? William Zhang helps out-of-state buyers navigate the Austin housing market with virtual tours, neighborhood guidance, and end-to-end relocation support.">
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Moving to Austin', url: '/relocate' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Relocation</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Moving to Austin, Texas</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Relocating to Austin from another state? I help out-of-state buyers navigate the Austin market with virtual tours, neighborhood guidance, and end-to-end support — from your first search to handing you the keys.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Intro -->
+		<div class="prose mb-16">
+			<h2>Why People Are Moving to Austin</h2>
+			<p>Austin has been one of the fastest-growing metro areas in the U.S. for more than a decade. The reasons are consistent: no state income tax, a diversified job market anchored by tech (Apple, Tesla, Samsung, Google, Oracle, Dell, Meta), warm weather, outdoor lifestyle, live music, and a lower cost of living than coastal California, New York, or the Pacific Northwest.</p>
+			<p>The housing market cooled from its 2021-2022 peak, which means relocation buyers today have more inventory, more negotiating power, and more time to make a decision than they did a few years ago.</p>
+
+			<h2>What I Do for Relocation Buyers</h2>
+			<ul>
+				<li><strong>Virtual tours</strong> — FaceTime and recorded walk-throughs for every property you're interested in</li>
+				<li><strong>Neighborhood drive-throughs</strong> — I'll drive the streets, check the commute, and send honest feedback</li>
+				<li><strong>School district guidance</strong> — exact attendance zones verified address by address</li>
+				<li><strong>Cost-of-living comparisons</strong> — I'll help you model property tax, insurance, and total monthly cost vs your current city</li>
+				<li><strong>Remote closings</strong> — electronic signatures, wire transfers, and coordinated timing if you can't be in Austin for closing</li>
+				<li><strong>Referrals</strong> — trusted lenders, inspectors, movers, and contractors</li>
+			</ul>
+
+			<h2>Popular Relocation Origins</h2>
+			<p>Most of my relocation clients come from California (Bay Area, LA, San Diego), New York, Washington (Seattle), Illinois (Chicago), Colorado, and increasingly from Florida and other Texas cities. Each origin has its own patterns — Californians often prioritize outdoor space and lower taxes, New Yorkers prioritize walkability and culture, Seattle buyers often move with tech employers. I'll tailor the search to what matters for your specific move.</p>
+		</div>
+
+		<!-- Popular routes -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Relocation Guides by Origin City</h2>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+				<a href="/blog/moving-from-california-to-austin" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+					<h3 class="font-display text-lg font-bold text-primary mb-1 group-hover:text-accent transition-colors">California &rarr; Austin</h3>
+					<p class="text-sm text-text-muted">Taxes, home prices, lifestyle, and the honest tradeoffs.</p>
+				</a>
+				<div class="bg-surface rounded-xl p-6 border border-border opacity-70">
+					<h3 class="font-display text-lg font-bold text-primary mb-1">NYC &rarr; Austin</h3>
+					<p class="text-sm text-text-muted">Coming soon — ask me directly in the meantime.</p>
+				</div>
+				<div class="bg-surface rounded-xl p-6 border border-border opacity-70">
+					<h3 class="font-display text-lg font-bold text-primary mb-1">Seattle &rarr; Austin</h3>
+					<p class="text-sm text-text-muted">Coming soon — ask me directly in the meantime.</p>
+				</div>
+				<div class="bg-surface rounded-xl p-6 border border-border opacity-70">
+					<h3 class="font-display text-lg font-bold text-primary mb-1">Chicago &rarr; Austin</h3>
+					<p class="text-sm text-text-muted">Coming soon — ask me directly in the meantime.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 mb-16 text-center">
+			<h2 class="font-display text-2xl font-bold text-primary mb-3">Planning a Move to Austin?</h2>
+			<p class="text-text-muted mb-6 max-w-lg mx-auto">Tell me where you're moving from, your timeline, and what you're looking for. I'll send neighborhood recommendations within 24 hours.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href={IDX_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Browse Austin Homes
+				</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Moving to Austin FAQ</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<ContactForm heading="Ready to plan your move to Austin?" subheading="I'll help you figure out the right neighborhood, timeline, and budget — no pressure, no obligation." />
+	</div>
+</BaseLayout>
