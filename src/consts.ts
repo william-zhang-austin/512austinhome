@@ -1,0 +1,10 @@
+export const SITE_TITLE = '512 Austin Home — Austin Real Estate Agent | William Zhang';
+export const SITE_DESCRIPTION = 'Austin real estate agent William Zhang helps you buy and sell homes in Austin, Cedar Park, Round Rock, and surrounding areas. Local expertise, data-driven guidance, and honest advice.';
+export const SITE_URL = 'https://512austinhome.com';
+export const YOUTUBE_URL = 'https://www.youtube.com/@WilliamTexasHomes';
+export const YOUTUBE_EN_URL = 'https://www.youtube.com/@aiforrealtors';
+export const IDX_URL = 'https://lifeinaustintx.com';
+export const PHONE = '(512) 766-3188';
+export const EMAIL = 'william@512austinhome.com';
+export const BROKERAGE = 'eXp Realty';
+export const TREC_LICENSE = '811948';

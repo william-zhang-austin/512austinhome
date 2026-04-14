@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from 'astro:content';
+import NeighborhoodPage from '../../layouts/NeighborhoodPage.astro';
+
+export async function getStaticPaths() {
+	const neighborhoods = await getCollection('neighborhoods');
+	return neighborhoods.map((n) => ({
+		params: { slug: n.id },
+		props: n,
+	}));
+}
+
+const neighborhood = Astro.props;
+const { Content } = await render(neighborhood);
+---
+
+<NeighborhoodPage {...neighborhood.data}>
+	<Content />
+</NeighborhoodPage>

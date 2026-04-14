@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Austin Real Estate Blog — Market Updates & Guides | 512 Austin Home" description="Austin real estate market updates, home buying tips, neighborhood guides, and selling strategies from a local Austin agent.">
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Blog</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Austin Real Estate Insights</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Market updates, buying and selling tips, and neighborhood guides — all based on real local data.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		{posts.length === 0 && (
+			<p class="text-text-muted">New posts coming soon. Check back for Austin real estate market updates and guides.</p>
+		)}
+
+		<div class="space-y-6">
+			{posts.map((post) => (
+				<a href={`/blog/${post.id}`} class="card-hover block bg-surface rounded-xl border border-border p-6 sm:p-8 no-underline group">
+					<div class="flex flex-col sm:flex-row sm:items-start gap-4">
+						<div class="flex-1">
+							{post.data.tags?.[0] && <span class="tag-pill mb-3">{post.data.tags[0]}</span>}
+							<h2 class="font-display text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors">{post.data.title}</h2>
+							<p class="text-sm text-text-muted line-clamp-2 mb-3">{post.data.description}</p>
+							<div class="text-xs text-text-muted">
+								<FormattedDate date={post.data.pubDate} />
+							</div>
+						</div>
+					</div>
+				</a>
+			))}
+		</div>
+	</div>
+</BaseLayout>

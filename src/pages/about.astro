@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { YOUTUBE_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
+---
+
+<BaseLayout title="About William Zhang — Austin Real Estate Agent | 512 Austin Home" description="William Zhang is a licensed real estate agent in Austin, Texas specializing in helping buyers and sellers navigate the Austin housing market. eXp Realty, TREC #811948.">
+	<SchemaMarkup type="agent" />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">About</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">William Zhang</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Licensed real estate agent in Austin, Texas. I help buyers and sellers make confident decisions with local market data and honest advice.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Bio -->
+		<div class="prose mb-16">
+			<h2>Why I Do This</h2>
+			<p>I became a real estate agent because I believe buying or selling a home should be straightforward, not stressful. Too many agents operate on gut feelings and sales pressure. I take a different approach: data-driven guidance, transparent communication, and no pressure tactics.</p>
+
+			<h2>What Sets Me Apart</h2>
+			<ul>
+				<li><strong>Local expertise:</strong> I live and work in Austin. I know the neighborhoods, the schools, the commute times, and where the market is heading.</li>
+				<li><strong>Data-driven:</strong> Every pricing recommendation and market analysis I provide is backed by current MLS data, not guesswork.</li>
+				<li><strong>YouTube marketing:</strong> When I list your home, it gets professional video exposure on YouTube — reaching buyers that traditional marketing misses.</li>
+				<li><strong>Bilingual:</strong> I speak fluent English and Mandarin Chinese, serving Austin's growing international community.</li>
+				<li><strong>Tech-forward:</strong> I use modern tools to make the buying and selling process smoother — from virtual tours to streamlined paperwork.</li>
+			</ul>
+
+			<h2>Background</h2>
+			<p>Before real estate, I worked at Deloitte, built a tech startup, and managed products at a growing company. That experience taught me how to analyze markets, manage complex projects, and communicate clearly — skills I bring to every transaction.</p>
+			<p>I'm a University of Texas at Austin alum, which means Austin isn't just where I work — it's home.</p>
+
+			<h2>Areas I Serve</h2>
+			<p>I work across the greater Austin metro area including Austin, Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, Leander, and surrounding communities.</p>
+		</div>
+
+		<!-- Credentials -->
+		<div class="bg-warm-dark rounded-2xl p-8 mb-16">
+			<h2 class="font-display text-xl font-bold text-primary mb-6">Credentials & Info</h2>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+				<div>
+					<p class="text-text-muted mb-1">Brokerage</p>
+					<p class="font-semibold text-primary">{BROKERAGE}</p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">TREC License</p>
+					<p class="font-semibold text-primary">#{TREC_LICENSE}</p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">Phone</p>
+					<p class="font-semibold text-primary"><a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent no-underline hover:text-accent-hover">{PHONE}</a></p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">Email</p>
+					<p class="font-semibold text-primary"><a href={`mailto:${EMAIL}`} class="text-accent no-underline hover:text-accent-hover">{EMAIL}</a></p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">YouTube</p>
+					<p class="font-semibold text-primary"><a href={YOUTUBE_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:text-accent-hover">@WilliamTexasHomes</a></p>
+				</div>
+				<div>
+					<p class="text-text-muted mb-1">Education</p>
+					<p class="font-semibold text-primary">University of Texas at Austin</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Contact -->
+		<ContactForm heading="Let's Talk" subheading="Ready to buy or sell in Austin? I'd love to hear about your goals." />
+	</div>
+</BaseLayout>

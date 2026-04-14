@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import { getCollection } from 'astro:content';
+import { IDX_URL } from '../../consts';
+
+const neighborhoods = await getCollection('neighborhoods');
+---
+
+<BaseLayout title="Austin Neighborhoods — Home Prices, Schools & Guides | 512 Austin Home" description="Explore Austin, TX neighborhoods with in-depth guides covering home prices, schools, lifestyle, and what it's like to live there. Find the right area for you.">
+	<SchemaMarkup type="agent" />
+
+	<div class="max-w-6xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Neighborhoods</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Austin Area Neighborhoods</h1>
+			<p class="text-lg text-text-muted max-w-2xl">In-depth guides to Austin and surrounding communities — median prices, top schools, lifestyle, and what makes each area unique.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+			{neighborhoods.map((n) => (
+				<a href={`/neighborhoods/${n.id}`} class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+					<h2 class="font-display text-xl font-bold text-primary mb-1 group-hover:text-accent transition-colors">{n.data.name}</h2>
+					<p class="text-sm text-text-muted mb-4">{n.data.region}</p>
+					<p class="text-sm text-text-muted line-clamp-2 mb-4">{n.data.description}</p>
+					<div class="flex items-center justify-between pt-4 border-t border-border">
+						<div>
+							<p class="text-xs text-text-muted">Median Price</p>
+							<p class="text-lg font-bold text-primary">{n.data.medianPrice}</p>
+						</div>
+						<span class="text-accent font-semibold text-sm">View guide &rarr;</span>
+					</div>
+				</a>
+			))}
+		</div>
+
+		<!-- CTA -->
+		<div class="mt-16 bg-accent-light rounded-2xl p-8 sm:p-10 text-center">
+			<h2 class="font-display text-2xl font-bold text-primary mb-3">Not Sure Which Neighborhood?</h2>
+			<p class="text-text-muted mb-6 max-w-lg mx-auto">Tell me your priorities — budget, commute, schools, lifestyle — and I'll recommend the best areas for you.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="/about#contact" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Get a Recommendation
+				</a>
+				<a href={IDX_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
+					Search All Homes
+				</a>
+			</div>
+		</div>
+	</div>
+</BaseLayout>

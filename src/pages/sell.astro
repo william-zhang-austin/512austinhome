@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { PHONE, YOUTUBE_URL } from '../consts';
+---
+
+<BaseLayout title="Sell Your Home in Austin, TX — Listing Agent | 512 Austin Home" description="Sell your Austin home for top dollar. William Zhang provides market-backed pricing, professional video marketing on YouTube, and honest guidance through the selling process.">
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: [
+		{ question: "How much is my Austin home worth?", answer: "Your home's value depends on location, condition, size, and recent comparable sales in your area. I provide a free, data-driven market analysis using current MLS data — not an algorithm estimate. Contact me for a personalized home valuation." },
+		{ question: "How long does it take to sell a home in Austin?", answer: "The average days on market in Austin varies by neighborhood and price point, but well-priced homes in good condition typically sell within 30-60 days. Proper pricing from day one is the single biggest factor in selling quickly." },
+		{ question: "What does it cost to sell a home in Austin?", answer: "Typical seller costs include agent commissions (negotiable), title insurance, and any agreed-upon buyer credits or repairs. I'll give you a full net sheet estimate before you list so there are no surprises at closing." },
+	]}} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">For Sellers</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Sell Your Home in Austin, Texas</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Get the most value from your home sale with market-backed pricing, professional video marketing, and a transparent process from listing to closing.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Why me -->
+		<div class="prose mb-16">
+			<h2>Why List with Me</h2>
+
+			<h3>Data-Driven Pricing</h3>
+			<p>I don't guess on price. Every listing starts with a thorough comparable market analysis using current MLS data. Pricing right from day one means more showings, stronger offers, and a faster sale.</p>
+
+			<h3>YouTube Video Marketing</h3>
+			<p>Your home gets a professional video tour published on <a href={YOUTUBE_URL} target="_blank" rel="noopener">YouTube</a> — reaching buyers that traditional MLS photos and open houses miss. Video listings get significantly more engagement and attract out-of-state and international buyers who are actively relocating to Austin.</p>
+
+			<h3>Professional Photography</h3>
+			<p>High-quality photos are the first impression buyers get. Every listing includes professional photography that showcases your home's best features.</p>
+
+			<h3>Transparent Communication</h3>
+			<p>You'll know exactly where things stand at every point. I provide regular showing feedback, market updates, and honest recommendations — not what you want to hear, but what you need to hear to get the best result.</p>
+
+			<h2>The Selling Process</h2>
+
+			<h3>1. Free Home Valuation</h3>
+			<p>I'll analyze recent sales in your area, assess your home's condition and features, and give you a realistic price range. No obligation, no pressure.</p>
+
+			<h3>2. Prepare and Stage</h3>
+			<p>I'll advise on what improvements (if any) will actually increase your sale price, and what to skip. Not every home needs staging — I'll tell you honestly what moves the needle for your specific property.</p>
+
+			<h3>3. List and Market</h3>
+			<p>Professional photos, YouTube video tour, MLS listing, social media promotion, and targeted outreach. Your home gets maximum exposure from day one.</p>
+
+			<h3>4. Showings and Offers</h3>
+			<p>I manage all showings and relay feedback promptly. When offers come in, I'll break down each one — not just the price, but terms, contingencies, financing strength, and timeline.</p>
+
+			<h3>5. Negotiate and Close</h3>
+			<p>From inspection negotiations to closing coordination, I handle the details so you don't have to. My goal is to get you to the closing table with the best possible outcome.</p>
+		</div>
+
+		<!-- CTA -->
+		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-16 text-center text-white">
+			<h2 class="font-display text-2xl font-bold mb-3">What's Your Home Worth?</h2>
+			<p class="text-white/70 mb-6 max-w-lg mx-auto">Get a free, no-obligation market analysis of your Austin home.</p>
+			<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all duration-200 no-underline">
+				Call {PHONE}
+			</a>
+		</div>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Frequently Asked Questions</h2>
+			<div class="space-y-6">
+				<details class="bg-surface rounded-xl border border-border p-6 group" open>
+					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
+						How much is my Austin home worth?
+						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
+					</summary>
+					<p class="mt-3 text-text-muted text-sm leading-relaxed">Your home's value depends on location, condition, size, and recent comparable sales in your area. I provide a free, data-driven market analysis using current MLS data — not an algorithm estimate. Contact me for a personalized home valuation.</p>
+				</details>
+				<details class="bg-surface rounded-xl border border-border p-6 group">
+					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
+						How long does it take to sell a home in Austin?
+						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
+					</summary>
+					<p class="mt-3 text-text-muted text-sm leading-relaxed">The average days on market in Austin varies by neighborhood and price point, but well-priced homes in good condition typically sell within 30-60 days. Proper pricing from day one is the single biggest factor in selling quickly.</p>
+				</details>
+				<details class="bg-surface rounded-xl border border-border p-6 group">
+					<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between">
+						What does it cost to sell a home in Austin?
+						<span class="text-text-muted group-open:rotate-180 transition-transform">&#9662;</span>
+					</summary>
+					<p class="mt-3 text-text-muted text-sm leading-relaxed">Typical seller costs include agent commissions (negotiable), title insurance, and any agreed-upon buyer credits or repairs. I'll give you a full net sheet estimate before you list so there are no surprises at closing.</p>
+				</details>
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<ContactForm heading="Ready to sell?" subheading="Let's discuss your timeline and goals. No pressure, just honest advice." />
+	</div>
+</BaseLayout>

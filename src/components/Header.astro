@@ -1,0 +1,119 @@
+---
+import { PHONE, IDX_URL } from '../consts';
+
+const pathname = new URL(Astro.request.url).pathname;
+const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/');
+
+const navLinks = [
+	{ href: '/buy', label: 'Buy' },
+	{ href: '/sell', label: 'Sell' },
+	{ href: '/neighborhoods', label: 'Neighborhoods' },
+	{ href: '/blog', label: 'Blog' },
+	{ href: '/about', label: 'About' },
+];
+---
+
+<header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-lg border-b border-border/60 transition-all duration-300">
+	<nav class="max-w-6xl mx-auto px-5 sm:px-8 flex items-center justify-between h-[72px]">
+		<!-- Logo -->
+		<a href="/" class="font-display text-xl font-bold text-primary no-underline tracking-tight hover:text-accent transition-colors duration-200">
+			512 Austin Home
+		</a>
+
+		<!-- Desktop nav -->
+		<div class="hidden lg:flex items-center gap-1">
+			{navLinks.map(({ href, label }) => (
+				<a
+					href={href}
+					class:list={[
+						"px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-200 no-underline",
+						isActive(href)
+							? "text-accent bg-accent-light"
+							: "text-text-muted hover:text-primary hover:bg-warm-dark"
+					]}
+				>
+					{label}
+				</a>
+			))}
+			<a
+				href={IDX_URL}
+				target="_blank"
+				rel="noopener"
+				class="ml-2 px-4 py-2 text-sm font-medium text-accent border border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline"
+			>
+				Search Homes
+			</a>
+			<a
+				href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`}
+				class="ml-2 px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline"
+			>
+				{PHONE}
+			</a>
+		</div>
+
+		<!-- Mobile menu button -->
+		<button
+			id="mobile-menu-btn"
+			class="lg:hidden p-2 -mr-2 text-text-muted hover:text-primary transition-colors"
+			aria-label="Open menu"
+			aria-expanded="false"
+		>
+			<svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+			</svg>
+			<svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+			</svg>
+		</button>
+	</nav>
+
+	<!-- Mobile menu -->
+	<div id="mobile-menu" class="lg:hidden hidden border-t border-border/60 bg-surface/95 backdrop-blur-lg">
+		<div class="px-5 py-6 space-y-1">
+			{navLinks.map(({ href, label }) => (
+				<a
+					href={href}
+					class:list={[
+						"block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 no-underline",
+						isActive(href)
+							? "text-accent bg-accent-light"
+							: "text-text-muted hover:text-primary hover:bg-warm-dark"
+					]}
+				>
+					{label}
+				</a>
+			))}
+			<div class="pt-4 space-y-3">
+				<a
+					href={IDX_URL}
+					target="_blank"
+					rel="noopener"
+					class="block text-center px-5 py-3 text-base font-medium text-accent border border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline"
+				>
+					Search Homes
+				</a>
+				<a
+					href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`}
+					class="block text-center px-5 py-3 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline"
+				>
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+	</div>
+</header>
+
+<script>
+	const btn = document.getElementById('mobile-menu-btn');
+	const menu = document.getElementById('mobile-menu');
+	const iconOpen = document.getElementById('menu-icon-open');
+	const iconClose = document.getElementById('menu-icon-close');
+
+	btn?.addEventListener('click', () => {
+		const isOpen = !menu?.classList.contains('hidden');
+		menu?.classList.toggle('hidden');
+		iconOpen?.classList.toggle('hidden');
+		iconClose?.classList.toggle('hidden');
+		btn.setAttribute('aria-expanded', String(!isOpen));
+	});
+</script>

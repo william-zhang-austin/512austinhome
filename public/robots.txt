@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://512austinhome.com/sitemap-index.xml

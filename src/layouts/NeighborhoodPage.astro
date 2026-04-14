@@ -1,0 +1,106 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import YouTubeEmbed from '../components/YouTubeEmbed.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { IDX_URL } from '../consts';
+
+type Props = CollectionEntry<'neighborhoods'>['data'];
+
+const { name, region, description, medianPrice, priceRange, topSchools, lifestyle, heroImage, youtubeId, mapEmbed } = Astro.props;
+---
+
+<BaseLayout title={`${name}, TX — Homes for Sale & Neighborhood Guide | 512 Austin Home`} description={description}>
+	<SchemaMarkup type="neighborhood" data={{ name, description }} />
+
+	<article class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<!-- Header -->
+		<header class="mb-10">
+			<span class="tag-pill mb-4">{region}</span>
+			<h1 class="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-primary leading-[1.15] tracking-tight mb-4">
+				{name}, Texas — Neighborhood Guide
+			</h1>
+			<p class="text-lg text-text-muted max-w-2xl">{description}</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<!-- Quick stats -->
+		<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12">
+			<div class="bg-surface rounded-xl p-5 border border-border">
+				<p class="text-sm text-text-muted mb-1">Median Home Price</p>
+				<p class="text-2xl font-bold text-primary">{medianPrice}</p>
+			</div>
+			<div class="bg-surface rounded-xl p-5 border border-border">
+				<p class="text-sm text-text-muted mb-1">Price Range</p>
+				<p class="text-2xl font-bold text-primary">{priceRange}</p>
+			</div>
+			<div class="bg-surface rounded-xl p-5 border border-border sm:col-span-1 col-span-2">
+				<p class="text-sm text-text-muted mb-1">Search Homes</p>
+				<a href={IDX_URL} target="_blank" rel="noopener" class="text-accent font-semibold hover:text-accent-hover transition-colors no-underline">
+					View listings &rarr;
+				</a>
+			</div>
+		</div>
+
+		<!-- YouTube embed -->
+		{youtubeId && <YouTubeEmbed id={youtubeId} title={`${name} neighborhood guide`} />}
+
+		<!-- Content (MDX body) -->
+		<div class="prose mb-12">
+			<slot />
+		</div>
+
+		<!-- Schools -->
+		{topSchools.length > 0 && (
+			<section class="mb-12">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">Top Schools</h2>
+				<ul class="space-y-2">
+					{topSchools.map((school) => (
+						<li class="flex items-start gap-2">
+							<span class="text-green mt-0.5">&#10003;</span>
+							<span>{school}</span>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
+
+		<!-- Lifestyle -->
+		{lifestyle.length > 0 && (
+			<section class="mb-12">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">What It's Like to Live Here</h2>
+				<div class="flex flex-wrap gap-2">
+					{lifestyle.map((tag) => (
+						<span class="tag-pill">{tag}</span>
+					))}
+				</div>
+			</section>
+		)}
+
+		<!-- Map -->
+		{mapEmbed && (
+			<section class="mb-12">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">Location</h2>
+				<div class="rounded-2xl overflow-hidden border border-border">
+					<iframe
+						src={mapEmbed}
+						width="100%"
+						height="400"
+						style="border:0;"
+						allowfullscreen
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						title={`Map of ${name}, Texas`}
+					></iframe>
+				</div>
+			</section>
+		)}
+
+		<!-- Contact -->
+		<ContactForm
+			heading={`Interested in ${name}?`}
+			subheading={`I'll help you find the right home in ${name}. Let's talk about what you're looking for.`}
+		/>
+	</article>
+</BaseLayout>
