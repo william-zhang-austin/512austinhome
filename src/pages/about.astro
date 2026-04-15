@@ -3,24 +3,88 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { YOUTUBE_URL, YOUTUBE_ZH_URL, GBP_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
+
+const faqs = [
+	{
+		question: "Who is William Zhang?",
+		answer: "William Zhang is a licensed real estate agent based in Austin, Texas, specializing in helping buyers, sellers, and relocation clients across the greater Austin metro area. He is affiliated with eXp Realty and holds Texas Real Estate Commission (TREC) license #811948. William is a University of Texas at Austin alum and takes a data-driven, no-pressure approach to every transaction.",
+	},
+	{
+		question: "Is William Zhang a licensed real estate agent in Texas?",
+		answer: "Yes. William Zhang is a fully licensed Texas real estate agent under the Texas Real Estate Commission, TREC license #811948. He practices under eXp Realty and serves Austin and the surrounding metro area, including Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, and Leander.",
+	},
+	{
+		question: "What brokerage is William Zhang with?",
+		answer: "William Zhang is affiliated with eXp Realty, one of the largest residential real estate brokerages in the United States. Through eXp Realty, he has access to nationwide referral networks, modern transaction tools, and marketing resources that benefit his Austin-area clients.",
+	},
+	{
+		question: "What languages does William Zhang speak?",
+		answer: "William Zhang is bilingual in English and Mandarin Chinese. He serves both English-speaking clients and Austin's growing Mandarin-speaking community, and maintains separate English and Mandarin YouTube channels focused on the Austin real estate market.",
+	},
+	{
+		question: "Where is William Zhang based?",
+		answer: "William Zhang is based in the Austin, Texas metro area and lives in Pflugerville, just north of Austin. He works across the entire greater Austin region, including Austin, Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, Leander, and surrounding suburbs.",
+	},
+	{
+		question: "What is William Zhang's background before real estate?",
+		answer: "Before becoming a real estate agent, William Zhang worked at Deloitte, built a technology startup, and worked in product management at a growing company. That analytical and operational background is why he approaches Austin real estate with market data, structured processes, and clear communication rather than gut-feel sales tactics.",
+	},
+	{
+		question: "What areas does William Zhang serve in Austin?",
+		answer: "William Zhang serves the entire greater Austin metro area, including the city of Austin, Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, Leander, and surrounding suburbs. He works with buyers, sellers, relocation clients, new construction buyers, and investment buyers throughout Central Texas.",
+	},
+	{
+		question: "What services does William Zhang offer?",
+		answer: "William Zhang offers full-service real estate representation in Austin, including buyer representation, listing and seller representation, relocation services for out-of-state buyers, new construction buyer representation at major Austin-area builders, and guidance for investment buyers. He also produces YouTube video marketing for his listings to reach buyers beyond the traditional MLS audience.",
+	},
+	{
+		question: "Did William Zhang go to UT Austin?",
+		answer: "Yes. William Zhang is a University of Texas at Austin alum, which is part of why Austin is not just where he works but also where he has chosen to live and raise his family. That local connection informs his neighborhood, school district, and commute advice for clients.",
+	},
+	{
+		question: "How can I get in touch with William Zhang?",
+		answer: `You can reach William Zhang directly by phone or text at ${PHONE}, by email at ${EMAIL}, or through the contact form on 512austinhome.com. He typically responds within one business day and offers no-pressure consultations for buyers, sellers, and relocation clients.`,
+	},
+];
 ---
 
 <BaseLayout title="About William Zhang — Austin Real Estate Agent | 512 Austin Home" description="William Zhang is a licensed real estate agent in Austin, Texas specializing in helping buyers and sellers navigate the Austin housing market. eXp Realty, TREC #811948.">
 	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'About', url: '/about' },
+	] }} />
 
 	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
 		<!-- Header -->
 		<header class="mb-12">
 			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">About</p>
 			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">William Zhang</h1>
-			<p class="text-lg text-text-muted max-w-2xl">Licensed real estate agent in Austin, Texas. I help buyers and sellers make confident decisions with local market data and honest advice.</p>
+			<p class="text-lg text-text-muted max-w-2xl">Licensed real estate agent in Austin, Texas. I've closed over 30 homes and helped families relocate to Austin from across the country. I specialize in new-construction negotiation, saving buyers over $200,000 in builder incentives and price reductions when they buy a new home.</p>
 			<span class="accent-bar mt-6"></span>
 		</header>
+
+		<!-- Track Record -->
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
+			<div class="bg-surface rounded-xl border border-border p-6 text-center">
+				<p class="font-display text-3xl font-bold text-accent mb-1">30+</p>
+				<p class="text-sm text-text-muted">Families helped relocate to Austin</p>
+			</div>
+			<div class="bg-surface rounded-xl border border-border p-6 text-center">
+				<p class="font-display text-3xl font-bold text-accent mb-1">$200K+</p>
+				<p class="text-sm text-text-muted">Saved for buyers negotiating new construction incentives & pricing</p>
+			</div>
+			<div class="bg-surface rounded-xl border border-border p-6 text-center">
+				<p class="font-display text-3xl font-bold text-accent mb-1">5.0 / 5</p>
+				<p class="text-sm text-text-muted">Across Google & RateMyAgent client reviews</p>
+			</div>
+		</div>
 
 		<!-- Bio -->
 		<div class="prose mb-16">
 			<h2>Why I Do This</h2>
-			<p>I became a real estate agent because I believe buying or selling a home should be straightforward, not stressful. Too many agents operate on gut feelings and sales pressure. I take a different approach: data-driven guidance, transparent communication, and no pressure tactics.</p>
+			<p>I became a real estate agent because I believe buying or selling a home should be straightforward, not stressful. Too many agents operate on gut feelings and sales pressure. I take a different approach: data-driven guidance, transparent communication, and no pressure tactics. I've helped over 30 families relocate to Austin from across the country, and I specialize in negotiating new construction — saving buyers more than $200,000 in combined builder incentives, rate buydowns, upgrade credits, and price reductions when they buy a new home.</p>
 
 			<h2>What Sets Me Apart</h2>
 			<ul>
@@ -77,6 +141,22 @@ import { YOUTUBE_URL, YOUTUBE_ZH_URL, GBP_URL, PHONE, EMAIL, BROKERAGE, TREC_LIC
 				</div>
 			</div>
 		</div>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Frequently Asked Questions About William Zhang</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
 
 		<!-- Contact -->
 		<ContactForm heading="Let's Talk" subheading="Ready to buy or sell in Austin? I'd love to hear about your goals." />

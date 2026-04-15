@@ -33,6 +33,7 @@ const neighborhoods = defineCollection({
       heroImage: z.optional(image()),
       youtubeId: z.string().optional(),
       mapEmbed: z.string().optional(),
+      faqs: z.array(z.object({ question: z.string(), answer: z.string() })).optional(),
     }),
 });
 

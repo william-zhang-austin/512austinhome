@@ -9,11 +9,14 @@ import { IDX_URL } from '../consts';
 
 type Props = CollectionEntry<'neighborhoods'>['data'];
 
-const { name, region, description, medianPrice, priceRange, topSchools, lifestyle, heroImage, youtubeId, mapEmbed } = Astro.props;
+const { name, region, description, medianPrice, priceRange, topSchools, lifestyle, heroImage, youtubeId, mapEmbed, faqs } = Astro.props;
 ---
 
 <BaseLayout title={`${name}, TX — Homes for Sale & Neighborhood Guide | 512 Austin Home`} description={description}>
 	<SchemaMarkup type="neighborhood" data={{ name, description }} />
+	{faqs && faqs.length > 0 && (
+		<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	)}
 
 	<article class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
 		<!-- Header -->
@@ -109,6 +112,24 @@ const { name, region, description, medianPrice, priceRange, topSchools, lifestyl
 						referrerpolicy="no-referrer-when-downgrade"
 						title={`Map of ${name}, Texas`}
 					></iframe>
+				</div>
+			</section>
+		)}
+
+		<!-- FAQ -->
+		{faqs && faqs.length > 0 && (
+			<section class="mb-12" aria-labelledby="faq-heading">
+				<h2 id="faq-heading" class="font-display text-2xl font-bold text-primary mb-6">Frequently Asked Questions about {name}, Texas</h2>
+				<div class="space-y-4">
+					{faqs.map((faq: { question: string; answer: string }, i: number) => (
+						<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+							<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+								{faq.question}
+								<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+							</summary>
+							<p class="mt-3 text-text-muted text-sm leading-relaxed">{faq.answer}</p>
+						</details>
+					))}
 				</div>
 			</section>
 		)}

@@ -2,9 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
+import TidyCalEmbed from '../components/TidyCalEmbed.astro';
 import { IDX_URL, PHONE } from '../consts';
 
 const faqs = [
+	{
+		question: "How much can a buyer's agent actually save you on a new construction home in Austin?",
+		answer: "Across the new construction homes I've negotiated for Austin buyers, I've saved clients over $200,000 combined — typically $15,000 to $50,000 per transaction depending on the builder, community, and market conditions. That savings comes from stacking builder incentives (design center credits, closing cost contributions, rate buydowns), pushing back on lot premiums, timing end-of-quarter or end-of-fiscal-year builder pressure, and in some cases negotiating base price reductions on standing inventory. The exact savings depend on which builder, which community, and how much unsold inventory they're carrying. Most buyers walking into a sales office alone leave significant money on the table because they don't know what's negotiable or how to ask.",
+	},
 	{
 		question: "Can I use a real estate agent when buying new construction in Austin?",
 		answer: "Yes — and you should. Nearly every major Austin-area builder pays buyer-agent commissions from their marketing budget, meaning representation costs you nothing. However, you must register your agent on your first visit to the builder's sales office. If you walk in alone and sign anything, you may lose the ability to bring in representation later. Always bring your agent or register them before you visit.",
@@ -68,7 +73,7 @@ const faqs = [
 ];
 ---
 
-<BaseLayout title="New Construction Homes in Austin, TX — Builder Buyer Representation | 512 Austin Home" description="Buying a new construction home in Austin? William Zhang represents buyers at Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, and every major Austin-area builder — at no cost to you.">
+<BaseLayout title="Austin New Construction Buyer's Agent — Save $200K+ on Your New Home | 512 Austin Home" description="Austin new construction negotiation specialist William Zhang has saved buyers over $200,000 in builder incentives, rate buydowns, and price reductions. Free representation at Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, and every major Austin-area builder.">
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="faq" data={{ questions: faqs }} />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
@@ -81,8 +86,8 @@ const faqs = [
 		<!-- Header -->
 		<header class="mb-12">
 			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">New Construction</p>
-			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">New Construction Homes in Austin, Texas</h1>
-			<p class="text-lg text-text-muted max-w-2xl">Buying a new construction home in Austin? I represent buyers at every major Austin-area builder — Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, Highland Homes, and more — at no cost to you. Most builders pay buyer-agent commissions from their marketing budget.</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Austin New Construction Buyer's Agent — Saving Buyers $200K+ and Counting</h1>
+			<p class="text-lg text-text-muted max-w-2xl">I specialize in negotiating new construction for Austin buyers. To date I've saved clients over $200,000 combined in builder incentives, rate buydowns, upgrade credits, and price reductions across Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, Highland Homes, and every other major Austin-area builder. Representation is free to you — builders pay the buyer-agent commission from their marketing budget.</p>
 			<span class="accent-bar mt-6"></span>
 		</header>
 
@@ -140,17 +145,24 @@ const faqs = [
 		</div>
 
 		<!-- CTA -->
-		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 mb-16 text-center">
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 mb-10 text-center">
 			<h2 class="font-display text-2xl font-bold text-primary mb-3">Thinking About New Construction in Austin?</h2>
-			<p class="text-text-muted mb-6 max-w-lg mx-auto">Tell me which builders or communities you're considering. I'll register you as a client and share current incentives — at no cost to you.</p>
+			<p class="text-text-muted mb-6 max-w-lg mx-auto">Tell me which builders or communities you're considering. Book a 15-minute call below and I'll register you as a client and share current incentives — at no cost to you.</p>
 			<div class="flex flex-col sm:flex-row gap-4 justify-center">
-				<a href={IDX_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
-					Browse Austin Homes
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Schedule a Call
 				</a>
 				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
 					Call {PHONE}
 				</a>
 			</div>
+		</div>
+
+		<div id="schedule" class="mb-16 scroll-mt-20">
+			<TidyCalEmbed
+				heading="Book a New Construction Consultation"
+				subheading="Pick a time that works for you. 15 minutes — tell me which builders or communities you're considering and I'll send you current incentives plus a shortlist tailored to your budget."
+			/>
 		</div>
 
 		<!-- FAQ -->

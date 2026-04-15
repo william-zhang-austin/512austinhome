@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SchemaMarkup from '../../../components/SchemaMarkup.astro';
+import TidyCalEmbed from '../../../components/TidyCalEmbed.astro';
 import { COMMUNITIES, communitiesByCity, priceRangeLabel, sqftRangeLabel, bedsLabel } from '../../../data/communities';
 import { PHONE } from '../../../consts';
 
@@ -127,18 +128,25 @@ const description = 'Current new construction home communities in Pflugerville a
 			</div>
 		</section>
 
-		<!-- CTA -->
-		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 text-center">
+		<!-- CTA + TidyCal -->
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 text-center mb-10">
 			<h2 class="font-display text-2xl font-bold text-primary mb-3">Touring any of these? Register me first.</h2>
-			<p class="text-text-muted mb-6 max-w-xl mx-auto">Builders pay my commission from their marketing budget, so representation costs you nothing — but only if I'm registered as your agent <em>before</em> your first sales office visit. Text me the community and I'll handle it in 60 seconds.</p>
+			<p class="text-text-muted mb-6 max-w-xl mx-auto">Builders pay my commission from their marketing budget, so representation costs you nothing — but only if I'm registered as your agent <em>before</em> your first sales office visit. Book a 15-minute call below and I'll handle it.</p>
 			<div class="flex flex-col sm:flex-row gap-4 justify-center">
-				<a href="/contact" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
-					Register Before You Visit
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Schedule a Call
 				</a>
 				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
 					Call {PHONE}
 				</a>
 			</div>
+		</div>
+
+		<div id="schedule" class="mb-10 scroll-mt-20">
+			<TidyCalEmbed
+				heading="Book a New Construction Consultation"
+				subheading="Pick a time that works for you. 15 minutes — tell me which communities you're considering and I'll send you current incentives and a shortlist tailored to your budget."
+			/>
 		</div>
 
 		<p class="text-xs text-text-muted text-center mt-10 max-w-2xl mx-auto">Community details compiled from public builder information and my on-site tours. Prices, floor plans, and incentives change frequently — always confirm current numbers with me before making decisions. Photos are property of the respective builders.</p>

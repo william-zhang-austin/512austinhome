@@ -1,0 +1,18 @@
+---
+import { TIDYCAL_PATH } from '../consts';
+
+interface Props {
+	heading?: string;
+	subheading?: string;
+}
+
+const { heading = 'Schedule a Call', subheading = 'Pick a time that works for you. 15-minute no-pressure conversation — tell me what you\'re looking for and I\'ll send you a shortlist.' } = Astro.props;
+---
+
+<section class="bg-surface rounded-2xl p-6 sm:p-8 border border-border">
+	<h2 class="font-display text-2xl font-bold text-primary mb-2">{heading}</h2>
+	<p class="text-text-muted text-sm mb-6">{subheading}</p>
+	<div class="tidycal-embed" data-path={TIDYCAL_PATH}></div>
+</section>
+
+<script src="https://asset-tidycal.b-cdn.net/js/embed.js" async is:inline></script>

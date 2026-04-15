@@ -1,0 +1,824 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { SITE_URL, PHONE, IDX_URL } from '../consts';
+
+const faqs = [
+	{
+		question: "Which Austin tech employer has the most employees?",
+		answer: "Apple's Parmer Lane campus in North Austin is the largest single-site tech employer with approximately 15,000 employees and 2.8 million square feet of office space. Tesla's Gigafactory Texas in Del Valle is targeting 20,000+ employees at full buildout, which would make it the largest by headcount once fully staffed. Samsung has a combined Austin-metro footprint of 10,000+ across its Parmer Lane fab and new Taylor, TX facility.",
+	},
+	{
+		question: "What are the best Austin neighborhoods for Apple employees?",
+		answer: "Cedar Park and Leander are the top choices for Apple employees — both are 15-20 minutes from the Parmer Lane campus with strong schools (Leander ISD), new construction options in the $400K-$700K range, and less traffic than central Austin routes. Round Rock (northwest) and the Domain-area neighborhoods of Austin itself are also solid options. For detailed neighborhood-by-neighborhood breakdowns, see our guide to neighborhoods near the Apple Austin campus.",
+	},
+	{
+		question: "How far is the Tesla Gigafactory from downtown Austin?",
+		answer: "The Tesla Gigafactory Texas is located in Del Valle, approximately 15-18 miles southeast of downtown Austin via TX-130 (the toll road). In light traffic the drive is about 20-25 minutes; during peak hours on surface streets it can stretch to 40-50 minutes. Pflugerville, via TX-130, is a 20-25 minute commute with minimal congestion because you're moving opposite to the downtown-bound traffic flow.",
+	},
+	{
+		question: "Do Austin tech workers live downtown or in the suburbs?",
+		answer: "It depends on the employer location and life stage. Workers at downtown employers like Google (500 W 2nd), Meta (300 W 6th), Indeed (200 W 6th), and Oracle's Waterloo campus often choose central neighborhoods — Mueller, East Austin, South Congress, Travis Heights. Workers at campus employers in North Austin (Apple, IBM) or East Austin/SE Austin (Tesla, Samsung) tend to choose suburbs: Cedar Park, Leander, Round Rock, and Pflugerville. Senior employees and families lean suburban for space and schools; younger employees without kids trend toward walkable central neighborhoods.",
+	},
+	{
+		question: "Is Pflugerville a good commute to Samsung?",
+		answer: "Yes — Pflugerville is the best-value suburb for Samsung employees. The Parmer Lane Samsung fab is about 15-20 minutes from central Pflugerville using TX-45 and TX-130. The new Samsung Taylor fab is 25-35 minutes via TX-130 North. Communities like Lisso and Grove at Blackhawk sit near the TX-130/TX-45 interchange, which gives direct access to both Samsung locations. Pflugerville ISD schools are solid, and home prices run $375K-$550K for new construction — well below Cedar Park or Round Rock equivalents.",
+	},
+	{
+		question: "Which Austin suburbs have the shortest commute to the Apple campus?",
+		answer: "Cedar Park and Leander are the closest suburbs to Apple's Parmer Lane campus, with a typical commute of 15-20 minutes via US-183A or Parmer Lane itself. Round Rock's northwest corner (near 620 and US-183) runs 20-25 minutes. Pflugerville is 25-30 minutes via TX-45. For buyers willing to sacrifice some commute time for significantly lower prices, Hutto is 30-35 minutes and represents some of the best value in the metro.",
+	},
+	{
+		question: "Where do Google Austin employees live?",
+		answer: "Google's two downtown Austin offices (500 W 2nd St and 601 W 2nd St) draw employees from central neighborhoods within 15-20 minutes. Mueller is the most popular — walkable, family-friendly, with homes in the $600K-$900K range. East Austin (78702, 78721) is a close second, especially for younger buyers. Travis Heights and South Congress attract buyers who want a walkable south-side lifestyle. Clarksville and Tarrytown serve the more senior or established buyers. Almost nobody at Google's Austin office commutes from the suburbs.",
+	},
+	{
+		question: "Is it worth living close to your Austin tech employer or farther out for schools?",
+		answer: "The calculation depends on how often you're in the office. Hybrid workers (2-3 days per week) often choose a suburb for schools and space — the school quality difference between Leander ISD or Round Rock ISD and Austin ISD is meaningful for families. Full-time in-office workers at campus employers (Apple, Samsung, Tesla) often find the daily commute savings from living 10 minutes away outweigh the school district tradeoff. I can help you model total cost of living for both scenarios based on your specific office location.",
+	},
+	{
+		question: "How much should a Tesla or Apple engineer budget for an Austin home in 2026?",
+		answer: "In the suburbs closest to Apple (Cedar Park, Leander) and Tesla (Pflugerville, Manor), you can find 3-4 bedroom homes in the $400K-$600K range. New construction in those corridors starts around $375K and goes to $650K for 4-5 bedrooms with modern finishes. Median home price across the Austin MSA is approximately $400K as of January 2026, with about 4 months of inventory — a meaningfully better buyer's market than 2021-2022. Budget for 2-2.5% property taxes annually on top of your purchase price.",
+	},
+	{
+		question: "Which Austin tech companies are still hiring in 2026?",
+		answer: "After the 2022-2024 tech layoff cycle, Austin's tech job market has stabilized. Apple, Samsung, and Tesla all continue active hiring in Austin given their large campus footprints and ongoing manufacturing needs. Oracle is expanding at its Waterloo campus. Applied Materials is tied to semiconductor demand cycles. Google, Meta, Amazon, and Indeed have smaller Austin headcounts relative to their peak but remain active. The University of Texas, state government, and healthcare employers (Dell Medical School, Ascension, St. David's) provide a more stable employment baseline.",
+	},
+	{
+		question: "What's the traffic like commuting from Cedar Park to Apple's Parmer Lane campus?",
+		answer: "US-183A (the toll road) is the primary route from Cedar Park to Apple's campus. In morning rush hour (7:30-9am), the drive is typically 20-30 minutes depending on where in Cedar Park you're starting. The route largely avoids I-35, which is a major advantage. Leander residents can also take Parmer Lane east for a direct shot. Evening commutes can add 5-15 minutes during peak periods. Cedar Park's proximity to the 183A on-ramp is a meaningful factor when selecting a neighborhood within Cedar Park itself.",
+	},
+	{
+		question: "Which area is best for Samsung employees at the new Taylor, TX fab?",
+		answer: "Hutto is the closest established community to Samsung's Taylor fab — about 15-20 minutes via TX-79. Pflugerville (northeast side) is 25-30 minutes via TX-130 North and offers more housing options in a more established community. Round Rock is 30-35 minutes. Taylor itself has limited housing inventory but new developments are coming online given the Samsung announcement. For buyers who also want to keep options open for the Parmer Lane fab, Pflugerville is the best compromise location.",
+	},
+];
+
+// Employer data for ItemList schema
+const employers = [
+	{ name: "Apple", url: "https://www.apple.com/austin/" },
+	{ name: "Tesla (Gigafactory Texas)", url: "https://www.tesla.com/gigafactory" },
+	{ name: "Samsung Austin Semiconductor", url: "https://www.samsung.com/us/sas/" },
+	{ name: "Dell Technologies", url: "https://www.dell.com" },
+	{ name: "Google Austin", url: "https://about.google/locations/austin/" },
+	{ name: "Oracle", url: "https://www.oracle.com" },
+	{ name: "Meta (Facebook) Austin", url: "https://www.meta.com" },
+	{ name: "Amazon Austin", url: "https://www.amazon.com" },
+	{ name: "IBM Austin", url: "https://www.ibm.com" },
+	{ name: "Indeed", url: "https://www.indeed.com" },
+	{ name: "AMD", url: "https://www.amd.com" },
+	{ name: "Applied Materials", url: "https://www.appliedmaterials.com" },
+];
+
+const collectionPageSchema = {
+	"@context": "https://schema.org",
+	"@type": "CollectionPage",
+	"@id": `${SITE_URL}/tech-employers/`,
+	"name": "The Biggest Tech Employers in Austin, TX (2026) — Where to Live Near Each",
+	"description": "A complete guide to Austin's major tech employers — campus locations, employee counts, and the best neighborhoods to buy a home near each one.",
+	"url": `${SITE_URL}/tech-employers/`,
+	"author": {
+		"@type": "Person",
+		"@id": `${SITE_URL}/about#william-zhang`,
+		"name": "William Zhang",
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "512 Austin Home",
+		"url": SITE_URL,
+	},
+	"mainEntity": {
+		"@type": "ItemList",
+		"name": "Major Tech Employers in Austin, TX",
+		"numberOfItems": employers.length,
+		"itemListElement": employers.map((e, i) => ({
+			"@type": "ListItem",
+			"position": i + 1,
+			"item": {
+				"@type": "Organization",
+				"name": e.name,
+				"url": e.url,
+				"location": {
+					"@type": "Place",
+					"address": {
+						"@type": "PostalAddress",
+						"addressLocality": "Austin",
+						"addressRegion": "TX",
+						"addressCountry": "US",
+					},
+				},
+			},
+		})),
+	},
+};
+---
+
+<BaseLayout
+	title="The Biggest Tech Employers in Austin, TX (2026) — Where to Live Near Each | 512 Austin Home"
+	description="Where Austin's tech campuses sit, which neighborhoods put you closest, and what homes cost near Apple, Tesla, Samsung, Google, Oracle, Dell, and more in 2026."
+	canonical={`${SITE_URL}/tech-employers/`}
+>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Tech Employers', url: '/tech-employers' },
+	] }} />
+	<script is:inline type="application/ld+json" set:html={JSON.stringify(collectionPageSchema)} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+
+		<!-- Hero -->
+		<header class="mb-12">
+			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Austin Tech Employers</p>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">The Biggest Tech Employers in Austin, Texas</h1>
+			<p class="text-lg text-text-muted max-w-2xl">Where every major campus sits, which neighborhoods put you closest, and what it costs to buy there in 2026.</p>
+			<span class="accent-bar mt-6"></span>
+		</header>
+
+		<img
+			src="/src/assets/austin-tech-corridor.png"
+			alt="Austin tech corridor aerial showing the Silicon Hills corridor from North Austin to Southeast Austin"
+			class="w-full rounded-xl mb-12 object-cover"
+			width="1200"
+			height="630"
+			loading="eager"
+		/>
+
+		<!-- Intro -->
+		<div class="prose mb-16">
+			<h2>How Austin Became Silicon Hills</h2>
+			<p>Austin earned the "Silicon Hills" nickname — a nod to the rolling limestone terrain west of downtown — in three distinct waves. The first wave came in the 1980s, when Dell Computer launched from a University of Texas dorm room in 1984 and eventually built its Round Rock corporate campus, drawing an ecosystem of suppliers, contractors, and support businesses. IBM had already arrived on Burnet Road before Dell, and Samsung broke ground on its first Austin wafer fabrication plant in the 1990s.</p>
+			<p>The second wave arrived in the 2000s and early 2010s. Apple opened its Parmer Lane campus in 2012, eventually expanding to 2.8 million square feet and roughly 15,000 employees. Google established a presence downtown. Oracle moved its back-office operations to Austin, and the Domain retail-and-office corridor in North Austin became a second downtown for tech workers who didn't want to fight I-35 traffic.</p>
+			<p>The third wave hit between 2020 and 2023 and was genuinely transformative. Tesla broke ground on Gigafactory Texas in Del Valle in 2020 and officially moved its headquarters from California to Austin in 2021. Oracle relocated its global headquarters to Austin the same year. Meta expanded its downtown footprint. Amazon, Indeed, and Applied Materials deepened their local presence. The population of the Austin MSA crossed 2.3 million.</p>
+			<p>The 2026 reality is more measured. After the tech layoff cycle of 2022-2024, hiring has stabilized. The Austin housing market has cooled from its 2021-2022 peak — the median home price across the MSA sits around $400,000 as of January 2026, inventory is roughly 4 months, and homes are averaging 89 days on market. That's a meaningfully better environment for tech buyers than the bidding-war era. For a fuller picture of current market conditions, see the <a href="/blog/austin-housing-market-january-2026">January 2026 Austin housing market update</a>.</p>
+			<p>What follows is a campus-by-campus breakdown of where Austin's 12 largest tech employers are located, which neighborhoods and suburbs sit closest, and what commute times and home prices actually look like in 2026. I'm William Zhang, a licensed Austin buyer's agent with eXp Realty (TREC #811948). I work with tech buyers every week and know these corridors well.</p>
+		</div>
+
+		<!-- Interactive map of every Austin tech HQ -->
+		<section class="mb-16" id="map">
+			<div class="bg-accent-light rounded-2xl p-6 sm:p-8 border-l-4 border-accent mb-6">
+				<p class="text-xs uppercase tracking-widest text-accent font-semibold mb-2">Interactive Map</p>
+				<h2 class="font-display text-2xl font-bold text-primary mb-3">Every Austin Tech HQ on One Map</h2>
+				<p class="text-text-muted text-sm leading-relaxed mb-5">I marked out the campus or headquarters location for each of the 12 employers below — Apple, Tesla, Samsung, Dell, Google, Oracle, Meta, Amazon, IBM, Indeed, AMD, and Applied Materials — plus a few other notable offices. Use it to sanity-check commute distance from any neighborhood or community you're considering.</p>
+				<a
+					href="https://www.google.com/maps/d/u/0/viewer?mid=1qX21YQh3RhT_ZDzjYVJ0wQVgqo9I4d8"
+					target="_blank"
+					rel="noopener"
+					class="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline"
+				>
+					Open the full interactive map →
+				</a>
+			</div>
+			<div class="rounded-2xl overflow-hidden border border-border shadow-lg">
+				<iframe
+					src="https://www.google.com/maps/d/u/0/embed?mid=1qX21YQh3RhT_ZDzjYVJ0wQVgqo9I4d8&ll=30.397917895456395%2C-97.71109618027342&z=11"
+					width="100%"
+					height="520"
+					title="Map of the biggest tech employers in Austin, Texas"
+					loading="lazy"
+					style="border:0;"
+				></iframe>
+			</div>
+		</section>
+
+		<!-- ===== EMPLOYER SECTIONS ===== -->
+
+		<!-- 1. Apple -->
+		<section class="mb-16" id="apple">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near the Apple Austin Campus?</h2>
+			<p class="text-sm text-text-muted mb-6">Parmer Lane / Riata Vista, North Austin — ~15,000 employees — 2.8M sqft campus</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Apple's campus sprawls along Parmer Lane between US-183 and TX-45, roughly 20 miles north of downtown. It's the largest single private employer in Austin and the anchor of the North Austin tech corridor that also includes Samsung, IBM, and several smaller semiconductor companies. US-183A (toll road) is the primary commute artery from the northwest suburbs.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Cedar Park</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via US-183A</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $425K–$700K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">Cedar Park is the default choice for most Apple employees with families — short toll-road commute, highly-rated schools, and established neighborhoods with mature trees and amenities. Inventory is tight but demand is consistent. See the full <a href="/neighborhoods/cedar-park" class="text-accent no-underline hover:underline">Cedar Park neighborhood guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Leander (Wildspring, Horizon Lake, Travisso)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-30 min via US-183A</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $450K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">Leander has some of the best new construction options for Apple employees. <a href="/new-construction/communities/wildspring" class="text-accent no-underline hover:underline">Wildspring</a> and <a href="/new-construction/communities/horizon-lake" class="text-accent no-underline hover:underline">Horizon Lake</a> offer new builds from the $450Ks. <a href="/new-construction/communities/travisso" class="text-accent no-underline hover:underline">Travisso</a> is the luxury option with Hill Country views north of $700K.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Round Rock (Northwest)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-25 min via Parmer Ln / TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $375K–$600K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Round Rock ISD</p>
+					<p class="text-sm text-text-muted">Northwest Round Rock sits directly east of Parmer Lane and offers slightly lower prices than Cedar Park for similar square footage. Round Rock ISD is top-rated. See the <a href="/neighborhoods/round-rock" class="text-accent no-underline hover:underline">Round Rock neighborhood guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Northwest Austin (78750, 78759)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via Parmer Ln</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$1M+</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Round Rock ISD / Austin ISD</p>
+					<p class="text-sm text-text-muted">Anderson Mill, Spicewood, and the 78759 corridor put you closest to the Apple campus with a straight shot down Parmer Lane. Resale inventory is the norm here; prices reflect the premium location.</p>
+				</div>
+			</div>
+
+			<p class="text-sm text-text-muted leading-relaxed">For a complete neighborhood-by-neighborhood breakdown specifically for Apple employees, including school district maps and commute route comparisons, read the full guide: <a href="/blog/neighborhoods-near-austin-apple-office" class="text-accent no-underline hover:underline">Best neighborhoods near the Apple Austin office</a>.</p>
+		</section>
+
+		<!-- 2. Tesla -->
+		<section class="mb-16" id="tesla">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Tesla Gigafactory Texas?</h2>
+			<p class="text-sm text-text-muted mb-6">Del Valle / SE Austin, off TX-130 Toll — 20,000+ employees at full buildout</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Tesla's Gigafactory Texas sits off TX-130 in Del Valle, about 15 miles southeast of downtown Austin. It's the most unconventional commute corridor in the Austin metro — southeast of downtown, which means most suburbs are northwest-to-southeast drives that avoid the worst congestion. TX-130 is the lifeline for this commute.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Pflugerville (Lisso, Grove at Blackhawk)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-25 min via TX-130</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $375K–$560K new construction</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Pflugerville ISD</p>
+					<p class="text-sm text-text-muted">The best value commuter suburb for Tesla. <a href="/new-construction/communities/lisso-pflugerville" class="text-accent no-underline hover:underline">Lisso</a> (Taylor Morrison, from $375K) and <a href="/new-construction/communities/grove-at-blackhawk" class="text-accent no-underline hover:underline">Grove at Blackhawk</a> are both near the TX-130/TX-45 interchange and give a clean SE run to Giga Texas. See the <a href="/neighborhoods/pflugerville" class="text-accent no-underline hover:underline">Pflugerville neighborhood guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Mueller / East Austin</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-25 min via TX-71 / 183</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $600K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">For Tesla workers who want central Austin walkability, Mueller and East Austin (78702) are the closest urban options. Higher prices, smaller homes, but walkable amenities and a short highway hop southeast.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Manor</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-30 min via US-290 E</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $300K–$450K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Manor ISD</p>
+					<p class="text-sm text-text-muted">Manor is the entry-level option for Tesla workers. Prices are the lowest in the metro for this commute corridor. The tradeoff is Manor ISD schools rank below Pflugerville ISD, and the area is still catching up on retail and services.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Hutto / Kyle</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 30-40 min via TX-130</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $320K–$480K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Hutto ISD / Hays CISD</p>
+					<p class="text-sm text-text-muted">Hutto (northeast) and Kyle (south) offer value and TX-130 access but add 10-15 minutes to the Tesla commute. Best for buyers prioritizing price per square foot over commute time.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3. Samsung -->
+		<section class="mb-16" id="samsung">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Samsung Austin Semiconductor?</h2>
+			<p class="text-sm text-text-muted mb-6">Parmer Lane (existing fab) + Taylor, TX (new $17B fab) — 10,000+ Austin, 2,000+ Taylor</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Samsung operates two distinct campuses in the Austin metro. The original fab on Parmer Lane in northeast Austin sits near the Samsung Blvd/Parmer Lane intersection (78754). The new Taylor fab — a $17 billion investment that broke ground in 2022 — is off US-79 in Taylor, TX, about 30 miles northeast of Austin. Pflugerville sits at the geographic midpoint between both campuses.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Pflugerville (Lisso, Grove at Blackhawk)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to Parmer fab:</strong> 15-20 min via TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to Taylor fab:</strong> 25-35 min via TX-130 N</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $375K–$560K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Pflugerville ISD</p>
+					<p class="text-sm text-text-muted">Pflugerville is the single best location for Samsung employees who want to hedge both campuses. <a href="/new-construction/communities/lisso-pflugerville" class="text-accent no-underline hover:underline">Lisso</a> and <a href="/new-construction/communities/grove-at-blackhawk" class="text-accent no-underline hover:underline">Grove at Blackhawk</a> both sit near the TX-130/TX-45 interchange. See the full <a href="/neighborhoods/pflugerville" class="text-accent no-underline hover:underline">Pflugerville guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Hutto</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to Taylor fab:</strong> 15-20 min via TX-79</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $320K–$480K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Hutto ISD</p>
+					<p class="text-sm text-text-muted">For employees assigned primarily to the Taylor fab, Hutto is the closest established city with a range of housing options. Prices are lower than Pflugerville and Round Rock, and new construction is active in several communities.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Round Rock</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to Parmer fab:</strong> 20-25 min via TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $380K–$620K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Round Rock ISD</p>
+					<p class="text-sm text-text-muted">Round Rock ISD is one of the strongest districts in Central Texas, making Round Rock a top choice for Samsung families who want to prioritize schools. See the <a href="/neighborhoods/round-rock" class="text-accent no-underline hover:underline">Round Rock neighborhood guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Northeast Austin (78754)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to Parmer fab:</strong> 10-15 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $380K–$600K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD / Pflugerville ISD</p>
+					<p class="text-sm text-text-muted">The closest resale neighborhoods to Samsung's Parmer Lane fab. Convenient but resale-only; most new construction has pushed further out to Pflugerville and Hutto.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4. Dell -->
+		<section class="mb-16" id="dell">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Dell Technologies in Round Rock?</h2>
+			<p class="text-sm text-text-muted mb-6">Round Rock HQ on Dell Way — ~13,000 employees in metro</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Dell's corporate headquarters and main campus sits on Dell Way in Round Rock, just east of I-35 near the I-35/TX-45 interchange. It's one of the best-positioned corporate campuses in the metro for suburb access — Round Rock, Cedar Park, Pflugerville, and Hutto all offer reasonable commutes without requiring the I-35 gauntlet into downtown.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Round Rock</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-15 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $380K–$620K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Round Rock ISD</p>
+					<p class="text-sm text-text-muted">Living in Round Rock itself is the obvious choice for Dell employees — short commute, strong schools, and decent inventory across a range of price points. The northwest and southwest parts of Round Rock add 5-10 minutes but offer newer construction. See the <a href="/neighborhoods/round-rock" class="text-accent no-underline hover:underline">Round Rock guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Cedar Park</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-25 min via US-183 or TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $425K–$700K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">Cedar Park's east side is a 20-minute drive to Dell; the west side adds another 10 minutes but rewards with larger lots and top-ranked Leander ISD schools. See the <a href="/neighborhoods/cedar-park" class="text-accent no-underline hover:underline">Cedar Park guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Pflugerville</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-25 min via TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $375K–$560K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Pflugerville ISD</p>
+					<p class="text-sm text-text-muted">Pflugerville offers the best value for Dell employees willing to commute 20 minutes. The TX-45 connection to Round Rock avoids I-35. New construction is the primary option. See the <a href="/neighborhoods/pflugerville" class="text-accent no-underline hover:underline">Pflugerville guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Hutto</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 25-30 min via TX-130 / TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $310K–$460K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Hutto ISD</p>
+					<p class="text-sm text-text-muted">Hutto is the price-conscious option — best dollars-per-square-foot in the Dell commute corridor. A good fit for first-time buyers or those prioritizing space over commute time.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5. Google -->
+		<section class="mb-16" id="google">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Google's Austin Offices?</h2>
+			<p class="text-sm text-text-muted mb-6">500 W 2nd St + 601 W 2nd St (Block 185), Downtown Austin — ~1,100 employees</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Google operates two adjacent office buildings in downtown Austin along West 2nd Street near the corner of Lamar Blvd. Both are walkable from the 2nd Street District and Lady Bird Lake. At roughly 1,100 employees, Google Austin is a mid-size office — large enough to anchor a real estate search, small enough that most employees choose centrally-located neighborhoods over suburban commutes.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Mueller</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via MLK Blvd or I-35</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $600K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Mueller is the most-requested central Austin neighborhood for tech workers. It's a planned community with walkable retail, parks, a farmers market, and a mix of townhomes and single-family homes. Prices are high but justified by the quality of life and central location.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">East Austin (78702)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 12-18 min via E 6th or E 2nd</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$1M+</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">East Austin is popular with younger tech workers for its walkability, restaurant and bar scene, and proximity to downtown. New construction townhomes and condos fill many lots. Traffic into downtown is manageable from East 6th or East 2nd.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">South Congress / Travis Heights</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via S Congress or S 1st</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $650K–$1.2M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">South Congress and Travis Heights attract Google employees who want the Austin lifestyle — bungalows, walkability, proximity to Lady Bird Lake and Barton Springs. Premium prices, very limited inventory.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Clarksville / Tarrytown</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 5-10 min via W 6th or Lamar</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $900K–$2M+</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD (Casis Elem)</p>
+					<p class="text-sm text-text-muted">For senior Google employees with larger budgets, Clarksville and Tarrytown are essentially walking distance from the office. Expect $900K+ for a modest single-family home; the location premium is real.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6. Oracle -->
+		<section class="mb-16" id="oracle">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Oracle's Austin Campus?</h2>
+			<p class="text-sm text-text-muted mb-6">2300 Cloud Way (Waterloo campus), Lady Bird Lake south shore — ~10,000 employees</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Oracle's Waterloo campus sits on the south shore of Lady Bird Lake, replacing the old Auditorium Shores area. The location is uniquely central — it's equidistant from South Austin residential neighborhoods, the East Austin corridor, and the Westlake Hills that rise west of MoPac. The campus is close enough to walk or bike from South Congress-area neighborhoods.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Travis Heights / South Congress</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 5-15 min on bike or car</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $600K–$1.2M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">The closest residential neighborhoods to Oracle's campus. Travis Heights is walkable, has classic Austin bungalows, and sits just south of Lady Bird Lake. South Congress adds retail and restaurant walkability. Both are resale-only markets with limited inventory.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Barton Hills / Zilker</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-20 min via S Lamar or Barton Springs Rd</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $750K–$1.5M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD (Barton Hills Elem)</p>
+					<p class="text-sm text-text-muted">Zilker and Barton Hills are some of the most desirable neighborhoods in Austin — Barton Springs Pool, Zilker Park, the hike-and-bike trail, and proximity to downtown. Premium prices but some of the best resale stability in the city.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Westlake Hills / Rollingwood</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-30 min via MoPac or Loop 360</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $1M–$4M+</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Eanes ISD</p>
+					<p class="text-sm text-text-muted">For Oracle executives and senior managers, Westlake Hills and Rollingwood offer Eanes ISD (the highest-rated district in Central Texas) plus large lots and privacy. MoPac can be congested; budget 30-40 minutes during peak hours.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Bee Cave / Lakeway</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 30-40 min via TX-71 / MoPac</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$1.2M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Lake Travis ISD</p>
+					<p class="text-sm text-text-muted">Bee Cave and Lakeway are popular with Oracle families who want Hill Country lifestyle, Lake Travis access, and strong Lake Travis ISD schools at lower prices than Westlake. See the <a href="/neighborhoods/lakeway" class="text-accent no-underline hover:underline">Lakeway guide</a>.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 7. Meta -->
+		<section class="mb-16" id="meta">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Meta's Austin Office?</h2>
+			<p class="text-sm text-text-muted mb-6">300 W 6th St / Sixth and Guadalupe, Downtown Austin</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Meta's Austin presence is concentrated in its downtown office at 300 West 6th Street, near the Shoal Creek corridor. It's a central location with access to all major central Austin neighborhoods and reasonable drives to most east and south Austin areas. Like Google, Meta's Austin office size means employees typically choose central neighborhoods over suburban commutes.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Downtown / Seaholm</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> Walking distance or 5 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $450K–$900K (condos)</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Downtown condos in the Seaholm District, 2nd Street corridor, and West 6th area are literal walking distance to Meta's office. The downtown condo market has been softer than single-family since 2022, which means better values than the peak.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Clarksville / Old West Austin</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 5-10 min or walkable</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $900K–$2M+</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Clarksville is immediately west of Meta's office — walkable for many employees. Older bungalows on tree-lined streets with strong walkability and top location. Very limited inventory, prices reflect the scarcity.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">East Austin / Mueller</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-25 min via E 6th or Manor Rd</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">East Austin and Mueller are the go-to central neighborhoods for Meta employees who want more space than downtown condos offer at a lower price than Clarksville. The 15-25 minute commute via 6th Street or Manor Rd is manageable.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Tarrytown</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-15 min via W 6th or Lake Austin Blvd</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $900K–$2.5M+</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD (Casis Elem)</p>
+					<p class="text-sm text-text-muted">Tarrytown is the established luxury neighborhood west of downtown — older homes, large lots, mature trees, and the Casis Elementary attendance zone. One of the most coveted family neighborhoods in central Austin.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 8. Amazon -->
+		<section class="mb-16" id="amazon">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Amazon's Austin Operations?</h2>
+			<p class="text-sm text-text-muted mb-6">Downtown office + 3.8M sqft fulfillment center in Pflugerville (near Blackhawk)</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Amazon has two distinct footprints in Austin. Corporate employees work in the downtown Austin office (similar commute profile to Google/Meta). Operations and fulfillment workers commute to the massive fulfillment center in northeast Pflugerville, adjacent to the Blackhawk community off TX-130. The neighborhoods that work depend entirely on which facility you're at.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Pflugerville (Lisso, Grove at Blackhawk, Meadowlark Preserve)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to fulfillment center:</strong> 5-15 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $375K–$560K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Pflugerville ISD</p>
+					<p class="text-sm text="text-text-muted">For fulfillment center workers, Pflugerville is the obvious choice — <a href="/new-construction/communities/lisso-pflugerville" class="text-accent no-underline hover:underline">Lisso</a>, <a href="/new-construction/communities/grove-at-blackhawk" class="text-accent no-underline hover:underline">Grove at Blackhawk</a>, and <a href="/new-construction/communities/meadowlark-preserve" class="text-accent no-underline hover:underline">Meadowlark Preserve</a> are essentially adjacent to the facility.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Manor</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to fulfillment center:</strong> 20-30 min via US-290 E</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $300K–$430K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Manor ISD</p>
+					<p class="text-sm text-text-muted">Manor offers the lowest entry prices for Amazon fulfillment workers. Short commute via US-290 to TX-130. A solid entry-level option for first-time buyers in this corridor.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">East Austin / Mueller (for corporate)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to downtown office:</strong> 15-25 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Amazon corporate employees at the downtown office follow the same neighborhood logic as Google and Meta workers — Mueller, East Austin, and central neighborhoods work well.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Round Rock</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute to fulfillment center:</strong> 25-30 min via TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $380K–$620K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Round Rock ISD</p>
+					<p class="text-sm text-text-muted">Round Rock adds commute time for fulfillment workers but rewards with stronger schools and more established community infrastructure. See the <a href="/neighborhoods/round-rock" class="text-accent no-underline hover:underline">Round Rock guide</a>.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 9. IBM -->
+		<section class="mb-16" id="ibm">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near IBM's Austin Campus?</h2>
+			<p class="text-sm text-text-muted mb-6">11400 Burnet Rd, Northwest Austin — long-established campus</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				IBM's Burnet Road campus is one of the oldest tech employer campuses in Austin — IBM has been on this site since the 1960s. It sits at the MoPac / US-183 corridor in northwest Austin (78759), surrounded by established neighborhoods and the Jollyville/Anderson Mill area. Traffic on MoPac and 183 can be challenging; neighborhoods that avoid these arteries for the commute have an advantage.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Anderson Mill / Millwood (78750)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-15 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $450K–$750K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Round Rock ISD</p>
+					<p class="text-sm text-text-muted">Anderson Mill is the closest established neighborhood to IBM's campus — 1970s-1980s ranchers and traditional homes, large lots, and Round Rock ISD schools. A classic IBM employee neighborhood that remains popular with the campus's long-tenured workforce.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Northwest Hills / Crestview / Allandale</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via Burnet Rd or MoPac</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $650K–$1.2M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Northwest Hills, Allandale, and Crestview are central Austin's most established mid-century neighborhoods — popular with IBM employees who want proximity to Burnet Rd bars and restaurants and central Austin amenities. Higher prices but excellent location.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Cedar Park (south side)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-25 min via US-183</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $425K–$680K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">The south Cedar Park area gives IBM employees Leander ISD schools plus a 20-25 minute commute down US-183 or Parmer Lane. A solid family option at lower prices than central Austin equivalents. See the <a href="/neighborhoods/cedar-park" class="text-accent no-underline hover:underline">Cedar Park guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Lakeline / Leander</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 25-30 min via US-183A</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $390K–$650K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">Lakeline and south Leander offer newer construction and Leander ISD schools with a 25-30 minute commute via the 183A toll road — a good tradeoff for families prioritizing school quality and new-build warranties.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 10. Indeed -->
+		<section class="mb-16" id="indeed">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Indeed's Austin Headquarters?</h2>
+			<p class="text-sm text-text-muted mb-6">200 W 6th St, Downtown Austin — major tech downtown employer</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Indeed's global headquarters sits at 200 West 6th Street in the heart of downtown Austin — two blocks from Meta, four blocks from Google. The downtown location means the commute calculus is identical to other downtown employers: central Austin neighborhoods work, suburban commutes are long and unnecessary for most employees.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Mueller</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via MLK or I-35</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $600K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Mueller is consistently the top recommendation for Indeed employees — planned, walkable, family-friendly, and a reasonable drive or bike ride downtown. Limited inventory; homes move quickly when listed.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">East Austin (78702, 78721)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$950K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">East Austin's 78702 and 78721 ZIP codes remain popular with downtown employers. A wide range of housing types — bungalows, new construction townhomes, converted duplexes — at prices somewhat lower than Mueller.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">South Congress / Bouldin Creek</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-20 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $650K–$1.3M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">South Congress and Bouldin Creek are walkable, culturally rich neighborhoods south of Lady Bird Lake. Popular with Indeed employees who want Austin's food and music scene within walking or biking distance of the office.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Travis Heights / Zilker</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-20 min via S Congress</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $650K–$1.5M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Travis Heights and Zilker offer Barton Springs access, lake proximity, and the classic Austin lifestyle — a premium over comparable square footage elsewhere, but with strong long-term demand and resale stability.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 11. AMD -->
+		<section class="mb-16" id="amd">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near AMD in Austin?</h2>
+			<p class="text-sm text-text-muted mb-6">7171 Southwest Pkwy (SW Austin) + Lakeline campus (NW Austin)</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				AMD operates two Austin campuses: the primary Southwest Parkway campus in southwest Austin (near the US-290 W / Mopac junction) and a secondary Lakeline campus in northwest Austin near Cedar Park. Where you work determines the entire neighborhood calculus — the two campuses are on opposite sides of the city.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Circle C Ranch / Oak Hill (SW campus)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-20 min via SW Pkwy or TX-45</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$950K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD / Eanes ISD</p>
+					<p class="text-sm text-text-muted">Circle C Ranch is the most popular neighborhood for AMD Southwest Pkwy employees — planned community, highly-rated Austin ISD schools, community pools, and a reasonable drive to the campus. Oak Hill offers slightly more affordable options just east of Circle C.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Bee Cave / Sunset Valley (SW campus)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-25 min via TX-71 / SW Pkwy</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$1.2M</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Lake Travis ISD</p>
+					<p class="text-sm text-text-muted">Bee Cave gives AMD employees Lake Travis ISD schools and Hill Country proximity with a 15-25 minute southwest commute. Good option for families who want lake access and outdoor lifestyle. See the <a href="/neighborhoods/lakeway" class="text-accent no-underline hover:underline">Lakeway/Bee Cave guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Cedar Park / Lakeline (NW campus)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-20 min</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $430K–$700K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">For AMD's Lakeline campus employees, Cedar Park is the logical choice — close to the campus, excellent Leander ISD schools, and a wide selection of resale and new construction. See the <a href="/neighborhoods/cedar-park" class="text-accent no-underline hover:underline">Cedar Park guide</a>.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Leander (NW campus)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-30 min via US-183A</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $400K–$750K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">Leander adds commute time for the Lakeline campus but rewards with newer construction and more space. New communities like <a href="/new-construction/communities/wildspring" class="text-accent no-underline hover:underline">Wildspring</a> and <a href="/new-construction/communities/travisso" class="text-accent no-underline hover:underline">Travisso</a> are active options.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 12. Applied Materials -->
+		<section class="mb-16" id="applied-materials">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Where Should I Live Near Applied Materials in Austin?</h2>
+			<p class="text-sm text-text-muted mb-6">9700 US Hwy 290 E (east Austin) + NW Austin offices</p>
+
+			<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 mb-6 text-sm text-text-muted leading-relaxed">
+				Applied Materials' primary Austin facility sits on US-290 East, between Austin and Manor — a semiconductor equipment manufacturer with close ties to the Samsung and NXP semiconductor plants nearby. The campus is east of I-35, making east Austin, Mueller, and Pflugerville the most practical commute neighborhoods.
+			</div>
+
+			<div class="grid md:grid-cols-2 gap-6 mb-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Mueller / East Austin</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-25 min via US-290 E or Manor Rd</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $550K–$900K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Austin ISD</p>
+					<p class="text-sm text-text-muted">Mueller and the nearby East Austin neighborhoods offer the closest central Austin option to Applied Materials' 290 E campus. A quick hop east on 290 or Manor Rd without going through downtown congestion.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Manor</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 10-20 min via US-290 E</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $295K–$430K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Manor ISD</p>
+					<p class="text-sm text-text-muted">Manor is the closest and most affordable option for Applied Materials workers — entry-level prices and a short commute. The tradeoff is less developed retail and restaurant infrastructure than Pflugerville or central Austin.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Pflugerville (Northeast side)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 20-30 min via TX-130 / US-290</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $375K–$560K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Pflugerville ISD</p>
+					<p class="text-sm text-text-muted">Pflugerville's northeast communities give Applied Materials workers the convenience of established retail (Costco, H-E-B, restaurants), Pflugerville ISD schools, and TX-130 access for a manageable 20-30 minute commute.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display font-bold text-primary mb-3">Cedar Park (for NW offices)</h3>
+					<p class="text-sm text-text-muted mb-2"><strong>Commute:</strong> 15-25 min via US-183</p>
+					<p class="text-sm text-text-muted mb-2"><strong>Price range:</strong> $430K–$700K</p>
+					<p class="text-sm text-text-muted mb-2"><strong>School district:</strong> Leander ISD</p>
+					<p class="text-sm text-text-muted">Employees at Applied Materials' northwest Austin offices find Cedar Park the natural fit — short commute via US-183, Leander ISD schools, and established neighborhood infrastructure. See the <a href="/neighborhoods/cedar-park" class="text-accent no-underline hover:underline">Cedar Park guide</a>.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Summary Table -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Austin Tech Employer Quick-Reference Table</h2>
+			<div class="overflow-x-auto rounded-xl border border-border">
+				<table class="w-full text-sm">
+					<thead>
+						<tr class="bg-surface border-b border-border">
+							<th class="text-left p-4 font-semibold text-primary">Employer</th>
+							<th class="text-left p-4 font-semibold text-primary">Campus Location</th>
+							<th class="text-left p-4 font-semibold text-primary hidden sm:table-cell">~Employees</th>
+							<th class="text-left p-4 font-semibold text-primary">Best-Value Suburb</th>
+							<th class="text-left p-4 font-semibold text-primary hidden md:table-cell">Luxury Option</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-border">
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#apple" class="text-accent no-underline hover:underline">Apple</a></td>
+							<td class="p-4 text-text-muted">Parmer Ln, NW Austin</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">~15,000</td>
+							<td class="p-4 text-text-muted">Cedar Park</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Travisso (Leander)</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#tesla" class="text-accent no-underline hover:underline">Tesla</a></td>
+							<td class="p-4 text-text-muted">Del Valle / TX-130</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">20,000+ (target)</td>
+							<td class="p-4 text-text-muted">Pflugerville</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Mueller / East Austin</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#samsung" class="text-accent no-underline hover:underline">Samsung</a></td>
+							<td class="p-4 text-text-muted">Parmer Ln + Taylor, TX</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">10,000–12,000</td>
+							<td class="p-4 text-text-muted">Pflugerville / Hutto</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Round Rock</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#dell" class="text-accent no-underline hover:underline">Dell</a></td>
+							<td class="p-4 text-text-muted">Round Rock HQ</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">~13,000</td>
+							<td class="p-4 text-text-muted">Round Rock</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Cedar Park</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#google" class="text-accent no-underline hover:underline">Google</a></td>
+							<td class="p-4 text-text-muted">Downtown (W 2nd St)</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">~1,100</td>
+							<td class="p-4 text-text-muted">East Austin</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Clarksville / Tarrytown</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#oracle" class="text-accent no-underline hover:underline">Oracle</a></td>
+							<td class="p-4 text-text-muted">Waterloo / Lady Bird Lake</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">~10,000</td>
+							<td class="p-4 text-text-muted">Bee Cave</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Westlake / Rollingwood</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#meta" class="text-accent no-underline hover:underline">Meta</a></td>
+							<td class="p-4 text-text-muted">Downtown (W 6th St)</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">N/A (not disclosed)</td>
+							<td class="p-4 text-text-muted">East Austin</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Clarksville / Tarrytown</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#amazon" class="text-accent no-underline hover:underline">Amazon</a></td>
+							<td class="p-4 text-text-muted">Downtown + Pflugerville FC</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">Varies by role</td>
+							<td class="p-4 text-text-muted">Pflugerville / Manor</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Mueller (corporate)</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#ibm" class="text-accent no-underline hover:underline">IBM</a></td>
+							<td class="p-4 text-text-muted">Burnet Rd, NW Austin</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">Large campus</td>
+							<td class="p-4 text-text-muted">Anderson Mill (78750)</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Northwest Hills</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#indeed" class="text-accent no-underline hover:underline">Indeed</a></td>
+							<td class="p-4 text-text-muted">Downtown (W 6th St)</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">Large downtown HQ</td>
+							<td class="p-4 text-text-muted">East Austin</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Travis Heights / Zilker</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#amd" class="text-accent no-underline hover:underline">AMD</a></td>
+							<td class="p-4 text-text-muted">SW Pkwy + Lakeline (NW)</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">Large campus</td>
+							<td class="p-4 text-text-muted">Circle C / Cedar Park</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Bee Cave (SW) / Travisso (NW)</td>
+						</tr>
+						<tr class="hover:bg-surface/60 transition-colors">
+							<td class="p-4 font-medium text-primary"><a href="#applied-materials" class="text-accent no-underline hover:underline">Applied Materials</a></td>
+							<td class="p-4 text-text-muted">US-290 E + NW offices</td>
+							<td class="p-4 text-text-muted hidden sm:table-cell">Large campus</td>
+							<td class="p-4 text-text-muted">Manor / Pflugerville</td>
+							<td class="p-4 text-text-muted hidden md:table-cell">Mueller / East Austin</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Austin Tech Employer FAQ</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 mb-10 text-center">
+			<h2 class="font-display text-2xl font-bold text-primary mb-3">Buying on the Right Side of Austin for Your Job?</h2>
+			<p class="text-text-muted mb-6 max-w-lg mx-auto">Your commute corridor matters as much as your price range. Tell me your employer and budget and I'll narrow the search to neighborhoods that actually work for your daily drive — including new construction communities with current builder incentives.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href={IDX_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+					Browse Austin Homes
+				</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+
+		<!-- Contact -->
+		<ContactForm
+			heading="Working at an Austin tech company and looking for a home?"
+			subheading="Tell me your employer, commute tolerance, budget, and timeline. I'll recommend specific neighborhoods and communities that fit."
+		/>
+
+	</div>
+</BaseLayout>

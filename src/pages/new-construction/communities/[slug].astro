@@ -2,8 +2,10 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SchemaMarkup from '../../../components/SchemaMarkup.astro';
 import ContactForm from '../../../components/ContactForm.astro';
+import TidyCalEmbed from '../../../components/TidyCalEmbed.astro';
+import YouTubeEmbed from '../../../components/YouTubeEmbed.astro';
 import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel, type Community } from '../../../data/communities';
-import { PHONE, SITE_URL } from '../../../consts';
+import { PHONE, SITE_URL, TIDYCAL_URL } from '../../../consts';
 
 export async function getStaticPaths() {
 	return COMMUNITIES.map((c) => ({
@@ -48,7 +50,19 @@ const residenceSchema = {
 	},
 };
 
+const videoSchema = c.youtubeId ? {
+	"@context": "https://schema.org",
+	"@type": "VideoObject",
+	"name": `${c.name} by ${c.builder} — Community Tour`,
+	"description": `Walk-through and neighborhood context for ${c.name} in ${c.city}, TX by William Zhang, local Austin real estate agent.`,
+	"thumbnailUrl": `https://i.ytimg.com/vi/${c.youtubeId}/maxresdefault.jpg`,
+	"uploadDate": c.updatedDate,
+	"contentUrl": `https://www.youtube.com/watch?v=${c.youtubeId}`,
+	"embedUrl": `https://www.youtube.com/embed/${c.youtubeId}`,
+} : null;
+
 const jsonLdString = JSON.stringify(residenceSchema);
+const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} image={c.heroImage}>
@@ -60,6 +74,7 @@ const jsonLdString = JSON.stringify(residenceSchema);
 		{ name: c.name, url: `/new-construction/communities/${c.slug}` },
 	] }} />
 	<script is:inline type="application/ld+json" set:html={jsonLdString} />
+	{videoLdString && <script is:inline type="application/ld+json" set:html={videoLdString} />}
 
 	<article class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
 		<!-- Breadcrumb trail -->
@@ -82,7 +97,16 @@ const jsonLdString = JSON.stringify(residenceSchema);
 		<!-- Hero image -->
 		{c.heroImage && (
 			<div class="rounded-2xl overflow-hidden mb-10 border border-border aspect-[16/9] bg-warm-dark">
-				<img src={c.heroImage} alt={`${c.name} by ${c.builder} in ${c.city}, TX`} class="w-full h-full object-cover" />
+				<img
+					src={c.heroImage}
+					alt={`${c.name} by ${c.builder} in ${c.city}, TX`}
+					width="1920"
+					height="1080"
+					loading="eager"
+					fetchpriority="high"
+					decoding="async"
+					class="w-full h-full object-cover"
+				/>
 			</div>
 		)}
 		{!c.heroImage && (
@@ -130,6 +154,13 @@ const jsonLdString = JSON.stringify(residenceSchema);
 			<h2>About {c.name}</h2>
 			<p>{c.summary}</p>
 		</section>
+
+		{c.youtubeId && (
+			<section class="mb-10">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">Community Tour Video</h2>
+				<YouTubeEmbed id={c.youtubeId} title={`${c.name} community tour`} />
+			</section>
+		)}
 
 		<!-- Highlights -->
 		<section class="grid md:grid-cols-2 gap-6 mb-10">
@@ -230,11 +261,11 @@ const jsonLdString = JSON.stringify(residenceSchema);
 
 		<!-- Register callout -->
 		<div class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-10 border-l-4 border-accent">
-			<h3 class="font-display text-xl font-bold text-primary mb-3">Register Me Before You Visit {c.name}</h3>
-			<p class="text-text-muted text-sm leading-relaxed mb-4">Builder representation only works if your agent is registered on your first visit. If you walk into the {c.builder} sales office alone and sign a visitor sheet, you may lose the ability to bring in a buyer's agent at this community. Text me the community name before you go — I'll register you in 60 seconds. It's free and it protects you.</p>
+			<h3 class="font-display text-xl font-bold text-primary mb-3">Book a Tour of {c.name} (or a Quick Call First)</h3>
+			<p class="text-text-muted text-sm leading-relaxed mb-4">Builder representation only works if your agent is registered on your first visit. If you walk into the {c.builder} sales office alone, you may lose the ability to bring in a buyer's agent at this community. Book a 15-minute call with me first — I'll register you, walk you through current incentives, and we can schedule the tour together.</p>
 			<div class="flex flex-col sm:flex-row gap-3">
-				<a href="/contact" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
-					Register Me as Your Agent
+				<a href="#schedule" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
+					Schedule a Tour or Call
 				</a>
 				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border-2 border-accent rounded-lg hover:bg-white transition-all no-underline">
 					Call {PHONE}
@@ -242,8 +273,16 @@ const jsonLdString = JSON.stringify(residenceSchema);
 			</div>
 		</div>
 
-		<!-- Contact form -->
-		<ContactForm heading={`Questions about ${c.name}?`} subheading={`Tell me what you're looking for and I'll send current inventory, incentives, and my notes on the best lots.`} />
+		<!-- TidyCal scheduling -->
+		<div id="schedule" class="mb-10 scroll-mt-20">
+			<TidyCalEmbed
+				heading={`Schedule a Call About ${c.name}`}
+				subheading={`Pick a time that works for you. I'll share current ${c.builder} incentives, my notes on the best lots, and we'll plan your visit so your representation is protected.`}
+			/>
+		</div>
+
+		<!-- Contact form fallback -->
+		<ContactForm heading={`Prefer to message first?`} subheading={`Tell me what you're looking for at ${c.name} and I'll send current inventory, incentives, and my notes on the best lots.`} />
 
 		<p class="text-xs text-text-muted text-center mt-10">Community data last updated {c.updatedDate}. Prices, floor plans, and incentives change frequently — confirm current numbers before making decisions. Photos are property of {c.builder}.</p>
 	</article>

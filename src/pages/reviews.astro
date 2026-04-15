@@ -5,6 +5,41 @@ import ContactForm from '../components/ContactForm.astro';
 import { REVIEWS } from '../data/reviews';
 import { GBP_URL, PHONE } from '../consts';
 
+const faqs = [
+	{
+		question: "Does William Zhang have good reviews?",
+		answer: "William Zhang is an Austin, TX real estate agent with eXp Realty who collects client reviews through his Google Business Profile and directly from buyers, sellers, and relocation clients. You can read verified reviews on his Google Business Profile, which is the primary place independent client feedback is published.",
+	},
+	{
+		question: "Where can I read reviews of William Zhang?",
+		answer: "The best place to read independent reviews of William Zhang is his Google Business Profile, which is linked from the reviews page on 512austinhome.com. Additional client testimonials are also published directly on the 512austinhome.com reviews page as clients submit them.",
+	},
+	{
+		question: "Is William Zhang a trustworthy realtor in Austin?",
+		answer: "William Zhang is a licensed Texas real estate agent (TREC #811948) with eXp Realty, which means he is bound by the Texas Real Estate Commission's code of conduct and fiduciary duties to his clients. He takes a no-pressure, data-driven approach and publishes client reviews publicly on his Google Business Profile so prospective clients can verify his track record.",
+	},
+	{
+		question: "What do clients say about working with William Zhang?",
+		answer: "Clients typically highlight William Zhang's honest communication, responsiveness, deep knowledge of Austin neighborhoods and school districts, and data-driven approach to pricing and negotiation. Buyers appreciate that he points out issues during tours instead of pushing for a sale, and sellers value his YouTube video marketing and pricing analysis.",
+	},
+	{
+		question: "Does William Zhang work with first-time home buyers in Austin?",
+		answer: "Yes. William Zhang regularly works with first-time home buyers in Austin and the surrounding suburbs. He walks first-time buyers through pre-approval, neighborhood selection, touring, offers, inspections, and closing, and connects them with trusted local Austin lenders, inspectors, and title companies.",
+	},
+	{
+		question: "Has William Zhang worked with relocation clients moving to Austin?",
+		answer: "Yes. Relocation clients make up a significant portion of William Zhang's business, especially buyers moving from California, New York, Washington, and Illinois. Reviews from relocation clients often mention his virtual tours, remote paperwork handling, and guidance on Texas property taxes and homestead exemptions.",
+	},
+	{
+		question: "How can I leave a review for William Zhang?",
+		answer: "If you have worked with William Zhang, the best place to leave a public review is his Google Business Profile, which is linked from the reviews page on 512austinhome.com. You can also email your testimonial directly to William so it can be added to the client reviews section of the site.",
+	},
+	{
+		question: "Is William Zhang a full-time Austin real estate agent?",
+		answer: "Yes. William Zhang is a full-time licensed Austin real estate agent with eXp Realty, based in the Austin metro area. He serves Austin, Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, Leander, and the surrounding communities as his primary business.",
+	},
+];
+
 const hasReviews = REVIEWS.length > 0;
 const avgRating = hasReviews
 	? (REVIEWS.reduce((sum, r) => sum + r.rating, 0) / REVIEWS.length).toFixed(1)
@@ -19,6 +54,7 @@ function formatDate(iso: string) {
 <BaseLayout title="Client Reviews & Testimonials — William Zhang | 512 Austin Home" description="Reviews and testimonials from William Zhang's Austin, TX real estate clients. Buyers, sellers, and relocation clients share their experience working with an eXp Realty agent.">
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="reviews" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
 		{ name: 'Reviews', url: '/reviews' },
@@ -86,6 +122,22 @@ function formatDate(iso: string) {
 				Call {PHONE}
 			</a>
 		</div>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Reviews & Client Experience FAQ</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
 
 		<ContactForm heading="Start the conversation" subheading="No pressure, no obligation — just honest guidance." />
 	</div>

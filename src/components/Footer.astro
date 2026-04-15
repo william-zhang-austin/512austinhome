@@ -27,6 +27,7 @@ const year = new Date().getFullYear();
 					<li><a href="/neighborhoods" class="hover:text-accent transition-colors duration-200 no-underline">Neighborhoods</a></li>
 					<li><a href="/blog" class="hover:text-accent transition-colors duration-200 no-underline">Blog</a></li>
 					<li><a href="/reviews" class="hover:text-accent transition-colors duration-200 no-underline">Reviews</a></li>
+					<li><a href="/tech-employers" class="hover:text-accent transition-colors duration-200 no-underline">Austin Tech Employers</a></li>
 					<li><a href={IDX_URL} target="_blank" rel="noopener" class="hover:text-accent transition-colors duration-200 no-underline">Search Homes</a></li>
 				</ul>
 			</div>
@@ -57,10 +58,28 @@ const year = new Date().getFullYear();
 		</div>
 
 		<!-- Bottom bar -->
-		<div class="mt-14 pt-8 border-t border-white/10 text-xs text-white/40">
+		<div class="mt-14 pt-8 border-t border-white/10 text-xs text-white/40 space-y-4">
 			<div class="flex flex-col sm:flex-row items-center justify-between gap-4">
 				<span>&copy; {year} William Zhang | {BROKERAGE} | TREC #{TREC_LICENSE}</span>
 				<span>512 Austin Home &mdash; Austin, Texas</span>
+			</div>
+			<div class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-center">
+				<a
+					href="https://drive.google.com/file/d/1kDbiMbgScANjqs5e29LkyynBPBpJjF4v/view"
+					target="_blank"
+					rel="noopener"
+					class="hover:text-accent transition-colors duration-200 no-underline"
+				>
+					Texas Information About Brokerage Services (IABS)
+				</a>
+				<a
+					href="https://www.trec.texas.gov/sites/default/files/pdf-forms/CN%201-4-1.pdf"
+					target="_blank"
+					rel="noopener"
+					class="hover:text-accent transition-colors duration-200 no-underline"
+				>
+					TREC Consumer Protection Notice
+				</a>
 			</div>
 		</div>
 	</div>

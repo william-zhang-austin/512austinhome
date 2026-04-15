@@ -2,75 +2,48 @@
 interface Props {
 	heading?: string;
 	subheading?: string;
+	formId?: string;
 }
 
-const { heading = 'Get in Touch', subheading = 'Whether you\'re buying, selling, or just exploring — I\'m here to help.' } = Astro.props;
+const {
+	heading = 'Get in Touch',
+	subheading = 'Whether you\'re buying, selling, or just exploring — I\'m here to help.',
+	formId = 'RGBKxQ',
+} = Astro.props;
+
+const embedSrc = `https://tally.so/embed/${formId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`;
 ---
 
-<section id="contact" class="bg-warm-dark rounded-2xl p-8 sm:p-10">
+<section id="contact" class="bg-warm-dark rounded-2xl p-6 sm:p-10">
 	<h2 class="font-display text-2xl font-bold text-primary mb-2">{heading}</h2>
 	<p class="text-text-muted mb-6">{subheading}</p>
 
-	<form
-		name="contact"
-		method="POST"
-		data-netlify="true"
-		class="space-y-4"
-	>
-		<input type="hidden" name="form-name" value="contact" />
+	<iframe
+		data-tally-src={embedSrc}
+		loading="lazy"
+		width="100%"
+		height="500"
+		frameborder="0"
+		marginheight="0"
+		marginwidth="0"
+		title={heading}
+		class="w-full block"
+	></iframe>
 
-		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-			<div>
-				<label for="name" class="block text-sm font-medium text-primary mb-1">Name</label>
-				<input
-					type="text"
-					id="name"
-					name="name"
-					required
-					class="w-full px-4 py-3 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
-					placeholder="Your name"
-				/>
-			</div>
-			<div>
-				<label for="phone" class="block text-sm font-medium text-primary mb-1">Phone</label>
-				<input
-					type="tel"
-					id="phone"
-					name="phone"
-					class="w-full px-4 py-3 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
-					placeholder="(512) 555-1234"
-				/>
-			</div>
-		</div>
-
-		<div>
-			<label for="email" class="block text-sm font-medium text-primary mb-1">Email</label>
-			<input
-				type="email"
-				id="email"
-				name="email"
-				required
-				class="w-full px-4 py-3 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
-				placeholder="you@email.com"
-			/>
-		</div>
-
-		<div>
-			<label for="message" class="block text-sm font-medium text-primary mb-1">How can I help?</label>
-			<textarea
-				id="message"
-				name="message"
-				rows="4"
-				class="w-full px-4 py-3 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all resize-y"
-				placeholder="Tell me about your timeline, budget, and what you're looking for..."
-			></textarea>
-		</div>
-
-		<button
-			type="submit"
-			class="w-full sm:w-auto px-8 py-3 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 cursor-pointer"
-		>
-			Send Message
-		</button>
-	</form>
+	<script is:inline src="https://tally.so/widgets/embed.js" async></script>
+	<script is:inline>
+		// Fallback: if the Tally widget script hasn't hydrated iframes by the time
+		// the user sees the page, set src directly so the form still loads.
+		(function () {
+			function load() {
+				document.querySelectorAll('iframe[data-tally-src]:not([src])').forEach(function (el) {
+					el.src = el.getAttribute('data-tally-src');
+				});
+			}
+			if (typeof window.Tally === 'undefined') {
+				if (document.readyState !== 'loading') load();
+				else document.addEventListener('DOMContentLoaded', load);
+			}
+		})();
+	</script>
 </section>

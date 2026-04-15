@@ -5,6 +5,8 @@ export const YOUTUBE_URL = 'https://www.youtube.com/channel/UCun_gJQ6zg3q3Uc8avy
 export const YOUTUBE_ZH_URL = 'https://www.youtube.com/@WilliamTexasHomes';
 export const GBP_URL = 'https://share.google/trv8A42Hs8vMpUjyS';
 export const IDX_URL = 'https://lifeinaustintx.com';
+export const TIDYCAL_URL = 'https://tidycal.com/williamzhang/buyer-consultation';
+export const TIDYCAL_PATH = 'williamzhang/buyer-consultation';
 export const PHONE = '(512) 766-3188';
 export const EMAIL = 'william@512austinhome.com';
 export const BROKERAGE = 'eXp Realty';
@@ -16,6 +18,9 @@ export const SAME_AS: string[] = [
 	YOUTUBE_URL,
 	YOUTUBE_ZH_URL,
 	GBP_URL,
+	'https://www.realtor.com/realestateagents/650b3ee1a490e661cd08238b',
+	'https://www.ratemyagent.com/real-estate-agent/william-zhang-b2ojcq/sales/overview',
+	'https://www.instagram.com/william.zhang_austin.realtor/',
 ];
 
 // Services offered — used by Service schema on homepage and service pages.
