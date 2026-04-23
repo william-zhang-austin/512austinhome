@@ -161,7 +161,7 @@ export const CITIES: CityData[] = [
 		schoolDistricts: ['Georgetown ISD', 'Liberty Hill ISD'],
 		nearbyEmployers: ['Samsung Taylor', 'Dell', 'Southwestern University'],
 		medianPriceRange: '$350K-$650K',
-		newConstructionPriceRange: '$310K-$750K',
+		newConstructionPriceRange: '$345K-$750K',
 		commuteToDowntown: '35-50 minutes',
 		description: 'Georgetown combines a historic downtown square with large-scale new construction communities. Two school districts serve the area — Georgetown ISD and the fast-improving Liberty Hill ISD. Samsung\'s Taylor facility has made Georgetown a hub for semiconductor jobs.',
 		sellDescription: 'Georgetown\'s market is driven by the Samsung Taylor semiconductor corridor, Sun City retirees, and families drawn to the historic downtown and improving schools. The city\'s character — a real town square, local restaurants, community events — differentiates it from generic suburban development.',
