@@ -1,5 +1,4 @@
 {
-  "trailingSlash": true,
   "redirects": [
     {
       "source": "/homes/listing/:path*",
@@ -12,14 +11,18 @@
       "permanent": true
     },
     {
+      "source": "/provision-error",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/provision-error/",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/",
-      "has": [{ "type": "query", "key": "p" }],
-      "destination": "/",
+      "source": "/feed",
+      "destination": "/rss.xml",
       "permanent": true
     },
     {
