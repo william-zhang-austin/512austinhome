@@ -1,0 +1,56 @@
+{
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/homes/listing/:path*",
+      "destination": "/buy/",
+      "permanent": true
+    },
+    {
+      "source": "/homes/:path*",
+      "destination": "/buy/",
+      "permanent": true
+    },
+    {
+      "source": "/provision-error/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "query", "key": "p" }],
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/feed/",
+      "destination": "/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap.xml",
+      "destination": "/sitemap-index.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap:path*",
+      "destination": "/sitemap-index.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-content/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-includes/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-json/:path*",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

@@ -22,7 +22,7 @@ const { community: c } = Astro.props;
 
 const title = `${c.name} by ${c.builder} — New Construction in ${c.city}, TX | 512 Austin Home`;
 const description = `${c.name} by ${c.builder} in ${c.city}, Texas. ${priceRangeLabel(c)}, ${c.sqftMin.toLocaleString()}–${c.sqftMax.toLocaleString()} sqft, ${c.schoolDistrict}. ${c.tagline}`;
-const canonical = `${SITE_URL}/new-construction/communities/${c.slug}`;
+const canonical = `${SITE_URL}/new-construction/communities/${c.slug}/`;
 
 const residenceSchema = {
 	"@context": "https://schema.org",
@@ -69,9 +69,9 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
-		{ name: 'New Construction', url: '/new-construction' },
-		{ name: 'Communities', url: '/new-construction/communities' },
-		{ name: c.name, url: `/new-construction/communities/${c.slug}` },
+		{ name: 'New Construction', url: '/new-construction/' },
+		{ name: 'Communities', url: '/new-construction/communities/' },
+		{ name: c.name, url: `/new-construction/communities/${c.slug}/` },
 	] }} />
 	<script is:inline type="application/ld+json" set:html={jsonLdString} />
 	{videoLdString && <script is:inline type="application/ld+json" set:html={videoLdString} />}

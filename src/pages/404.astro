@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PHONE } from '../consts';
+---
+
+<BaseLayout title="Page Not Found | 512 Austin Home" description="The page you're looking for has moved or no longer exists.">
+	<div class="max-w-2xl mx-auto px-5 sm:px-8 py-24 text-center">
+		<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-4">404</p>
+		<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">Page not found</h1>
+		<p class="text-text-muted text-lg mb-10">This page has moved or no longer exists. If you were looking for a specific listing, I've moved to a new site — use the links below to find what you need.</p>
+
+		<div class="grid sm:grid-cols-2 gap-4 max-w-md mx-auto mb-12">
+			<a href="/buy/" class="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
+				Search Homes
+			</a>
+			<a href="/new-construction/" class="flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border-2 border-accent rounded-lg hover:bg-white transition-all no-underline">
+				New Construction
+			</a>
+		</div>
+
+		<nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-text-muted mb-10">
+			<a href="/" class="hover:text-accent no-underline">Home</a>
+			<a href="/blog/" class="hover:text-accent no-underline">Blog</a>
+			<a href="/neighborhoods/" class="hover:text-accent no-underline">Neighborhoods</a>
+			<a href="/sell/" class="hover:text-accent no-underline">Sell</a>
+			<a href="/contact/" class="hover:text-accent no-underline">Contact</a>
+		</nav>
+
+		<p class="text-sm text-text-muted">
+			Need help? Call <a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent font-semibold no-underline hover:underline">{PHONE}</a>
+		</p>
+	</div>
+</BaseLayout>
