@@ -6,18 +6,18 @@ const isActive = (path: string) => pathname === path || pathname.startsWith(path
 
 // Primary nav — keep compact enough for desktop. New Construction is cross-linked from Buy and Footer.
 const navLinks = [
-	{ href: '/buy', label: 'Buy' },
-	{ href: '/sell', label: 'Sell' },
-	{ href: '/relocate', label: 'Relocate' },
-	{ href: '/neighborhoods', label: 'Neighborhoods' },
-	{ href: '/blog', label: 'Blog' },
-	{ href: '/about', label: 'About' },
+	{ href: '/buy/', label: 'Buy' },
+	{ href: '/sell/', label: 'Sell' },
+	{ href: '/relocate/', label: 'Relocate' },
+	{ href: '/neighborhoods/', label: 'Neighborhoods' },
+	{ href: '/blog/', label: 'Blog' },
+	{ href: '/about/', label: 'About' },
 ];
 
 // Mobile-only additional links
 const mobileExtraLinks = [
-	{ href: '/new-construction', label: 'New Construction' },
-	{ href: '/reviews', label: 'Reviews' },
+	{ href: '/new-construction/', label: 'New Construction' },
+	{ href: '/reviews/', label: 'Reviews' },
 ];
 ---
 
@@ -52,7 +52,7 @@ const mobileExtraLinks = [
 				Search Homes
 			</a>
 			<a
-				href="/contact"
+				href="/contact/"
 				class="ml-2 px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline"
 			>
 				Contact

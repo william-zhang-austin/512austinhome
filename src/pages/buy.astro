@@ -81,7 +81,7 @@ const faqs = [
 	<SchemaMarkup type="faq" data={{ questions: faqs }} />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
-		{ name: 'Buy a Home in Austin', url: '/buy' },
+		{ name: 'Buy a Home in Austin', url: '/buy/' },
 	] }} />
 
 	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
@@ -101,7 +101,7 @@ const faqs = [
 			<p>Before you start touring homes, get pre-approved for a mortgage. This tells you exactly what you can afford and shows sellers you're serious. I can connect you with trusted local lenders who know the Austin market.</p>
 
 			<h3>2. Define Your Priorities</h3>
-			<p>Austin is a big metro with very different neighborhoods. Do you want top-rated schools? A short commute downtown? Hill Country views? Walkability? Let's figure out what matters most so we're looking in the right places. See my <a href="/neighborhoods">Austin neighborhood guides</a> to start narrowing it down.</p>
+			<p>Austin is a big metro with very different neighborhoods. Do you want top-rated schools? A short commute downtown? Hill Country views? Walkability? Let's figure out what matters most so we're looking in the right places. See my <a href="/neighborhoods/">Austin neighborhood guides</a> to start narrowing it down.</p>
 
 			<h3>3. Tour Homes</h3>
 			<p>I'll set up your search on our <a href={IDX_URL} target="_blank" rel="noopener">home search portal</a> and schedule tours based on your criteria. I'll share honest feedback on each property — including things you might not notice on your own.</p>
@@ -118,15 +118,15 @@ const faqs = [
 
 		<!-- Buyer types -->
 		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
-			<a href="/relocate" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+			<a href="/relocate/" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
 				<h3 class="font-display text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors">Relocating to Austin</h3>
 				<p class="text-sm text-text-muted">Moving from out of state? I work with relocation buyers every week.</p>
 			</a>
-			<a href="/new-construction" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+			<a href="/new-construction/" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
 				<h3 class="font-display text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors">New Construction</h3>
 				<p class="text-sm text-text-muted">Builder representation at Lennar, DR Horton, Pulte, Perry Homes, and more — free to you.</p>
 			</a>
-			<a href="/neighborhoods" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
+			<a href="/neighborhoods/" class="card-hover bg-surface rounded-xl p-6 border border-border no-underline group">
 				<h3 class="font-display text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors">Neighborhood Guides</h3>
 				<p class="text-sm text-text-muted">Detailed breakdowns of Austin and the surrounding suburbs.</p>
 			</a>
