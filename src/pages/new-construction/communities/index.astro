@@ -7,9 +7,11 @@ import { PHONE } from '../../../consts';
 
 const pflugerville = communitiesByCity('Pflugerville');
 const leander = communitiesByCity('Leander');
+const manor = communitiesByCity('Manor');
+const cedarPark = communitiesByCity('Cedar Park');
 
-const title = 'New Construction Communities in Pflugerville & Leander, TX | 512 Austin Home';
-const description = 'Current new construction home communities in Pflugerville and Leander, Texas — prices, floor plans, builders, and an agent\'s honest take. Updated monthly.';
+const title = 'New Construction Communities in Austin, TX | 512 Austin Home';
+const description = 'Current new construction home communities across the Austin metro — Pflugerville, Leander, Manor, Cedar Park, and more. Prices, builders, and an agent\'s honest take.';
 ---
 
 <BaseLayout title={title} description={description}>
@@ -23,7 +25,7 @@ const description = 'Current new construction home communities in Pflugerville a
 	<div class="max-w-6xl mx-auto px-5 sm:px-8 py-16">
 		<header class="mb-12">
 			<p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">New Construction</p>
-			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">New Construction Communities in Pflugerville &amp; Leander</h1>
+			<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">New Construction Communities in Austin, TX</h1>
 			<p class="text-lg text-text-muted max-w-3xl">Current new build communities I tour and represent buyers at. Pricing, floor plans, and builder details below. Every listing includes my honest take — highlights and what to push back on. Register me as your agent before you visit a sales office and representation costs you nothing.</p>
 			<span class="accent-bar mt-6"></span>
 		</header>
@@ -99,6 +101,86 @@ const description = 'Current new construction home communities in Pflugerville a
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 				{leander.map((c) => (
+					<a href={`/new-construction/communities/${c.slug}`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
+						<div class="aspect-[16/9] overflow-hidden bg-warm-dark relative">
+							{c.heroImage ? (
+								<img src={c.heroImage} alt={`${c.name} by ${c.builder} — ${c.city}, TX`} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+							) : (
+								<div class="w-full h-full bg-gradient-to-br from-accent-light to-warm-dark flex items-center justify-center">
+									<span class="font-display text-xl font-bold text-accent">{c.name}</span>
+								</div>
+							)}
+							<div class="absolute top-3 left-3 bg-white/95 backdrop-blur text-primary text-xs font-semibold px-3 py-1.5 rounded-full">{c.builder}</div>
+						</div>
+						<div class="p-6 flex-1 flex flex-col">
+							<h3 class="font-display text-xl font-bold text-primary mb-1 group-hover:text-accent transition-colors">{c.name}</h3>
+							<p class="text-sm text-text-muted mb-3">{c.tagline}</p>
+							<div class="flex flex-wrap gap-2 mb-4">
+								<span class="text-xs bg-accent-light text-accent px-2.5 py-1 rounded-full font-semibold">{priceRangeLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{bedsLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{sqftRangeLabel(c)}</span>
+							</div>
+							<div class="flex items-center justify-between pt-4 border-t border-border mt-auto">
+								<p class="text-xs text-text-muted">{c.schoolDistrict}</p>
+								<span class="text-accent font-semibold text-sm">View details &rarr;</span>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<!-- Manor section -->
+		<section class="mb-16">
+			<div class="flex items-end justify-between mb-6">
+				<div>
+					<h2 class="font-display text-2xl sm:text-3xl font-bold text-primary">Manor</h2>
+					<p class="text-text-muted text-sm mt-1">East Austin metro — most affordable new construction, 15 min to Tesla.</p>
+				</div>
+				<a href="/new-construction/manor/" class="hidden sm:inline text-accent font-semibold text-sm no-underline hover:underline">Manor guide &rarr;</a>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				{manor.map((c) => (
+					<a href={`/new-construction/communities/${c.slug}`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
+						<div class="aspect-[16/9] overflow-hidden bg-warm-dark relative">
+							{c.heroImage ? (
+								<img src={c.heroImage} alt={`${c.name} by ${c.builder} — ${c.city}, TX`} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+							) : (
+								<div class="w-full h-full bg-gradient-to-br from-accent-light to-warm-dark flex items-center justify-center">
+									<span class="font-display text-xl font-bold text-accent">{c.name}</span>
+								</div>
+							)}
+							<div class="absolute top-3 left-3 bg-white/95 backdrop-blur text-primary text-xs font-semibold px-3 py-1.5 rounded-full">{c.builder}</div>
+						</div>
+						<div class="p-6 flex-1 flex flex-col">
+							<h3 class="font-display text-xl font-bold text-primary mb-1 group-hover:text-accent transition-colors">{c.name}</h3>
+							<p class="text-sm text-text-muted mb-3">{c.tagline}</p>
+							<div class="flex flex-wrap gap-2 mb-4">
+								<span class="text-xs bg-accent-light text-accent px-2.5 py-1 rounded-full font-semibold">{priceRangeLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{bedsLabel(c)}</span>
+								<span class="text-xs bg-warm-dark text-text-muted px-2.5 py-1 rounded-full">{sqftRangeLabel(c)}</span>
+							</div>
+							<div class="flex items-center justify-between pt-4 border-t border-border mt-auto">
+								<p class="text-xs text-text-muted">{c.schoolDistrict}</p>
+								<span class="text-accent font-semibold text-sm">View details &rarr;</span>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<!-- Cedar Park section -->
+		<section class="mb-16">
+			<div class="flex items-end justify-between mb-6">
+				<div>
+					<h2 class="font-display text-2xl sm:text-3xl font-bold text-primary">Cedar Park</h2>
+					<p class="text-text-muted text-sm mt-1">Established NW suburb — Leander ISD, 10-15 min to Apple campus, limited new inventory.</p>
+				</div>
+				<a href="/new-construction/cedar-park/" class="hidden sm:inline text-accent font-semibold text-sm no-underline hover:underline">Cedar Park guide &rarr;</a>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				{cedarPark.map((c) => (
 					<a href={`/new-construction/communities/${c.slug}`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
 						<div class="aspect-[16/9] overflow-hidden bg-warm-dark relative">
 							{c.heroImage ? (

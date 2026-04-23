@@ -293,6 +293,104 @@ export const CITIES: CityData[] = [
 			},
 		],
 	},
+	{
+		slug: 'manor',
+		name: 'Manor',
+		state: 'TX',
+		metro: 'Austin',
+		schoolDistricts: ['Manor ISD'],
+		nearbyEmployers: ['Tesla Gigafactory (15 min)', 'Samsung (20 min)', 'Dell (30 min)', 'Amazon (20 min)', 'Apple (35 min)'],
+		medianPriceRange: '$300K-$450K',
+		newConstructionPriceRange: '$260K-$600K',
+		commuteToDowntown: '25-45 minutes',
+		description: 'Manor is the most active new construction market in Travis County and one of the most affordable in the Austin metro. Five master-planned communities — Carillon, Lagos, ShadowGlen, Whisper Valley, and Mustang Valley — offer new homes from the $260s to $600K with multiple builders competing at each price point. Tesla Gigafactory is 15 minutes away, Samsung 20 minutes, and downtown Austin 25-45 minutes via US-290 or SH-130. Manor grew 185% over the last decade, making it one of the fastest-growing cities in the U.S. The trade-off is Manor ISD, which is below the state average in ratings.',
+		sellDescription: 'Manor resale homes compete directly with a large pipeline of new construction, which means pricing strategy is critical. Resale advantages include established landscaping, no MUD premium in older sections, and immediate occupancy. The long-term demand story is strong — Tesla, Samsung, and Amazon are driving job growth nearby, and Manor Crossing (H-E-B, Home Depot) has improved retail access. Sellers who price at or below new construction cost-per-sqft and offer concessions are moving homes.',
+		newConstructionFaqs: [
+			{
+				question: 'How much do new construction homes cost in Manor, TX?',
+				answer: 'Manor is one of the most affordable new construction markets in the Austin metro. Entry-level homes start around $260K-$300K from builders like KB Home and Terrata. Mid-range runs $350K-$500K at Carillon, Lagos, and ShadowGlen. The average new construction price is $353K-$374K, which is 15-25% below comparable suburbs like Pflugerville and Round Rock.',
+			},
+			{
+				question: 'Which builders are building new homes in Manor?',
+				answer: 'Manor has one of the deepest builder pools in the Austin metro. Major national builders include D.R. Horton, KB Home, Pulte Homes, M/I Homes, Meritage Homes, Tri Pointe, Ashton Woods, and Richmond American. Regional builders include Chesmar Homes, DRB Homes, Terrata Homes, GFO Home, and Pacesetter. Most are concentrated across five master-planned communities: Carillon, Lagos, ShadowGlen, Mustang Valley, and Whisper Valley.',
+			},
+			{
+				question: 'Is Manor ISD a good school district?',
+				answer: 'Manor ISD is below the state average in school ratings. Math proficiency is around 22% versus 44% statewide, and reading proficiency is 37% versus 51%. The district is expanding with the city growth. For buyers where school rankings are a top priority, Pflugerville ISD or Leander ISD communities are 15-20 minutes away. For buyers prioritizing affordability and proximity to Tesla or Samsung, Manor ISD is serviceable.',
+			},
+			{
+				question: 'Are there MUD taxes on Manor new construction?',
+				answer: 'Most Manor new construction communities are in MUDs, which push total property tax rates to 1.77-2.37% of assessed value. On a $400K home, that means $7,080-$9,480 per year. Always ask for the MUD disclosure and calculate your Year 2 tax estimate before signing.',
+			},
+			{
+				question: 'How far is Manor from Austin tech employers?',
+				answer: 'Manor is well-positioned for east-side tech workers. Tesla Gigafactory is about 15 minutes via SH-130. Samsung is 20 minutes. Amazon fulfillment centers are 20 minutes. Dell and Apple are 30-35 minutes. Downtown Austin is 25-45 minutes depending on traffic and route (US-290 free or SH-130 toll).',
+			},
+		],
+		sellFaqs: [
+			{
+				question: 'How much is my Manor home worth in 2026?',
+				answer: 'Manor home values typically range from $300K-$450K for single-family homes, with the median around $342K-$355K. Values have been steady but sellers face heavy competition from new construction incentives. I provide a free market analysis using current MLS comps specific to your address — not algorithm estimates.',
+			},
+			{
+				question: 'How do I compete with new construction when selling in Manor?',
+				answer: 'Manor has one of the largest new construction pipelines in the metro, which means resale sellers must price aggressively. Price at or below new construction cost-per-sqft, highlight what builders cannot offer — mature landscaping, no MUD taxes in established sections, immediate occupancy — and consider offering a rate buydown or closing cost credit. Homes averaging 101 days on market in 2026.',
+			},
+			{
+				question: 'Is now a good time to sell in Manor?',
+				answer: 'Manor is a buyer market in 2026 with homes averaging 101 days on market. But the long-term fundamentals are strong — Tesla, Samsung, Amazon nearby, 185% population growth over the last decade, and new retail like H-E-B and Home Depot. Sellers who price right and offer concessions are still closing. Overpriced listings sit.',
+			},
+		],
+	},
+	{
+		slug: 'cedar-park',
+		name: 'Cedar Park',
+		state: 'TX',
+		metro: 'Austin',
+		schoolDistricts: ['Leander ISD', 'Round Rock ISD'],
+		nearbyEmployers: ['Apple (10-15 min)', 'Dell (15 min)', 'The Domain tech corridor (15-20 min)', 'Firefly Aerospace (in-city)', 'NXP Semiconductors (10 min)'],
+		medianPriceRange: '$490K-$700K',
+		newConstructionPriceRange: '$370K-$1.4M+',
+		commuteToDowntown: '25-40 minutes',
+		description: 'Cedar Park is one of Austin\'s most established suburbs with top-rated Leander ISD schools, proximity to Apple\'s campus, and a rapidly developing commercial base. New construction is extremely limited because the city is largely built out — only three active communities as of 2026: Crestline at Brushy Creek (Toll Brothers luxury from $950K), Cross Creek (Brohn Homes from $400K), and Whitestone Preserve (Pulte townhomes from $370K, near sellout). The scarcity supports property values but limits buyer options.',
+		sellDescription: 'Cedar Park resale homes benefit from persistent demand driven by Leander ISD schools, Apple campus proximity, and the city\'s landlocked supply constraint. The median home price is around $490K-$515K, and while prices are down 8-10% from 2023 peaks, Cedar Park holds up better than outer suburbs. The CedarView mixed-use development, Scheels, and Nebraska Furniture Mart coming in 2026 are strengthening the city\'s commercial appeal.',
+		newConstructionFaqs: [
+			{
+				question: 'Is there new construction available in Cedar Park in 2026?',
+				answer: 'Yes, but options are very limited. Cedar Park is largely built out. Three active communities: Crestline at Brushy Creek (Toll Brothers, $950K-$1.4M+), Cross Creek (Brohn Homes, ~$400K), and Whitestone Preserve (Pulte townhomes, $370K-$390K, near sellout). Buyers who need more options should also look at Leander, which shares Leander ISD and has a much larger new construction pipeline.',
+			},
+			{
+				question: 'What school district serves Cedar Park new construction?',
+				answer: 'Most Cedar Park homes are zoned to Leander ISD, one of the top-rated districts in the Austin metro. One exception: Crestline at Brushy Creek (Toll Brothers) is zoned to Round Rock ISD despite the Cedar Park address. Always verify school zoning with the builder and district before purchasing.',
+			},
+			{
+				question: 'Why is Cedar Park new construction so limited?',
+				answer: 'Cedar Park is landlocked and largely built out. Available raw land for traditional subdivisions is scarce. Most of the remaining development parcels support either luxury product (Crestline) or infill communities on smaller lots. Buyers seeking entry-level or mid-market detached homes have more options in neighboring Leander.',
+			},
+			{
+				question: 'How does Cedar Park compare to Leander for new construction?',
+				answer: 'Cedar Park offers a more established, amenity-rich environment with shorter commutes to NW Austin employers. But Leander (5 minutes north, also Leander ISD) has a far larger new construction pipeline across all price points with more builder competition. Cedar Park wins on location and maturity. Leander wins on selection and price range.',
+			},
+			{
+				question: 'What is the commute from Cedar Park to Austin tech employers?',
+				answer: 'Cedar Park is one of the best-positioned suburbs for NW Austin tech workers. Apple campus is 10-15 minutes. The Domain tech corridor is 15-20 minutes. Dell Round Rock HQ is 15 minutes. Downtown Austin is 25-40 minutes via 183A Toll Road. The CapMetro Lakeline Station offers rail access to downtown.',
+			},
+		],
+		sellFaqs: [
+			{
+				question: 'How much is my Cedar Park home worth in 2026?',
+				answer: 'Cedar Park home values typically range from $490K-$700K depending on neighborhood, school zoning, and condition. The median is around $490K-$515K as of early 2026, down about 8-10% from 2023 peaks. Homes in top Leander ISD zones hold value better. I provide a free market analysis using current MLS comps for your address.',
+			},
+			{
+				question: 'How fast do homes sell in Cedar Park?',
+				answer: 'Cedar Park homes average about 49 days on market in 2026, up from 42 days a year ago. Well-priced homes in top school zones still move in 21-30 days. The sale-to-list ratio is about 97.5%, and about 14% of homes still sell above list price.',
+			},
+			{
+				question: 'What makes Cedar Park homes hold their value?',
+				answer: 'Three factors: Leander ISD schools (non-negotiable demand from families), proximity to Apple and the NW Austin tech corridor (keeps tech workers in the buyer pool), and Cedar Park\'s landlocked geography (limits new supply, preventing the inventory glut pressuring outer suburbs). The coming CedarView development with Scheels and Nebraska Furniture Mart is also strengthening demand.',
+			},
+		],
+	},
 ];
 
 export function findCity(slug: string) {
