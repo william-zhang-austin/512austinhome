@@ -986,15 +986,13 @@ export const COMMUNITIES: Community[] = [
 
 	// ---------- AUSTIN ----------
 	{
-		// TODO: confirm current numbers — Whisper Valley has had pricing and builder evolution; GFO Homes is the master developer/builder
-		// Del Valle ISD serves Whisper Valley; some portions may be Manor ISD — confirm at address level
 		slug: 'whisper-valley',
 		name: 'Whisper Valley',
-		builder: 'GFO Homes',
+		builder: 'GFO Home, Terrata Homes, Pacesetter Homes',
 		city: 'Austin',
 		cityUrl: '/neighborhoods/austin',
-		priceFrom: 320000,
-		priceTo: 520000,
+		priceFrom: 300000,
+		priceTo: 525000,
 		sqftMin: 1500,
 		sqftMax: 3200,
 		bedsMin: 3,
