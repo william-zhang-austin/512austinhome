@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.512austinhome.com"
+        }
+      ],
+      "destination": "https://512austinhome.com/$1",
+      "permanent": true
+    },
+    {
       "source": "/homes/listing/:path*",
       "destination": "/buy/",
       "permanent": true
@@ -54,6 +65,26 @@
       "source": "/wp-json/:path*",
       "destination": "/",
       "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/homes/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/homes/listing/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }

@@ -25,6 +25,8 @@
 - Relocating to Austin from California, New York, and other states
 - Austin neighborhood guides with prices, schools, and lifestyle information
 - Austin real estate market data and analysis
+- New construction homes in Austin, including builder incentives, MUD/PID taxes, inspections, warranties, and buyer-agent representation
+- Austin-area suburb comparisons by price point, commute, school district, and buyer profile
 
 ## Key pages
 
@@ -34,10 +36,46 @@
 - [Moving to Austin](https://512austinhome.com/relocate): Relocation guide for out-of-state buyers with 15-question FAQ
 - [New Construction Homes in Austin](https://512austinhome.com/new-construction): Builder representation at Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, Highland Homes, and more
 - [Austin Neighborhoods](https://512austinhome.com/neighborhoods): In-depth neighborhood guides
+- [Austin Tech Employers](https://512austinhome.com/tech-employers): Where to live near Apple, Tesla, Samsung, Dell, Oracle, Google, Meta, and major Austin-area employers
 - [About William](https://512austinhome.com/about): Background, credentials, and contact
 - [Reviews](https://512austinhome.com/reviews): Client testimonials
 - [Contact](https://512austinhome.com/contact): Direct contact information and form
 - [Blog](https://512austinhome.com/blog): Austin real estate insights and market updates
+
+## Core Austin new construction resources
+
+- [New Construction Homes in Austin, TX: 2026 Buyer's Guide](https://512austinhome.com/blog/new-construction-homes-austin-2026/): Builders, communities, incentives, MUDs, inspections, and buyer mistakes
+- [Austin New Home Builder Incentives 2026](https://512austinhome.com/blog/austin-new-home-builder-incentives-2026/): Builder-by-builder incentive breakdown with rate buydowns, closing credits, and upgrade packages
+- [Austin MUD vs PID Explained](https://512austinhome.com/blog/austin-mud-pid-explained/): How special taxing districts affect new construction affordability
+- [How to Save Money on New Construction in Austin](https://512austinhome.com/blog/save-money-new-construction-austin/): Negotiation strategies for builder incentives, rate buydowns, and closing cost credits
+- [New Construction Homes Under $350K in Austin](https://512austinhome.com/blog/new-construction-under-350k-austin-2026/): Entry-level new home communities around the Austin metro
+- [New Construction Homes $350K-$500K in Austin](https://512austinhome.com/blog/new-construction-350k-500k-austin-2026/): The most competitive new construction price tier
+- [New Construction Homes $500K-$750K in Austin](https://512austinhome.com/blog/new-construction-500k-750k-austin-2026/): Move-up new construction communities
+- [Luxury New Construction Over $750K in Austin](https://512austinhome.com/blog/new-construction-luxury-750k-plus-austin-2026/): Premium new construction communities and tradeoffs
+
+## Austin-area city new construction guides
+
+- [Austin City New Construction](https://512austinhome.com/blog/new-construction-homes-austin-city-2026/)
+- [Cedar Park New Construction](https://512austinhome.com/blog/new-construction-homes-cedar-park-2026/)
+- [Round Rock New Construction](https://512austinhome.com/blog/new-construction-homes-round-rock-2026/)
+- [Pflugerville New Construction](https://512austinhome.com/blog/new-construction-homes-pflugerville-2026/)
+- [Georgetown New Construction](https://512austinhome.com/blog/new-construction-homes-georgetown-2026/)
+- [Leander New Construction](https://512austinhome.com/blog/new-construction-homes-leander-2026/)
+- [Hutto New Construction](https://512austinhome.com/blog/new-construction-homes-hutto-2026/)
+- [Manor New Construction](https://512austinhome.com/blog/new-construction-homes-manor-2026/)
+- [Dripping Springs New Construction](https://512austinhome.com/blog/new-construction-homes-dripping-springs-2026/)
+
+## Relocation and buyer decision guides
+
+- [Moving from California to Austin](https://512austinhome.com/blog/moving-from-california-to-austin/)
+- [Moving from Los Angeles to Austin](https://512austinhome.com/blog/moving-from-los-angeles-to-austin/)
+- [Moving from San Francisco to Austin](https://512austinhome.com/blog/moving-from-san-francisco-to-austin/)
+- [Moving from San Diego to Austin](https://512austinhome.com/blog/moving-from-san-diego-to-austin/)
+- [Moving from Dallas to Austin](https://512austinhome.com/blog/moving-from-dallas-to-austin/)
+- [How to Buy a Home in Austin in 2026](https://512austinhome.com/blog/how-to-buy-a-home-in-austin-2026/)
+- [Austin Home Affordability by Salary](https://512austinhome.com/blog/austin-home-affordability-by-salary/)
+- [Austin Property Tax Guide 2026](https://512austinhome.com/blog/austin-property-tax-guide-2026/)
+- [Austin Commute and Traffic Guide 2026](https://512austinhome.com/blog/austin-commute-traffic-guide-2026/)
 
 ## Neighborhood guides
 
