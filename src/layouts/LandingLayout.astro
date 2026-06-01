@@ -20,6 +20,14 @@ const telHref = `tel:${PHONE.replace(/[^0-9+]/g, '')}`;
 		<BaseHead title={title} description={description} image={image} canonical={canonical} />
 		<!-- Paid-ad landing page: keep out of organic index, no link equity passed -->
 		<meta name="robots" content="noindex, nofollow" />
+		<!-- OpenAI / ChatGPT Ads conversion pixel -->
+		<script is:inline>
+			!function(w, d, s, u) {if (w.oaiq) return;var q = function() {q.q.push(arguments);};q.q = [];w.oaiq = q;var j = d.createElement(s);j.async = 1;j.src = u;var f = d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j, f);}(window, document, "script", "https://bzrcdn.openai.com/sdk/oaiq.min.js");
+			oaiq("init", {
+				pixelId: "EY8b8YChhnw4y7bA3e3e8h",
+				debug: false
+			});
+		</script>
 	</head>
 	<body class="min-h-screen flex flex-col">
 		<!-- Slim header: brand + tap-to-call only. No nav, no exit links. -->

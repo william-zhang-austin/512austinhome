@@ -70,6 +70,45 @@ const faqs = [
 					<a href={telHref} class="text-accent no-underline hover:underline font-semibold">Call {PHONE}</a>
 				</p>
 			</div>
+
+			<!--
+				ChatGPT Ads conversion hook.
+				The Real Geeks valuation widget is a CROSS-ORIGIN iframe, and on submit it
+				redirects the whole top window to lifeinaustintx.com to finish. We can't see
+				clicks inside the iframe, and firing on the other domain would lose the ChatGPT
+				ad-click attribution (separate cookie). So we fire the conversion HERE, on exit,
+				but ONLY if the visitor actually engaged the widget — detected via the iframe
+				stealing focus. This counts "valuation submitted" (engaged + redirected), not the
+				final Real Geeks lead; reconcile true closed leads in Follow Up Boss.
+			-->
+			<script is:inline>
+				(function () {
+					var engaged = false, fired = false;
+					function inWidget(el) {
+						return el && el.tagName === "IFRAME" && el.closest && el.closest(".rg-valuation-root");
+					}
+					// Clicking into the cross-origin valuation iframe blurs the parent window
+					// and makes the iframe the active element — our proxy for "engaged".
+					window.addEventListener("blur", function () {
+						setTimeout(function () { if (inWidget(document.activeElement)) engaged = true; }, 0);
+					});
+					function fire(reason) {
+						if (fired || !engaged) return;
+						fired = true;
+						try {
+							window.oaiq && window.oaiq("measure", "lead_created", {
+								type: "customer_action",
+								amount: 0,
+								currency: "USD"
+							});
+							console.debug("[oaiq] lead_created fired via:", reason);
+						} catch (e) { /* never block the redirect */ }
+					}
+					// Submit redirects the top window away → fire on exit (keepalive carries it).
+					window.addEventListener("pagehide", function () { fire("pagehide"); });
+					window.addEventListener("beforeunload", function () { fire("beforeunload"); });
+				})();
+			</script>
 		</header>
 
 		<!-- TRUST STRIP -->
@@ -175,5 +214,34 @@ const faqs = [
 			heading="Prefer a Personal Valuation?"
 			subheading="Tell me your address and timeline. I'll send back a market snapshot with real comparable sales for your neighborhood — no obligation."
 		/>
+
+		<!--
+			ChatGPT Ads conversion hook for the Tally form (the second lead path).
+			Tally posts a "Tally.FormSubmitted" message to the parent on submit (same page,
+			no redirect), so we fire lead_created directly. Separate once-guard from the
+			valuation-widget hook so each path can convert independently.
+		-->
+		<script is:inline>
+			(function () {
+				var fired = false;
+				window.addEventListener("message", function (e) {
+					if (typeof e.data !== "string" || e.data.indexOf("Tally.FormSubmitted") === -1) return;
+					var msg;
+					try { msg = JSON.parse(e.data); } catch (err) { return; }
+					if (!msg || msg.event !== "Tally.FormSubmitted") return;
+					if (msg.payload && msg.payload.formId && msg.payload.formId !== "KYkWyM") return;
+					if (fired) return;
+					fired = true;
+					try {
+						window.oaiq && window.oaiq("measure", "lead_created", {
+							type: "customer_action",
+							amount: 0,
+							currency: "USD"
+						});
+						console.debug("[oaiq] lead_created fired via: tally form");
+					} catch (err) { /* never block the form */ }
+				});
+			})();
+		</script>
 	</div>
 </LandingLayout>
