@@ -10,7 +10,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://512austinhome.com',
   trailingSlash: 'always',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // Exclude paid-ad landing pages (noindex) from the sitemap
+    sitemap({ filter: (page) => !page.includes('/home-value') }),
+  ],
 
   vite: {
     plugins: [tailwindcss()],

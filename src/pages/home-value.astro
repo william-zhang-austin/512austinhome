@@ -1,0 +1,179 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { PHONE, YOUTUBE_URL, GBP_URL, BROKERAGE, TREC_LICENSE } from '../consts';
+
+const telHref = `tel:${PHONE.replace(/[^0-9+]/g, '')}`;
+
+const faqs = [
+	{
+		question: "How accurate is an online home valuation?",
+		answer: "An instant online valuation is a great starting point — it uses recent sales data to estimate your home's value in seconds. But algorithms can't see your renovations, your view, your lot, or your home's condition. That's why I follow up every instant estimate with a free, human valuation (a CMA) based on real comparable sales in your immediate neighborhood. The two together give you a realistic price range.",
+	},
+	{
+		question: "Is the home valuation really free?",
+		answer: "Yes. The instant estimate above is free and there's no obligation. If you'd like a more precise number, I'll prepare a full comparative market analysis for your specific address at no cost and with no pressure to list. Most sellers I work with start exactly this way.",
+	},
+	{
+		question: "How much is my Austin home worth in 2026?",
+		answer: "It depends on your location, condition, size, recent upgrades, and current comparable sales in your immediate area. The Austin market in 2026 is more balanced than the 2021–2022 peak — well-priced homes still sell, but pricing accuracy matters more than ever. Enter your address above for an instant estimate, and I'll refine it with current MLS comps for your street.",
+	},
+	{
+		question: "Do I have to list my home to get a valuation?",
+		answer: "No. The valuation is just information. Plenty of homeowners get a valuation simply to understand their equity, plan a future move, or decide whether now is the right time. There's no listing agreement and no commitment — just the numbers and honest advice.",
+	},
+	{
+		question: "What's the difference between this and a Zillow Zestimate?",
+		answer: "The instant estimate uses live MLS-sourced data, which tends to be more current and local than national portals. More importantly, I personally review your address and adjust for the things algorithms miss — finishes, floor plan, location within the neighborhood, and what's actually selling right now. You get a data estimate plus a local agent's read, not just a number.",
+	},
+];
+---
+
+<LandingLayout
+	title="What's My Austin Home Worth? — Free Instant Home Valuation | 512 Austin Home"
+	description="Get a free, instant home valuation for your Austin, TX home. Enter your address for a current value estimate, then a no-obligation expert valuation from local agent William Zhang. Call (512) 766-3188."
+	canonical="https://512austinhome.com/home-value/"
+>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
+
+		<!-- HERO + VALUATION WIDGET (above the fold) -->
+		<header class="mb-10">
+			<p class="tag-pill mb-4">Free Austin Home Valuation</p>
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">
+				What's Your Austin Home Worth?
+			</h1>
+			<p class="text-lg sm:text-xl text-text-muted max-w-2xl mb-6">
+				Enter your address for an instant, data-driven estimate — then get a free, no-obligation valuation from a local Austin agent who knows your street.
+			</p>
+
+			<!-- Real Geeks valuation widget -->
+			<div class="bg-surface border border-border rounded-2xl p-5 sm:p-7 shadow-sm">
+				<div
+					class="rg-valuation-root"
+					data-domain="lifeinaustintx.realgeeks.com"
+					data-background_color="#FFFFFF"
+					data-button_background_color="#00D20F"
+				></div>
+				<script type="text/javascript" is:inline>
+					(function() {
+						var rg = document.createElement('script'); rg.type = 'text/javascript'; rg.async = true;
+						rg.src = 'https://widgets.realgeeks.com/static/js/valuation_v4.min.js';
+						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rg, s);
+					})();
+				</script>
+				<p class="text-xs text-text-muted mt-4 text-center">
+					100% free &middot; No obligation &middot; Takes 30 seconds. Prefer to talk?
+					<a href={telHref} class="text-accent no-underline hover:underline font-semibold">Call {PHONE}</a>
+				</p>
+			</div>
+		</header>
+
+		<!-- TRUST STRIP -->
+		<div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border mb-16">
+			<div class="bg-surface p-5 text-center">
+				<div class="font-display text-2xl font-bold text-primary">5.0&#9733;</div>
+				<p class="text-xs text-text-muted mt-1"><a href={GBP_URL} target="_blank" rel="noopener" class="no-underline hover:text-accent">Google rating</a></p>
+			</div>
+			<div class="bg-surface p-5 text-center">
+				<div class="font-display text-2xl font-bold text-primary">Local</div>
+				<p class="text-xs text-text-muted mt-1">Austin-based agent</p>
+			</div>
+			<div class="bg-surface p-5 text-center">
+				<div class="font-display text-2xl font-bold text-primary">MLS</div>
+				<p class="text-xs text-text-muted mt-1">Live comps, not guesses</p>
+			</div>
+			<div class="bg-surface p-5 text-center">
+				<div class="font-display text-2xl font-bold text-primary">{BROKERAGE}</div>
+				<p class="text-xs text-text-muted mt-1">TREC #{TREC_LICENSE}</p>
+			</div>
+		</div>
+
+		<!-- MORE THAN AN ALGORITHM -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">More Than an Algorithm</h2>
+			<p class="text-text-muted mb-6 max-w-2xl">An instant estimate is a great start. A real price comes from someone who actually knows your neighborhood.</p>
+			<div class="grid sm:grid-cols-3 gap-4">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-2">Instant Estimate</h3>
+					<p class="text-sm text-text-muted">Get a current value range in seconds from live MLS-sourced sales data — no waiting, no phone call required.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-2">Local Expert Review</h3>
+					<p class="text-sm text-text-muted">I refine the estimate with real comparable sales on your street and adjust for the upgrades, lot, and condition algorithms can't see.</p>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-2">Honest Advice</h3>
+					<p class="text-sm text-text-muted">No pressure to list. Whether you're selling now or just curious about your equity, you'll get a straight answer and a clear price range.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- HOW IT WORKS -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">How It Works</h2>
+			<div class="space-y-6">
+				<div class="flex gap-4">
+					<div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">1</div>
+					<div>
+						<h3 class="font-display font-bold text-primary mb-1">Enter Your Address</h3>
+						<p class="text-sm text-text-muted">Type your address into the box above. You'll get an instant value estimate based on current data for your area.</p>
+					</div>
+				</div>
+				<div class="flex gap-4">
+					<div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">2</div>
+					<div>
+						<h3 class="font-display font-bold text-primary mb-1">Get Your Instant Estimate</h3>
+						<p class="text-sm text-text-muted">See a current value range in seconds. Optionally, share where to send a more detailed analysis.</p>
+					</div>
+				</div>
+				<div class="flex gap-4">
+					<div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">3</div>
+					<div>
+						<h3 class="font-display font-bold text-primary mb-1">Optional: Free Expert Valuation</h3>
+						<p class="text-sm text-text-muted">If you want a precise number, I'll pull real comps for your address and walk you through a no-obligation valuation. 15 minutes, no pressure.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- MEET WILLIAM -->
+		<section class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-16 border-l-4 border-accent">
+			<h2 class="font-display text-xl font-bold text-primary mb-2">Who's Behind the Valuation</h2>
+			<p class="text-text-muted text-sm mb-3">
+				I'm William Zhang, a local Austin real estate agent with {BROKERAGE} (TREC&nbsp;#{TREC_LICENSE}). I price homes using current MLS data — not gut feel — and I'm honest about what your home is actually worth in today's market. I also run a
+				<a href={YOUTUBE_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">YouTube channel</a>
+				covering the Austin market, which is how a lot of out-of-state buyers find Austin before they ever arrive.
+			</p>
+			<a href={telHref} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
+				Call {PHONE}
+			</a>
+		</section>
+
+		<!-- FAQ -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Home Valuation Questions</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<!-- SECONDARY CAPTURE -->
+		<ContactForm
+			formId="KYkWyM"
+			heading="Prefer a Personal Valuation?"
+			subheading="Tell me your address and timeline. I'll send back a market snapshot with real comparable sales for your neighborhood — no obligation."
+		/>
+	</div>
+</LandingLayout>
