@@ -19,8 +19,25 @@ const communities = COMMUNITIES.filter(
 	(c) => c.city === city.name || (city.slug === 'austin' && c.city === 'Austin') || (city.slug === 'dripping-springs' && c.city === 'Dripping Springs')
 ).sort((a, b) => a.priceFrom - b.priceFrom);
 
-const title = `New Construction Homes in ${city.name}, TX — Save $5,000+ | 512 Austin Home`;
-const description = `New construction homes in ${city.name}, Texas from ${city.newConstructionPriceRange}. Save at least $5,000 when you buy with buyer's agent William Zhang. Free representation at every major builder. Call (512) 766-3188.`;
+// Builders are derived from the community data rather than hand-listed, so the
+// page can never claim a builder we do not actually have a community for.
+const builders = [...new Set(communities.map((c) => c.builder))].sort();
+
+// A city that has been written up to the reference standard renders the full
+// page. One that has not yet falls back to the previous layout.
+const isReferencePage = Boolean(city.shortAnswer && city.caseFor && city.caseAgainst && city.agentWatchesFor);
+
+const title = isReferencePage
+	? `New Construction Homes in ${city.name}, TX | Builders, Schools, Taxes | 512 Austin Home`
+	: `New Construction Homes in ${city.name}, TX — Save $5,000+ | 512 Austin Home`;
+
+const description = isReferencePage
+	? `New construction in ${city.name}, TX: the builders and communities here, school districts, MUD and PID taxes, commute times, honest tradeoffs, and buyer representation paid by the builder.`
+	: `New construction homes in ${city.name}, Texas from ${city.newConstructionPriceRange}. Save at least $5,000 when you buy with buyer's agent William Zhang. Free representation at every major builder. Call (512) 766-3188.`;
+
+const updatedLabel = city.contentUpdated
+	? new Date(`${city.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
+	: null;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -31,79 +48,72 @@ const description = `New construction homes in ${city.name}, Texas from ${city.n
 		{ name: 'New Construction', url: '/new-construction/' },
 		{ name: `${city.name} New Construction`, url: `/new-construction/${city.slug}/` },
 	] }} />
+	<SchemaMarkup type="city" data={{
+		name: city.name,
+		county: city.county,
+		description: city.shortAnswer || city.description,
+		schoolDistricts: city.schoolDistricts,
+		url: `/new-construction/${city.slug}/`,
+	}} />
 
 	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
 
-		<!-- ABOVE THE FOLD: H1 + CTA -->
-		<header class="mb-6">
+		<header class="mb-8">
 			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">New Construction Homes in {city.name}, TX</h1>
-			<p class="text-lg sm:text-xl text-text-muted max-w-2xl mb-8">Save at least $5,000 on your new build in {city.name}. I negotiate builder incentives, rate buydowns, and upgrade credits at every major builder — and representation is free to you.</p>
-
-			<div class="flex flex-col sm:flex-row gap-4 mb-4">
-				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-4 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
-					Get Your $5K+ Savings — Book a Call
-				</a>
-				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-4 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all no-underline">
-					Call {PHONE}
-				</a>
-			</div>
-			<p class="text-sm text-text-muted">15-minute call. I'll share current builder incentives for {city.name} before we talk.</p>
+			{city.location && <p class="text-sm uppercase tracking-widest text-text-muted mb-4">{city.location}{city.county ? ` · ${city.county}` : ''}</p>}
 		</header>
 
-		<!-- SOCIAL PROOF -->
-		<div class="bg-surface border border-border rounded-xl p-6 mb-12">
-			<div class="flex items-center gap-3 mb-4">
-				<div class="flex text-amber-400 text-lg" aria-label="5 out of 5 stars">
-					<span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-				</div>
-				<span class="text-sm text-text-muted">5.0 rating &middot; <a href={GBP_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">Google Reviews</a></span>
-			</div>
-			<blockquote class="text-sm text-text-muted italic leading-relaxed">
-				"William has rich experience in finding good houses in Austin, TX. He also generously helped me negotiate and approach good deals."
-			</blockquote>
-			<p class="text-xs text-text-muted mt-2">— Curtis Hsu, Leander TX</p>
-		</div>
+		{/* THE SHORT ANSWER — the citable block. Must stay first and stay factual. */}
+		{city.shortAnswer && (
+			<section class="mb-12">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+				<p class="text-lg text-primary leading-relaxed">{city.shortAnswer}</p>
+			</section>
+		)}
 
-		<!-- $100K+ SAVED IN 2026 -->
-		<div class="bg-surface border border-border rounded-xl p-6 mb-12">
-			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">2026 Results</p>
-			<p class="text-primary font-display text-2xl font-bold mb-2">$100,000+ saved for my buyers in 2026 — and counting.</p>
-			<p class="text-sm text-text-muted">Through rate buydowns, closing cost credits, and price negotiations across every major builder in the Austin metro. Each buyer saves $5,000-$30,000+ depending on the builder, community, and how much inventory they need to move.</p>
-		</div>
+		{/* THE FACTS */}
+		{isReferencePage && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">{city.name} new construction, by the numbers</h2>
+				<dl class="divide-y divide-border border-y border-border">
+					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+						<dt class="text-sm uppercase tracking-wider text-text-muted">County</dt>
+						<dd class="sm:col-span-2 text-primary">{city.county}</dd>
+					</div>
+					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+						<dt class="text-sm uppercase tracking-wider text-text-muted">School districts</dt>
+						<dd class="sm:col-span-2 text-primary">{city.schoolDistricts.join(', ')}</dd>
+					</div>
+					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+						<dt class="text-sm uppercase tracking-wider text-text-muted">New construction price range</dt>
+						<dd class="sm:col-span-2 text-primary">{city.newConstructionPriceRange}</dd>
+					</div>
+					{city.commuteNotes && (
+						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+							<dt class="text-sm uppercase tracking-wider text-text-muted">Commute</dt>
+							<dd class="sm:col-span-2 text-primary leading-relaxed">{city.commuteNotes}</dd>
+						</div>
+					)}
+					{city.taxNotes && (
+						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+							<dt class="text-sm uppercase tracking-wider text-text-muted">MUD and PID taxes</dt>
+							<dd class="sm:col-span-2 text-primary leading-relaxed">{city.taxNotes}</dd>
+						</div>
+					)}
+					{city.nearbyEmployers.length > 0 && (
+						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+							<dt class="text-sm uppercase tracking-wider text-text-muted">Major employers nearby</dt>
+							<dd class="sm:col-span-2 text-primary">{city.nearbyEmployers.join(', ')}</dd>
+						</div>
+					)}
+				</dl>
+			</section>
+		)}
 
-		<!-- HOW I SAVE YOU MONEY -->
-		<section class="mb-16">
-			<h2 class="font-display text-2xl font-bold text-primary mb-6">How I Save You $5,000+ on {city.name} New Construction</h2>
-			<div class="grid sm:grid-cols-2 gap-4">
-				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Past Sales Data You Can't Access</h3>
-					<p class="text-sm text-text-muted">I run comps using MLS data that only licensed agents can see — actual past sale prices, not the list prices builders advertise. You'll know exactly what other buyers paid in the same community, so you never overpay.</p>
-				</div>
-				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Stacked Builder Incentives</h3>
-					<p class="text-sm text-text-muted">Builders offer rate buydowns, closing cost credits, and design center allowances — but they don't volunteer everything. I know what each {city.name} builder is currently offering and how to combine incentives that most buyers never hear about.</p>
-				</div>
-				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Negotiation That Works</h3>
-					<p class="text-sm text-text-muted">I negotiate with these builders every week. I know what they'll say yes to, when to push, and which incentive packages have the highest likelihood of getting approved — because I've done it before at the same community.</p>
-				</div>
-				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Free to You</h3>
-					<p class="text-sm text-text-muted">Builders pay the buyer-agent commission from their marketing budget. My representation costs you nothing — and typically saves you thousands. But you must register me before your first visit to a sales office.</p>
-				</div>
-			</div>
-		</section>
-
-		<!-- REGISTER WARNING -->
-		<div class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-16 border-l-4 border-accent">
-			<h2 class="font-display text-xl font-bold text-primary mb-2">Register Me Before Your First Builder Visit</h2>
-			<p class="text-text-muted text-sm leading-relaxed">If you walk into a {city.name} builder's sales office alone and sign anything — even a guest book — you may lose the ability to bring in a buyer's agent at that community. Text me the builder and community name before you go. Registration takes 60 seconds and protects your right to representation.</p>
-		</div>
-
-		<!-- COMMUNITIES LIST -->
+		{/* COMMUNITIES */}
 		{communities.length > 0 && (
 			<section class="mb-16">
-				<h2 class="font-display text-2xl font-bold text-primary mb-6">New Construction Communities in {city.name}</h2>
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">New construction communities in {city.name}</h2>
 				<div class="space-y-4">
 					{communities.map((c) => (
 						<a href={`/new-construction/communities/${c.slug}/`} class="block bg-surface border border-border rounded-xl p-6 no-underline hover:border-accent transition-colors group">
@@ -119,44 +129,112 @@ const description = `New construction homes in ${city.name}, Texas from ${city.n
 			</section>
 		)}
 
-		<!-- CITY CONTEXT -->
-		<section class="prose mb-16">
-			<h2>About {city.name} New Construction</h2>
-			<p>{city.description}</p>
+		{/* BUILDERS */}
+		{isReferencePage && builders.length > 0 && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">Builders active in {city.name}</h2>
+				<p class="text-text-muted text-sm mb-4">Builders with communities on this page. Each one prices, negotiates, and handles upgrades differently, and the incentive packages are rarely the same two months running.</p>
+				<ul class="flex flex-wrap gap-2 list-none pl-0">
+					{builders.map((b) => (
+						<li class="text-sm text-primary bg-surface border border-border rounded-lg px-3 py-2">{b}</li>
+					))}
+				</ul>
+			</section>
+		)}
 
-			<div class="not-prose grid sm:grid-cols-3 gap-4 my-6">
-				<div class="bg-surface border border-border rounded-xl p-4 text-center">
-					<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Price Range</p>
-					<p class="text-lg font-bold text-primary">{city.newConstructionPriceRange}</p>
+		{/* THE CASE FOR AND AGAINST — the section that makes the page citable rather than promotional */}
+		{city.caseFor && city.caseAgainst && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl font-bold text-primary mb-2">The case for and against {city.name}</h2>
+				<p class="text-text-muted text-sm mb-6">No suburb is right for everyone. Here is how I would frame it for a client.</p>
+				<div class="grid sm:grid-cols-2 gap-6">
+					<div class="bg-surface border border-border rounded-xl p-6">
+						<h3 class="font-display text-base font-bold text-primary mb-4">The case for</h3>
+						<ul class="space-y-3 list-none pl-0">
+							{city.caseFor.map((item) => (
+								<li class="text-sm text-text-muted leading-relaxed">{item}</li>
+							))}
+						</ul>
+					</div>
+					<div class="bg-surface border border-border rounded-xl p-6">
+						<h3 class="font-display text-base font-bold text-primary mb-4">The case against</h3>
+						<ul class="space-y-3 list-none pl-0">
+							{city.caseAgainst.map((item) => (
+								<li class="text-sm text-text-muted leading-relaxed">{item}</li>
+							))}
+						</ul>
+					</div>
 				</div>
-				<div class="bg-surface border border-border rounded-xl p-4 text-center">
-					<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Schools</p>
-					<p class="text-lg font-bold text-primary">{city.schoolDistricts.join(', ')}</p>
-				</div>
-				<div class="bg-surface border border-border rounded-xl p-4 text-center">
-					<p class="text-xs uppercase tracking-wider text-text-muted mb-1">To Downtown</p>
-					<p class="text-lg font-bold text-primary">{city.commuteToDowntown}</p>
-				</div>
-			</div>
-		</section>
+			</section>
+		)}
 
-		<!-- MID-PAGE CTA -->
-		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-16 text-center text-white">
-			<h2 class="font-display text-2xl font-bold mb-3">Save $5,000+ on Your {city.name} New Build</h2>
-			<p class="text-white/70 mb-6 max-w-lg mx-auto">Book a 15-minute call. I'll share current builder incentives for {city.name} and register you before your first visit.</p>
-			<div class="flex flex-col sm:flex-row gap-4 justify-center">
-				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all no-underline">
-					Book Your Free Consultation
-				</a>
-				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-all no-underline">
-					Call {PHONE}
-				</a>
-			</div>
-		</div>
+		{/* WHAT A BUYER'S AGENT WATCHES FOR — the E-E-A-T moat */}
+		{city.agentWatchesFor && (
+			<section class="mb-16">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">What a buyer's agent watches for in {city.name}</h2>
+				<ul class="space-y-4 list-none pl-0">
+					{city.agentWatchesFor.map((item) => (
+						<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">{item}</li>
+					))}
+				</ul>
+				<p class="text-sm text-text-muted mt-6 leading-relaxed">On new construction the builder pays my fee in most cases, disclosed in writing before you tour, so all of this is on your side of the table. Register me before your first model visit — walking into a sales office alone and signing the guest book can cost you the right to representation at that community.</p>
+			</section>
+		)}
 
-		<!-- FAQ -->
+		{/* LEGACY SALES LAYOUT — retained for cities not yet written up to the reference standard */}
+		{!isReferencePage && (
+			<>
+				<div class="bg-surface border border-border rounded-xl p-6 mb-12">
+					<div class="flex items-center gap-3 mb-4">
+						<div class="flex text-amber-400 text-lg" aria-label="5 out of 5 stars">
+							<span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+						</div>
+						<span class="text-sm text-text-muted">5.0 rating &middot; <a href={GBP_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">Google Reviews</a></span>
+					</div>
+					<blockquote class="text-sm text-text-muted italic leading-relaxed">
+						"William has rich experience in finding good houses in Austin, TX. He also generously helped me negotiate and approach good deals."
+					</blockquote>
+					<p class="text-xs text-text-muted mt-2">— Curtis Hsu, Leander TX</p>
+				</div>
+
+				<section class="mb-16">
+					<h2 class="font-display text-2xl font-bold text-primary mb-6">How I Save You $5,000+ on {city.name} New Construction</h2>
+					<div class="grid sm:grid-cols-2 gap-4">
+						<div class="bg-surface border border-border rounded-xl p-6">
+							<h3 class="font-display text-base font-bold text-primary mb-2">Past Sales Data You Can't Access</h3>
+							<p class="text-sm text-text-muted">I run comps using MLS data that only licensed agents can see — actual past sale prices, not the list prices builders advertise. You'll know exactly what other buyers paid in the same community, so you never overpay.</p>
+						</div>
+						<div class="bg-surface border border-border rounded-xl p-6">
+							<h3 class="font-display text-base font-bold text-primary mb-2">Stacked Builder Incentives</h3>
+							<p class="text-sm text-text-muted">Builders offer rate buydowns, closing cost credits, and design center allowances — but they don't volunteer everything. I know what each {city.name} builder is currently offering and how to combine incentives that most buyers never hear about.</p>
+						</div>
+						<div class="bg-surface border border-border rounded-xl p-6">
+							<h3 class="font-display text-base font-bold text-primary mb-2">Negotiation That Works</h3>
+							<p class="text-sm text-text-muted">I negotiate with these builders every week. I know what they'll say yes to, when to push, and which incentive packages have the highest likelihood of getting approved — because I've done it before at the same community.</p>
+						</div>
+						<div class="bg-surface border border-border rounded-xl p-6">
+							<h3 class="font-display text-base font-bold text-primary mb-2">Free to You</h3>
+							<p class="text-sm text-text-muted">Builders pay the buyer-agent commission from their marketing budget. My representation costs you nothing — and typically saves you thousands. But you must register me before your first visit to a sales office.</p>
+						</div>
+					</div>
+				</section>
+
+				<div class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-16 border-l-4 border-accent">
+					<h2 class="font-display text-xl font-bold text-primary mb-2">Register Me Before Your First Builder Visit</h2>
+					<p class="text-text-muted text-sm leading-relaxed">If you walk into a {city.name} builder's sales office alone and sign anything — even a guest book — you may lose the ability to bring in a buyer's agent at that community. Text me the builder and community name before you go. Registration takes 60 seconds and protects your right to representation.</p>
+				</div>
+
+				<section class="prose mb-16">
+					<h2>About {city.name} New Construction</h2>
+					<p>{city.description}</p>
+				</section>
+			</>
+		)}
+
+		{/* FAQ */}
 		<section class="mb-16">
-			<h2 class="font-display text-2xl font-bold text-primary mb-8">{city.name} New Construction FAQ</h2>
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">{city.name} new construction, answered</h2>
 			<div class="space-y-4">
 				{city.newConstructionFaqs.map((f, i) => (
 					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
@@ -170,15 +248,56 @@ const description = `New construction homes in ${city.name}, Texas from ${city.n
 			</div>
 		</section>
 
-		<!-- TIDYCAL -->
+		{/* KEEP EXPLORING — internal links are what earn the crawl on this domain */}
+		{isReferencePage && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+				<div class="grid sm:grid-cols-2 gap-4">
+					<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">All Austin new construction</span>
+						<span class="text-sm text-text-muted">Every city and community I cover.</span>
+					</a>
+					<a href="/new-construction/communities/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">Community guides</span>
+						<span class="text-sm text-text-muted">Builders, schools, taxes and HOA by community.</span>
+					</a>
+					<a href={`/sell/${city.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">Selling in {city.name}</span>
+						<span class="text-sm text-text-muted">What your home is worth and how to compete with the builders.</span>
+					</a>
+					<a href="/blog/austin-mud-pid-explained/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">MUD and PID taxes explained</span>
+						<span class="text-sm text-text-muted">How special districts change what you actually pay.</span>
+					</a>
+				</div>
+			</section>
+		)}
+
+		{/* CTA — last, not first */}
+		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-10 text-center text-white">
+			<h2 class="font-display text-2xl font-bold mb-3">Thinking about {city.name}?</h2>
+			<p class="text-white/70 mb-6 max-w-lg mx-auto">Book a 15-minute call. I'll go through current builder incentives for {city.name} and register you before your first visit, at no cost to you.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all no-underline">
+					Book a call
+				</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-all no-underline">
+					Call {PHONE}
+				</a>
+			</div>
+		</div>
+
 		<div id="schedule" class="mb-10 scroll-mt-20">
 			<TidyCalEmbed
-				heading={`Book a ${city.name} New Construction Consultation`}
+				heading={`Book a ${city.name} new construction consultation`}
 				subheading={`Pick a time that works. I'll share current builder incentives for ${city.name} communities and register you as a client before your first visit — at no cost to you.`}
 			/>
 		</div>
 
-		<!-- CONTACT FORM -->
 		<ContactForm heading={`Questions about ${city.name} new construction?`} subheading={`Tell me your budget and what you're looking for. I'll send you a shortlist of ${city.name} communities with current pricing and incentives.`} />
+
+		{updatedLabel && (
+			<p class="text-xs text-text-muted text-center mt-10">Reviewed and updated {updatedLabel}. Prices, incentives and tax rates change frequently — confirm current numbers before making decisions.</p>
+		)}
 	</div>
 </BaseLayout>

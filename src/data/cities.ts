@@ -15,6 +15,36 @@ export interface CityData {
 	sellDescription: string;
 	newConstructionFaqs: { question: string; answer: string }[];
 	sellFaqs: { question: string; answer: string }[];
+
+	// ---- Reference-page fields (Phase 1 of the GEO plan) ----
+	// All optional so a city that has not been written up yet still builds and
+	// simply renders fewer sections. Fill these in to bring a city up to standard.
+
+	/** County (or counties) the city sits in. Emitted as AdministrativeArea schema. */
+	county?: string;
+	/**
+	 * The citable block. 60-90 words, factual, self-contained, no sales language.
+	 * Rendered directly under the H1. This is the unit an LLM lifts, so it has to
+	 * answer the head query on its own without the rest of the page.
+	 */
+	shortAnswer?: string;
+	/** Direction and distance from downtown Austin, in plain words. */
+	location?: string;
+	/** MUD / PID / effective tax-rate reality. Named plainly, not softened. */
+	taxNotes?: string;
+	/** Commute detail beyond the headline number: routes, tolls, known disruption. */
+	commuteNotes?: string;
+	/** The honest case. 5 items. */
+	caseFor?: string[];
+	/** The honest case against. 5 items. Must be real, or the page is an ad. */
+	caseAgainst?: string[];
+	/**
+	 * Practitioner advice only someone who works this market could write.
+	 * This is the E-E-A-T moat and the hardest section for a competitor to copy.
+	 */
+	agentWatchesFor?: string[];
+	/** ISO date of the last substantive content review. Rendered visibly. */
+	contentUpdated?: string;
 }
 
 export const CITIES: CityData[] = [
@@ -163,6 +193,34 @@ export const CITIES: CityData[] = [
 		medianPriceRange: '$350K-$650K',
 		newConstructionPriceRange: '$345K-$750K',
 		commuteToDowntown: '35-50 minutes',
+		county: 'Williamson County',
+		location: 'North of Austin along I-35',
+		contentUpdated: '2026-09-23',
+		shortAnswer: 'Georgetown is a fast-growing city in Williamson County, about 30 miles north of downtown Austin along I-35, and one of the largest new-construction markets in the metro. Buyers choose mainly between master-planned communities like Wolf Ranch, Parkside on the River, and Morningstar, with new homes generally running from the low $300s to over $750,000 as of 2026. Two districts serve the area, Georgetown ISD and Liberty Hill ISD, and most new communities carry MUD or PID taxes on top of the county rate.',
+		taxNotes: 'Most new-construction communities in and around Georgetown sit inside a Municipal Utility District or Public Improvement District. These add roughly 0.5 to 1.0 percent to the property tax rate and can push the effective rate above 2.5 percent in newer sections. MUD rates fall over time as the district pays down its infrastructure debt, but the first years are the highest. The rate varies by community and by phase within the same community.',
+		commuteNotes: 'Downtown Austin is roughly 30 miles south, about 35 to 45 minutes off-peak and 45 to 75 minutes in weekday rush hour on I-35. Most Georgetown buyers do not commute downtown. They work the north tech corridor, which makes the real commute 20 to 35 minutes. Toll 130 is the common bypass when I-35 is bad, and the multi-year I-35 Capital Express construction through central Austin is expected to affect the corridor for several more years.',
+		caseFor: [
+			'One of the widest selections of master-planned communities and builders in the metro, so there is real choice on price point, floor plan, and lot type.',
+			'A genuine historic downtown square with restaurants, festivals, and San Gabriel River parks and trails, rather than retail strips.',
+			'Generally lower price per square foot than comparable new homes closer to central Austin.',
+			'Two school districts to choose between, including Liberty Hill ISD, which has been one of the fastest-improving districts in the region.',
+			'Proximity to the Samsung Taylor semiconductor corridor and the north Austin tech employers, which supports steady resale demand.',
+		],
+		caseAgainst: [
+			'It is genuinely far north. The commute to downtown Austin is long and getting longer, and I-35 construction will not help for years.',
+			'Most new communities carry MUD or PID taxes that push the effective tax rate above 2.5 percent in the early years.',
+			'Rapid growth brings road congestion, ongoing construction next to occupied homes, and school crowding in some zones.',
+			'Newer sections have little mature tree cover, which means full summer heat exposure and higher cooling bills than an established neighborhood.',
+			'Heavy builder incentives can mask softening resale values, so the premium paid for a new home may not fully hold at resale.',
+		],
+		agentWatchesFor: [
+			'Get the combined MUD and PID rate for the exact section in writing. Georgetown rates vary widely between Wolf Ranch, Parkside on the River, and Parmer Ranch, and between phases inside the same community.',
+			'Budget from the finished improved value plus the special district, not the low first-year bill on an unimproved Williamson County lot. That first bill is the single most common budgeting mistake here.',
+			'Confirm the ISD for the specific address, not the city. Georgetown-area and ETJ lots can land in Liberty Hill, Leander, Jarrell, or Round Rock ISD rather than Georgetown ISD.',
+			'Register your agent before the first model visit. On-site agents at Sun City and Wolf Ranch work for the builder, and buydowns and lot premiums are negotiable.',
+			'In the fast-selling north Georgetown phases, weigh lot premiums and design-center minimums, which can add tens of thousands over the advertised base price.',
+			'Ask where your phase sits in the buildout. Far-north Georgetown sections can border active construction for years after you move in.',
+		],
 		description: 'Georgetown combines a historic downtown square with large-scale new construction communities. Two school districts serve the area — Georgetown ISD and the fast-improving Liberty Hill ISD. Samsung\'s Taylor facility has made Georgetown a hub for semiconductor jobs.',
 		sellDescription: 'Georgetown\'s market is driven by the Samsung Taylor semiconductor corridor, Sun City retirees, and families drawn to the historic downtown and improving schools. The city\'s character — a real town square, local restaurants, community events — differentiates it from generic suburban development.',
 		newConstructionFaqs: [

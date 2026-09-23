@@ -8,15 +8,6 @@ interface Props {
 }
 
 const hasReviews = REVIEWS.length > 0;
-const aggregateRating = hasReviews
-	? {
-		"@type": "AggregateRating",
-		"ratingValue": (REVIEWS.reduce((sum, r) => sum + r.rating, 0) / REVIEWS.length).toFixed(2),
-		"reviewCount": REVIEWS.length,
-		"bestRating": 5,
-		"worstRating": 1,
-	}
-	: null;
 
 const reviewSchemas = REVIEWS.map((r) => ({
 	"@type": "Review",
@@ -108,8 +99,9 @@ const agentSchema = {
 	},
 	"knowsLanguage": ["English", "Mandarin Chinese"],
 	"sameAs": SAME_AS,
-	...(aggregateRating && { "aggregateRating": aggregateRating }),
-	...(hasReviews && { "review": reviewSchemas }),
+	// NOTE: aggregateRating / review deliberately NOT emitted here. Self-serving review
+	// markup on non-review pages is a manual-action risk and Google discounts it.
+	// Real reviews are emitted as standalone Review entities on /reviews/ only (type='reviews').
 };
 
 const localBusinessSchema = {
@@ -237,6 +229,44 @@ function buildBreadcrumbSchema(d: Record<string, any>) {
 	};
 }
 
+/**
+ * City entity for the new-construction and sell city pages.
+ *
+ * Entity markup, not conversion markup: the city, the county it sits in, and
+ * each school district as its own GovernmentOrganization. This is what lets a
+ * model resolve "Georgetown ISD" to a real thing rather than a string on a page.
+ */
+function buildCitySchema(d: Record<string, any>) {
+	const districts: string[] = d.schoolDistricts || [];
+	return {
+		"@context": "https://schema.org",
+		"@type": "City",
+		"name": d.name,
+		"description": d.description,
+		...(d.url && { "url": d.url.startsWith('http') ? d.url : `${SITE_URL}${d.url}` }),
+		"address": {
+			"@type": "PostalAddress",
+			"addressLocality": d.name,
+			"addressRegion": "TX",
+			"addressCountry": "US",
+		},
+		...(d.county && {
+			"containedInPlace": {
+				"@type": "AdministrativeArea",
+				"name": d.county,
+				"containedInPlace": { "@type": "State", "name": "Texas" },
+			},
+		}),
+		...(districts.length && {
+			"containsPlace": districts.map((name) => ({
+				"@type": "GovernmentOrganization",
+				"name": name,
+				"areaServed": { "@type": "City", "name": d.name },
+			})),
+		}),
+	};
+}
+
 function buildNeighborhoodSchema(d: Record<string, any>) {
 	return {
 		"@context": "https://schema.org",
@@ -259,7 +289,8 @@ if (type === 'agent') {
 	schemas.push(JSON.stringify(agentSchema));
 	schemas.push(JSON.stringify(localBusinessSchema));
 	schemas.push(JSON.stringify(websiteSchema));
-	for (const s of serviceSchemas) schemas.push(JSON.stringify(s));
+	// Service entities are emitted only on pages that declare type='service',
+	// not on every page carrying the agent block.
 }
 if (type === 'website') {
 	schemas.push(JSON.stringify(websiteSchema));
@@ -281,6 +312,9 @@ if (type === 'article') {
 }
 if (type === 'faq') {
 	schemas.push(JSON.stringify(buildFaqSchema(data)));
+}
+if (type === 'city') {
+	schemas.push(JSON.stringify(buildCitySchema(data)));
 }
 if (type === 'neighborhood') {
 	schemas.push(JSON.stringify(buildNeighborhoodSchema(data)));
