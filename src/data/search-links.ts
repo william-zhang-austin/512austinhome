@@ -50,10 +50,10 @@ export const CITY_LINKS: Record<string, SearchLink> = {
 };
 
 export const BUILDER_LINKS: Record<string, SearchLink> = {
-	'lennar':              { nhb: '', nhbSearch: 'Builder: Lennar · Austin metro', label: 'See available Lennar homes' },
-	'meritage-homes':      { nhb: '', nhbSearch: 'Builder: Meritage Homes · Austin metro', label: 'See available Meritage homes' },
-	'taylor-morrison':     { nhb: '', nhbSearch: 'Builder: Taylor Morrison · Austin metro', label: 'See available Taylor Morrison homes' },
-	'pulte-homes':         { nhb: '', nhbSearch: 'Builder: Pulte Homes · Austin metro', label: 'See available Pulte homes' },
+	'lennar':              { nhb: 'https://a.nhb.app/saved-search/051057c8-6922-43ee-b91e-190ae5198c58', nhbSearch: 'Lennar, Austin — Builder: Lennar · Travis/Williamson/Hays/Bastrop/Caldwell counties', label: 'See available Lennar homes' },
+	'meritage-homes':      { nhb: 'https://a.nhb.app/saved-search/ed0fb64c-951e-4166-87ec-061ddcfd7ead', nhbSearch: 'Meritage, Austin — Builder: Meritage Homes · Travis/Williamson/Hays/Bastrop/Caldwell counties', label: 'See available Meritage homes' },
+	'taylor-morrison':     { nhb: '', nhbSearch: 'Builder: Taylor Morrison · Austin metro (not in NHB builder list as of 2026-09-23)', label: 'See available Taylor Morrison homes' },
+	'pulte-homes':         { nhb: '', nhbSearch: 'Builder: Pulte Homes · Austin metro (not in NHB builder list as of 2026-09-23)', label: 'See available Pulte homes' },
 	'dr-horton':           { nhb: '', nhbSearch: 'Builder: D.R. Horton · Austin metro', label: 'See available D.R. Horton homes' },
 	'coventry-homes':      { nhb: '', nhbSearch: 'Builder: Coventry Homes · Austin metro', label: 'See available Coventry homes' },
 	'highland-homes':      { nhb: '', nhbSearch: 'Builder: Highland Homes · Austin metro', label: 'See available Highland homes' },
@@ -69,13 +69,13 @@ export const BUILDER_LINKS: Record<string, SearchLink> = {
 };
 
 export const TOPIC_LINKS: Record<string, SearchLink> = {
-	'quick-move-in':    { nhb: '', nhbSearch: 'Build status: Move-in ready · Austin metro', label: 'See move-in ready homes' },
-	'price-reductions': { nhb: '', nhbSearch: 'Austin metro · sorted by recent price drop', label: 'See recently reduced homes' },
-	'rate-buydowns':    { nhb: '', nhbSearch: 'Austin metro · builders currently offering rate incentives (Lennar, Pulte to start)', label: 'See homes with rate incentives' },
-	'incentives':       { nhb: '', nhbSearch: 'Austin metro · homes with an advertised incentive', label: 'See homes with incentives' },
-	'best-time-to-buy': { nhb: '', nhbSearch: 'Build status: Move-in ready · closes this quarter', label: 'See homes that can close this quarter' },
-	'luxury':           { nhb: '', nhbSearch: 'Austin metro · Price $750K+ · New construction', label: 'See luxury new construction' },
-	'best-schools':     { nhb: '', nhbSearch: 'Austin metro · Leander ISD, Round Rock ISD, Eanes ISD, Lake Travis ISD, Dripping Springs ISD', label: 'See new homes in top school districts' },
+	'quick-move-in':    { nhb: 'https://a.nhb.app/saved-search/b519ac0d-6a79-4094-8b33-0445e48c63d7', nhbSearch: 'Move-in ready, Austin — Build status: Inventory · Travis/Williamson/Hays/Bastrop/Caldwell counties', label: 'See quick move-in homes' },
+	'price-reductions': { nhb: '', nhbSearch: 'Austin metro · sorted by recent price drop (NHB has no price-reduced filter or sort as of 2026-09-23)', label: 'See recently reduced homes' },
+	'rate-buydowns':    { nhb: 'https://a.nhb.app/saved-search/59e1b362-3ee9-4a4f-92be-76124aa55a50', nhbSearch: 'Rate incentives, Austin — Interest rate up to 5.5% · Travis/Williamson/Hays/Bastrop/Caldwell counties', label: 'See homes with rate incentives' },
+	'incentives':       { nhb: 'https://a.nhb.app/saved-search/925406c7-fdc3-4346-8765-6441453f0303', nhbSearch: 'Incentives, Austin — Builder paid closing costs $1+ · Travis/Williamson/Hays/Bastrop/Caldwell counties', label: 'See homes with incentives' },
+	'best-time-to-buy': { nhb: 'https://a.nhb.app/saved-search/b519ac0d-6a79-4094-8b33-0445e48c63d7', nhbSearch: 'Reuses Move-in ready, Austin (quick-move-in)', label: 'See quick move-in homes' },
+	'luxury':           { nhb: 'https://a.nhb.app/saved-search/b0cd5481-2ff3-417d-ae37-4ea19c646738', nhbSearch: 'Luxury new construction — Price $750K+ · Travis/Williamson/Hays/Bastrop/Caldwell counties', label: 'See luxury new construction' },
+	'best-schools':     { nhb: 'https://a.nhb.app/saved-search/78efa686-e7e9-41d0-9166-683bed87e363', nhbSearch: 'Top school districts — School system: Leander, Round Rock, Dripping Springs, Liberty Hill, Georgetown ISD', label: 'See new homes in top school districts' },
 };
 
 /** Resolve a link through its fallbacks. Always returns something usable. */
