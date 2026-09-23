@@ -48,7 +48,7 @@ export const DEAL_PAGES: DealPage[] = [
 		howToSpot: [
 			'Ask the sales office which completed homes have been standing longest. They will usually tell you, and that list is the whole conversation.',
 			'Ask what the home has already been reduced by and when. A home reduced twice is under more pressure than one reduced once.',
-			'Ask whether a broker bonus is posted on it. Builders put these on inventory they want gone, and it can often be redirected to you as a closing cost contribution.',
+			'Ask what the builder is prepared to add on this specific home beyond the advertised program. The posted offer applies to everyone; what sits on top of it for one address is where the negotiation is.',
 			'Compare the all-in monthly payment against a to-be-built of the same plan. The concession is frequently worth more than the finishes you would have picked.',
 		],
 		watchFor: [

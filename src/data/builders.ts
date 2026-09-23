@@ -65,12 +65,12 @@ export const BUILDERS: Builder[] = [
 		],
 		negotiating: [
 			'Negotiate the incentive package, not the price. On a completed spec that has been standing, the closing-cost credit and the buydown are where the movement is.',
-			'Ask what the broker bonus is on the specific home. Builders post these on inventory they want gone, and it is information you are entitled to know about because it can be redirected.',
+			'Ask which completed homes have been standing longest and what each has already been reduced by. Builders will usually tell you, and aged inventory is where the movement is.',
 			'Quarter end and month end are genuinely different from mid-month. Lennar manages to closing counts.',
 			'Get the buydown quoted as a permanent rate on the specific loan product, not as "up to" language in a flyer.',
 			'Register your agent before the first visit. Lennar\'s on-site agents work for Lennar.',
 		],
-		incentiveStyle: 'Large rate buydowns and closing-cost credits, conditioned on Lennar Mortgage and Lennar Title. Occasional broker bonuses on standing inventory. Rarely a base-price cut.',
+		incentiveStyle: 'Large rate buydowns and closing-cost credits, conditioned on Lennar Mortgage and Lennar Title. Periodic price reductions on standing inventory. Rarely a base-price cut on a to-be-built.',
 		incentiveTypes: ['rate-buydown', 'closing-cost-credit', 'broker-bonus'],
 		faqs: [
 			{

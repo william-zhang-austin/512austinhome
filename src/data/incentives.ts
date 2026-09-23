@@ -41,7 +41,7 @@ export const INCENTIVE_TYPES: IncentiveType[] = [
 	{
 		slug: 'price-reduction',
 		name: 'Price reduction',
-		what: 'A straight cut to the purchase price. The rarest of the four, because it is the one that shows up in the public record.',
+		what: 'A straight cut to the purchase price. The rarest of these, because it is the one that shows up in the public record.',
 		worth: 'It lowers your loan, your monthly payment, and your property tax basis, and it is the only incentive that keeps working after you refinance. Per dollar it is the cleanest thing you can get.',
 		catch: 'Builders resist it hardest, and for a reason that matters to you too: a recorded price cut becomes a comparable sale for every other home in the community, including yours when you sell. Builders protect the price and pay you in other ways to avoid that. This is genuinely a case where the builder\'s interest and yours partly align.',
 		typical: 'Mostly seen on standing inventory that has aged past a few months, and near quarter or year end.',
@@ -53,14 +53,6 @@ export const INCENTIVE_TYPES: IncentiveType[] = [
 		worth: 'Worth full value only if you were going to spend it anyway. Builder design-center pricing carries a substantial margin, so a $10,000 allowance does not buy $10,000 of work at contractor prices — it buys whatever the builder charges $10,000 for. Structural items are the exception and are worth taking here, because they cannot be added later at any sensible price.',
 		catch: 'It is spend-or-lose, it can only be used at their studio, and it tends to encourage spending past the allowance. Some builders offer a design-center minimum and an allowance in the same breath, which is not the same as a discount.',
 		typical: 'The default concession from move-up and semi-custom builders who will not move on price.',
-	},
-	{
-		slug: 'broker-bonus',
-		name: 'Broker bonus',
-		what: 'An additional payment the builder offers the buyer\'s agent on a specific home, usually one they want moved. It is advertised to agents, not to buyers.',
-		worth: 'Potentially a great deal to you, because it can often be redirected to you as a closing-cost concession. But only if you know it exists and ask.',
-		catch: 'You will not be told unless you ask. Watch the closing disclosure: a broker bonus and a buyer-side concession can appear on the same statement in a way that cancels out, leaving the total compensation line unchanged. If the numbers do not add up, ask what changed and when.',
-		typical: 'Posted on aged standing inventory, often a flat four-figure amount.',
 	},
 	{
 		slug: 'extended-rate-lock',
@@ -79,7 +71,7 @@ export const INCENTIVE_FAQS = [
 	},
 	{
 		question: 'Can I negotiate builder incentives, or are they fixed?',
-		answer: 'The advertised package is usually fixed, because it is a marketing program. What is negotiable is what sits on top of it for a specific home: an additional closing-cost contribution, a broker bonus redirected to you, a lot premium reduced, a design allowance added. That is a conversation about one address, not about the community, and it usually happens with the sales manager rather than the agent in the model home.',
+		answer: 'The advertised package is usually fixed, because it is a marketing program. What is negotiable is what sits on top of it for a specific home: an additional closing-cost contribution, a lot premium reduced, a design allowance added. That is a conversation about one address, not about the community, and it usually happens with the sales manager rather than the agent in the model home.',
 	},
 	{
 		question: 'Do I lose the incentive if I use my own lender?',

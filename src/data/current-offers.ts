@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The date the whole sheet was last reviewed. Shown on every incentives page. */
-export const OFFERS_AS_OF = '';
+export const OFFERS_AS_OF = '2026-09-23';
 
 export interface CurrentOffer {
 	/** Must match a slug in BUILDERS. */
@@ -36,12 +36,39 @@ export interface CurrentOffer {
 }
 
 /**
- * Currently empty. Nothing is published here that has not been confirmed, and
- * an empty sheet is the honest state until William supplies the current one.
- * The pages render a "contact me for this week's offer" state when a builder
- * has no row, which is the conversion path anyway.
+ * Sourced 2026-09-23 from builder emails sent directly to William's agent
+ * address. Only buyer-facing terms are recorded.
+ *
+ * DELIBERATELY EXCLUDED, AND DO NOT ADD THEM: agent commission rates, BTSA
+ * (bonus to selling agent), realtor bonuses and co-op splits. Several of the
+ * source emails led with those; they are compensation between the builder and
+ * the brokerage, they are not a buyer benefit, and they do not belong on a
+ * public page.
  */
-export const CURRENT_OFFERS: CurrentOffer[] = [];
+export const CURRENT_OFFERS: CurrentOffer[] = [
+	{
+		builderSlug: 'lennar',
+		headline: 'Up to $40,000 in price reductions on select homes closing before the end of October.',
+		detail: 'Applies to selected move-in ready inventory across Central Texas rather than to every home. Lennar also quotes FHA fixed rates as low as 4.25 percent in select communities and an FHA ARM as low as 3.375 percent, both through Lennar Mortgage. Lennar states that offers and seller contributions may require using their designated lender or closing agent and are subject to change or substitution without notice.',
+		source: 'Email from a Lennar Austin Division new home consultant',
+		verifiedOn: '2026-09-22',
+	},
+	{
+		builderSlug: 'pulte-homes',
+		headline: 'Rates as low as 3.99 percent (5.362 percent APR) on a 7/6 ARM, fixed for the first seven years.',
+		detail: 'Through Pulte Mortgage. Their published example assumes a 780 FICO, a primary residence and 20 percent down, with all incentives applied toward closing costs; the rate adjusts every six months from year eight. Pulte states the rate was effective 9/17/2026, that loans must be locked and closed by 12/31/2026, and that it is offered first come first served. An ARM is not the right product for everyone — ask me to price it against a fixed rate before you decide.',
+		source: 'Pulte Homes Central Texas email',
+		verifiedOn: '2026-09-18',
+	},
+	{
+		builderSlug: 'taylor-morrison',
+		headline: 'Semi-Annual Sale, running two weeks only.',
+		detail: 'Taylor Morrison runs this event twice a year and the savings vary by community and by home, with no single published figure. Separately they have released new pricing from the low $300s at Village Grove in Dripping Springs and at Sunfield in Buda. Ask me what it actually amounts to on a specific home.',
+		communities: ['Village Grove, Dripping Springs', 'Sunfield, Buda'],
+		source: 'Taylor Morrison Austin emails',
+		verifiedOn: '2026-09-19',
+	},
+];
 
 export function offersForBuilder(builderSlug: string) {
 	return CURRENT_OFFERS.filter((o) => o.builderSlug === builderSlug);

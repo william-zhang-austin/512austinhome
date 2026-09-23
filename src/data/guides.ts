@@ -356,7 +356,7 @@ GUIDES.push(
 		slug: 'how-to-negotiate-with-an-austin-builder',
 		title: 'How to Negotiate With an Austin Builder',
 		subtitle: 'What actually moves, what never does, and when to ask',
-		shortAnswer: 'Builders rarely move on the base price, because a recorded price cut lowers the comparable sales for every unsold home in the community. What moves is the package: rate buydowns, closing cost contributions, design center allowances, lot premiums and broker bonuses on a specific home. The leverage comes from timing and from the individual house, not from the community, and it is strongest on a completed home that has been standing near a quarter or year end.',
+		shortAnswer: 'Builders rarely move on the base price, because a recorded price cut lowers the comparable sales for every unsold home in the community. What moves is the package: rate buydowns, closing cost contributions, design center allowances and lot premiums on a specific home. The leverage comes from timing and from the individual house, not from the community, and it is strongest on a completed home that has been standing near a quarter or year end.',
 		sections: [
 			{
 				heading: 'Negotiate the package, not the price',
@@ -379,7 +379,7 @@ GUIDES.push(
 				],
 				list: [
 					'Ask which completed homes have been standing longest. Sales offices will generally tell you, and that list is where the concessions live.',
-					'Ask whether there is a broker bonus on the specific home. Builders post these on inventory they want gone and it can often be redirected to you as a closing cost contribution, but only if you know to ask.',
+					'Ask what the builder can add on this specific home beyond the advertised program. The posted offer applies to everyone; what sits on top of it for one address is the actual negotiation.',
 					'Ask for the lot premium separately, and what the same plan costs on an interior lot.',
 					'Ask whether the buydown is permanent or temporary. They are advertised in nearly the same words and are worth very different amounts.',
 					'Ask for a design center allowance rather than a price cut if you are buying a to-be-built. It is the concession builders approve most readily.',
@@ -418,10 +418,6 @@ GUIDES.push(
 			{
 				question: 'When is the best time to buy a new construction home in Austin?',
 				answer: 'Near the end of a quarter, and near the end of the calendar year most of all, because builders manage to closing counts. The second-best signal is any completed home that has been standing unsold for several months, since carrying cost is what funds a concession. If your move-in timing has any flexibility, that flexibility is the cheapest negotiating leverage available to you.',
-			},
-			{
-				question: 'What is a broker bonus and can I get it?',
-				answer: 'It is an additional payment a builder offers the buyer\'s agent on a specific home they want moved, advertised to agents rather than to buyers. It can frequently be redirected to you as a closing cost contribution, but you have to know it exists to ask. Have your agent ask whether one is posted on the specific home you are considering.',
 			},
 		],
 		related: [
@@ -526,7 +522,7 @@ GUIDES.push(
 				body: [],
 				list: [
 					'Knowing which homes have been standing longest and what the builder has already reduced, which changes what is realistic to ask for.',
-					'Asking whether a broker bonus exists on the specific home and whether it can be redirected to you, which you would not know to ask.',
+					'Knowing what each builder has been willing to do recently on a comparable home, which is not published anywhere and is the difference between a reasonable ask and a wasted one.',
 					'Pricing the builder\'s tied loan against an outside lender on all-in cost rather than the advertised rate.',
 					'Getting the effective tax rate for the specific phase, including any MUD or PID, before you set your budget.',
 					'Being at the inspection and the orientation walkthrough, and making sure everything you want addressed is documented rather than mentioned.',
