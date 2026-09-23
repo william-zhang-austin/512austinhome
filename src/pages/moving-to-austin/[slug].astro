@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
+import { PHONE } from '../../consts';
+import { EMPLOYERS } from '../../data/employers';
+import { RELOCATION_WATCH_LIST, RELOCATION_FAQS } from '../../data/relocation';
+
+export async function getStaticPaths() {
+	return EMPLOYERS.map((employer) => ({
+		params: { slug: employer.slug },
+		props: { employer },
+	}));
+}
+
+const { employer } = Astro.props;
+
+const cheapest = [...employer.areas].sort((a, b) => {
+	const num = (s: string) => parseInt((s.match(/\$(\d+)K/) || [])[1] || '9999', 10);
+	return num(a.price) - num(b.price);
+})[0];
+
+const shortest = [...employer.areas].sort((a, b) => {
+	const num = (s: string) => parseInt((s.match(/(\d+)/) || [])[1] || '999', 10);
+	return num(a.commute) - num(b.commute);
+})[0];
+
+const faqs = [
+	{
+		question: `Where do ${employer.name} employees live in Austin?`,
+		answer: `${employer.areas.map((a) => a.name.replace(/\s*\(.*\)/, '')).join(', ')}. ${employer.intro}`,
+	},
+	{
+		question: `What is the shortest commute to ${employer.name} in Austin?`,
+		answer: `${shortest.name.replace(/\s*\(.*\)/, '')} at ${shortest.commute}. ${shortest.notes}`,
+	},
+	{
+		question: `Where is the best value near ${employer.name}?`,
+		answer: `${cheapest.name.replace(/\s*\(.*\)/, '')} at ${cheapest.price}, zoned to ${cheapest.schools}. ${cheapest.notes}`,
+	},
+	...RELOCATION_FAQS,
+];
+
+const title = `Where to Live Near ${employer.name} Austin | Commutes, Prices, Schools | 512 Austin Home`;
+const description = `Where ${employer.name} employees live in Austin: ${employer.areas.map((a) => a.name.replace(/\s*\(.*\)/, '')).slice(0, 4).join(', ')} — with commute times, price ranges, school districts, and what to watch for if you are relocating.`;
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Moving to Austin', url: '/tech-employers/' },
+		{ name: employer.name, url: `/moving-to-austin/${employer.slug}/` },
+	] }} />
+	<SchemaMarkup type="organization" data={{
+		name: employer.name,
+		description: `${employer.name} in Austin, Texas. ${employer.location}. ${employer.scale}.`,
+		areaServed: 'Austin',
+	}} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Where to Live Near {employer.name} in Austin</h1>
+			<p class="text-sm uppercase tracking-widest text-text-muted">{employer.location}{employer.scale ? ` · ${employer.scale}` : ''}</p>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">{employer.intro}</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">The neighborhoods that actually work for this commute</h2>
+			<div class="space-y-4">
+				{employer.areas.map((a) => (
+					<div class="bg-surface border border-border rounded-xl p-6">
+						<h3 class="font-display text-lg font-bold text-primary mb-4">{a.name}</h3>
+						<dl class="grid sm:grid-cols-3 gap-4 mb-4">
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">Commute</dt>
+								<dd class="text-sm text-primary font-semibold">{a.commute}</dd>
+							</div>
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">Price range</dt>
+								<dd class="text-sm text-primary font-semibold">{a.price}</dd>
+							</div>
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">Schools</dt>
+								<dd class="text-sm text-primary font-semibold">{a.schools}</dd>
+							</div>
+						</dl>
+						<p class="text-sm text-text-muted leading-relaxed">{a.notes}</p>
+					</div>
+				))}
+			</div>
+			<div class="grid sm:grid-cols-2 gap-4 mt-6">
+				<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5">
+					<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Shortest commute</p>
+					<p class="text-primary font-semibold">{shortest.name.replace(/\s*\(.*\)/, '')} — {shortest.commute}</p>
+				</div>
+				<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5">
+					<p class="text-xs uppercase tracking-wider text-text-muted mb-1">Best value</p>
+					<p class="text-primary font-semibold">{cheapest.name.replace(/\s*\(.*\)/, '')} — {cheapest.price}</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">What I watch for with relocating buyers</h2>
+			<p class="text-text-muted text-sm mb-6">Most of my clients are relocating, a large share of them from California, Taiwan and mainland China. These are the things that actually go wrong, rather than generic moving advice.</p>
+			<div class="space-y-5">
+				{RELOCATION_WATCH_LIST.map((w) => (
+					<div class="border-l-2 border-accent pl-4">
+						<h3 class="font-display text-base font-bold text-primary mb-2">{w.heading}</h3>
+						<p class="text-sm text-text-muted leading-relaxed">{w.body}</p>
+					</div>
+				))}
+			</div>
+			<p class="text-sm text-text-muted mt-6 leading-relaxed">I work with buyers in English and Mandarin, and a good share of my clients buy before they ever land. On new construction the builder pays my fee in most cases, disclosed in writing before we tour.</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Moving to Austin for {employer.name}, answered</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href="/tech-employers/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">All Austin tech employers</span>
+					<span class="text-sm text-text-muted">Every major campus and where people commute from.</span>
+				</a>
+				<a href="/relocate/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Relocating to Austin</span>
+					<span class="text-sm text-text-muted">How the move works when you are buying from out of state.</span>
+				</a>
+				<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction by city</span>
+					<span class="text-sm text-text-muted">Builders, schools, taxes and tradeoffs, suburb by suburb.</span>
+				</a>
+				<a href="/blog/austin-property-tax-guide-2026/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Austin property taxes</span>
+					<span class="text-sm text-text-muted">The number that surprises relocating buyers most.</span>
+				</a>
+			</div>
+		</section>
+
+		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-10 text-center text-white">
+			<h2 class="font-display text-2xl font-bold mb-3">Moving to Austin for {employer.name}?</h2>
+			<p class="text-white/70 mb-6 max-w-lg mx-auto">Tell me your campus, your timeline and your budget. I'll tell you which side of the metro actually makes sense before you spend a Saturday touring the wrong one.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all no-underline">Book a call</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-all no-underline">Call {PHONE}</a>
+			</div>
+		</div>
+
+		<div id="schedule" class="mb-10 scroll-mt-20">
+			<TidyCalEmbed
+				heading={`Relocating for ${employer.name}?`}
+				subheading={`Pick a time. Tell me your start date and budget and I'll map the realistic options by commute, schools and what your money actually buys on each side of the metro.`}
+			/>
+		</div>
+
+		<ContactForm heading={`Questions about moving to Austin for ${employer.name}?`} subheading={`Tell me your campus, timeline and budget. I'll send a shortlist of neighborhoods and communities that fit, with the real commute times.`} />
+	</div>
+</BaseLayout>

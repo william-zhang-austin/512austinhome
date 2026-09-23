@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { COMPARISONS } from '../../data/comparisons';
+import { CITIES } from '../../data/cities';
+import { COMMUNITIES } from '../../data/communities';
+
+export async function getStaticPaths() {
+	return COMPARISONS.map((c) => ({
+		params: { slug: c.slug },
+		props: {
+			cmp: c,
+			cityA: CITIES.find((x) => x.slug === c.a)!,
+			cityB: CITIES.find((x) => x.slug === c.b)!,
+		},
+	}));
+}
+
+const { cmp, cityA, cityB } = Astro.props;
+
+const countCommunities = (name: string) => COMMUNITIES.filter((c) => c.city === name).length;
+
+// Factual rows come from the city data so a comparison can never drift out of
+// sync with the city pages it compares.
+const rows = [
+	{ label: 'County', a: cityA.county || '—', b: cityB.county || '—' },
+	{ label: 'School districts', a: cityA.schoolDistricts.join(', '), b: cityB.schoolDistricts.join(', ') },
+	{ label: 'New construction price range', a: cityA.newConstructionPriceRange, b: cityB.newConstructionPriceRange },
+	{ label: 'Typical resale range', a: cityA.medianPriceRange, b: cityB.medianPriceRange },
+	{ label: 'Commute to downtown', a: cityA.commuteToDowntown, b: cityB.commuteToDowntown },
+	{ label: 'Employers nearby', a: cityA.nearbyEmployers.join(', '), b: cityB.nearbyEmployers.join(', ') },
+	{ label: 'Communities I cover', a: String(countCommunities(cityA.name)), b: String(countCommunities(cityB.name)) },
+];
+
+const faqs = [
+	{
+		question: `Is ${cityA.name} or ${cityB.name} better to live in?`,
+		answer: cmp.shortAnswer,
+	},
+	{
+		question: `Which is cheaper, ${cityA.name} or ${cityB.name}?`,
+		answer: `New construction runs ${cityA.newConstructionPriceRange} in ${cityA.name} and ${cityB.newConstructionPriceRange} in ${cityB.name}. Compare the all-in monthly payment rather than the purchase price, because MUD and PID assessments differ between the two and can close or reverse a price gap entirely. ${cmp.watchFor}`,
+	},
+	{
+		question: `What do buyers get wrong about ${cityA.name} versus ${cityB.name}?`,
+		answer: cmp.watchFor,
+	},
+];
+
+const title = `${cityA.name} vs ${cityB.name} | Which Austin Suburb Is Right for You | 512 Austin Home`;
+const description = `${cityA.name} or ${cityB.name}? Commute times, school districts, new construction prices, MUD and PID taxes compared side by side, with a straight answer on who should pick which.`;
+
+const updatedLabel = new Date(`${cmp.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
+	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Compare', url: '/compare/' },
+		{ name: `${cityA.name} vs ${cityB.name}`, url: `/compare/${cmp.slug}/` },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">{cityA.name} vs {cityB.name}</h1>
+			<p class="text-sm uppercase tracking-widest text-text-muted">Which Austin suburb fits you</p>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">{cmp.shortAnswer}</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Side by side</h2>
+			<div class="overflow-x-auto">
+				<table class="w-full text-sm border-collapse">
+					<thead>
+						<tr class="border-b-2 border-border">
+							<th class="text-left py-3 pr-4 font-display text-text-muted text-xs uppercase tracking-wider font-semibold"></th>
+							<th class="text-left py-3 pr-4 font-display text-primary font-bold">{cityA.name}</th>
+							<th class="text-left py-3 font-display text-primary font-bold">{cityB.name}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{rows.map((r) => (
+							<tr class="border-b border-border align-top">
+								<td class="py-3 pr-4 text-text-muted text-xs uppercase tracking-wider">{r.label}</td>
+								<td class="py-3 pr-4 text-primary">{r.a}</td>
+								<td class="py-3 text-primary">{r.b}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Who should pick which</h2>
+			<p class="text-text-muted text-sm mb-6">"It depends on your priorities" is true and useless. Here is the actual answer.</p>
+			<div class="grid sm:grid-cols-2 gap-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-4">Choose {cityA.name} if</h3>
+					<ul class="space-y-3 list-none pl-0">
+						{cmp.chooseA.map((i) => <li class="text-sm text-text-muted leading-relaxed">{i}</li>)}
+					</ul>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-4">Choose {cityB.name} if</h3>
+					<ul class="space-y-3 list-none pl-0">
+						{cmp.chooseB.map((i) => <li class="text-sm text-text-muted leading-relaxed">{i}</li>)}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">What buyers get wrong about this one</h2>
+			<p class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">{cmp.watchFor}</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">{cityA.name} vs {cityB.name}, answered</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href={`/new-construction/${cityA.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction in {cityA.name}</span>
+					<span class="text-sm text-text-muted">Builders, schools, taxes and the honest tradeoffs.</span>
+				</a>
+				<a href={`/new-construction/${cityB.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction in {cityB.name}</span>
+					<span class="text-sm text-text-muted">Builders, schools, taxes and the honest tradeoffs.</span>
+				</a>
+				<a href="/compare/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">All suburb comparisons</span>
+					<span class="text-sm text-text-muted">Every head-to-head I have written.</span>
+				</a>
+				<a href="/blog/austin-mud-pid-explained/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">MUD and PID taxes explained</span>
+					<span class="text-sm text-text-muted">The reason a cheaper house can cost more per month.</span>
+				</a>
+			</div>
+		</section>
+
+		<ContactForm heading={`Still torn between ${cityA.name} and ${cityB.name}?`} subheading={`Tell me where you work, your budget and whether schools are a constraint. I'll tell you which one to spend your Saturday in.`} />
+
+		<p class="text-xs text-text-muted text-center mt-10">Reviewed and updated {updatedLabel}. Prices, tax rates and commute conditions change — confirm current numbers before making decisions.</p>
+	</div>
+</BaseLayout>

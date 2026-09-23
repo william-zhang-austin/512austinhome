@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { COMPARISONS } from '../../data/comparisons';
+import { CITIES } from '../../data/cities';
+
+const items = COMPARISONS.map((c) => ({
+	cmp: c,
+	a: CITIES.find((x) => x.slug === c.a)!,
+	b: CITIES.find((x) => x.slug === c.b)!,
+}));
+
+const title = 'Compare Austin Suburbs | Side by Side | 512 Austin Home';
+const description = 'Austin suburb comparisons: commute times, school districts, new construction prices and MUD or PID taxes side by side, with a straight answer on who should choose which.';
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Compare', url: '/compare/' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Compare Austin Suburbs</h1>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">Most Austin suburb comparisons come down to three things: which highway corridor reaches your job, which school district the specific address is actually in, and what the effective tax rate is once a MUD or PID is included. Price per square foot is the number buyers compare and the least useful of the four, because a cheaper house in a young special district can cost more every month than a pricier one in a mature neighborhood.</p>
+		</section>
+
+		<section class="mb-16">
+			<div class="space-y-4">
+				{items.map((i) => (
+					<a href={`/compare/${i.cmp.slug}/`} class="block bg-surface border border-border rounded-xl p-6 no-underline hover:border-accent transition-colors group">
+						<h2 class="font-display text-lg font-bold text-primary group-hover:text-accent transition-colors mb-2">{i.a.name} vs {i.b.name}</h2>
+						<p class="text-sm text-text-muted">{i.cmp.shortAnswer.split('. ').slice(0, 2).join('. ')}.</p>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<ContactForm heading="Comparing two suburbs I have not written up?" subheading="Tell me which two and where you work. I'll give you the honest read on both." />
+	</div>
+</BaseLayout>
