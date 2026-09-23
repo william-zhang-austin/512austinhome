@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { GUIDES } from '../../data/guides';
+
+// Existing long-form posts that belong in the same reading path.
+const FURTHER_READING = [
+	{ label: 'MUD and PID taxes explained', href: '/blog/austin-mud-pid-explained/', note: 'Why a cheaper house can cost more every month.' },
+	{ label: 'New construction mistakes in Austin', href: '/blog/new-construction-mistakes-austin/', note: 'What goes wrong most often, and when it is still fixable.' },
+	{ label: 'Which upgrades actually return money', href: '/blog/new-construction-upgrades-highest-roi/', note: 'Where design center spending pays back and where it does not.' },
+	{ label: 'How new construction homes are built', href: '/blog/how-new-construction-homes-are-built/', note: 'The build sequence, and where to inspect in it.' },
+	{ label: 'Saving money on a new build', href: '/blog/save-money-new-construction-austin/', note: 'Beyond the incentive sheet.' },
+	{ label: 'How to protest your property taxes', href: '/blog/how-to-protest-property-taxes-austin/', note: 'The year-two assessment is the one that stings.' },
+];
+
+const title = 'Austin New Construction Buyer Guides | 512 Austin Home';
+const description = 'Buyer-side guides to Austin new construction: builder contract red flags, inspections, warranties, builder financing versus your own lender, spec versus build to order, and what to do if you already visited a builder alone.';
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Guides', url: '/guides/' },
+	] }} />
+
+	<div class="max-w-3xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">New Construction Buyer Guides</h1>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">Buying new construction is a different transaction from buying a resale, and most of what goes wrong happens in places a first-time new-build buyer does not think to look: the addendum that conditions your incentive on a date, the walkthrough that waives anything you did not write down, the warranty deadline that passes without notice. These guides cover those, from transactions I have actually worked.</p>
+		</section>
+
+		<section class="mb-16">
+			<div class="space-y-4">
+				{GUIDES.map((g) => (
+					<a href={`/guides/${g.slug}/`} class="block bg-surface border border-border rounded-xl p-6 no-underline hover:border-accent transition-colors group">
+						<h2 class="font-display text-lg font-bold text-primary group-hover:text-accent transition-colors mb-1">{g.title}</h2>
+						<p class="text-sm text-text-muted mb-2">{g.subtitle}</p>
+						<p class="text-sm text-text-muted">{g.shortAnswer.split('. ').slice(0, 2).join('. ')}.</p>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Further reading</h2>
+			<div class="space-y-3">
+				{FURTHER_READING.map((r) => (
+					<a href={r.href} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors group">
+						<span class="font-display font-bold text-primary group-hover:text-accent transition-colors block mb-1">{r.label}</span>
+						<span class="text-sm text-text-muted">{r.note}</span>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<ContactForm heading="Something these guides did not cover?" subheading="Tell me where you are in the process and what you're worried about. I'll give you a straight answer." />
+	</div>
+</BaseLayout>

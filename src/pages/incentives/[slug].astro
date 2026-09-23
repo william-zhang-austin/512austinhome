@@ -4,7 +4,7 @@ import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE } from '../../consts';
-import { BUILDERS } from '../../data/builders';
+import { BUILDERS, builderMentioned } from '../../data/builders';
 import { INCENTIVE_TYPES } from '../../data/incentives';
 import { COMMUNITIES } from '../../data/communities';
 
@@ -17,9 +17,7 @@ export async function getStaticPaths() {
 
 const { builder } = Astro.props;
 
-const communities = COMMUNITIES.filter((c) =>
-	c.builder.toLowerCase().includes(builder.name.toLowerCase().replace(' homes', '')),
-);
+const communities = COMMUNITIES.filter((c) => builderMentioned(c.builder, builder));
 
 // Surface the incentive types this builder actually uses, so the page is about
 // them rather than a generic explainer with a name swapped in. Declared per

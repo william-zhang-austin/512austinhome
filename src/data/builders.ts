@@ -607,6 +607,36 @@ export const BUILDERS: Builder[] = [
 	},
 ];
 
+/**
+ * Match a free-text builder field from the community data to a builder record.
+ *
+ * The community `builder` field is prose and often lists several builders for
+ * one master plan ("D.R. Horton, DRB Homes, M/I Homes, Chesmar"). It also spells
+ * the same company differently in different rows ("MI Homes" vs "M/I Homes"),
+ * so compare on letters only.
+ */
+export function matchBuilder(builderField: string) {
+	const norm = (v: string) => v.toLowerCase().replace(/[^a-z]/g, '');
+	const field = norm(builderField);
+	// Longest name first, so "Toll Brothers" is not shadowed by a shorter match.
+	return [...BUILDERS]
+		.sort((a, b) => b.name.length - a.name.length)
+		.find((b) => field.includes(norm(b.name.replace(/ homes$/i, ''))));
+}
+
+/**
+ * Does this community's builder field mention this builder at all?
+ *
+ * Distinct from matchBuilder, which returns the single primary builder for a
+ * community. A master plan listing "Highland Homes, Perry Homes, Coventry Homes"
+ * has one primary for the community page's negotiating section, but belongs on
+ * all three builder pages.
+ */
+export function builderMentioned(builderField: string, builder: Builder) {
+	const norm = (v: string) => v.toLowerCase().replace(/[^a-z]/g, '');
+	return norm(builderField).includes(norm(builder.name.replace(/ homes$/i, '')));
+}
+
 export function findBuilder(slug: string) {
 	return BUILDERS.find((b) => b.slug === slug);
 }

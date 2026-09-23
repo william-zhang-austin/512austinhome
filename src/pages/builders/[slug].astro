@@ -4,7 +4,7 @@ import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE } from '../../consts';
-import { BUILDERS } from '../../data/builders';
+import { BUILDERS, builderMentioned } from '../../data/builders';
 import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
 
 export async function getStaticPaths() {
@@ -19,8 +19,8 @@ const { builder } = Astro.props;
 // Match communities whose builder field mentions this builder. The field is free
 // text and often lists several builders for one master plan, so match loosely
 // but on the full name to avoid "Perry Homes" catching "Perry Homes, Coventry".
-const communities = COMMUNITIES.filter((c) =>
-	c.builder.toLowerCase().includes(builder.name.toLowerCase().replace(' homes', '')),
+const communities = COMMUNITIES.filter(
+	(c) => builderMentioned(c.builder, builder),
 ).sort((a, b) => a.priceFrom - b.priceFrom);
 
 const title = `${builder.name} Austin, TX | Honest Buyer-Side Review | 512 Austin Home`;

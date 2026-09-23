@@ -6,6 +6,8 @@ import TidyCalEmbed from '../../../components/TidyCalEmbed.astro';
 import YouTubeEmbed from '../../../components/YouTubeEmbed.astro';
 import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel, type Community } from '../../../data/communities';
 import { PHONE, SITE_URL, TIDYCAL_URL } from '../../../consts';
+import { CITIES } from '../../../data/cities';
+import { matchBuilder } from '../../../data/builders';
 
 export async function getStaticPaths() {
 	return COMMUNITIES.map((c) => ({
@@ -19,6 +21,45 @@ interface Props {
 }
 
 const { community: c } = Astro.props;
+
+// Context is derived from the city and builder records rather than duplicated
+// into every community entry, so a correction in one place fixes all of them
+// and a community page can never contradict the city page above it.
+const city = CITIES.find((x) => x.name === c.city);
+const builder = matchBuilder(c.builder);
+
+const shortAnswer = [
+	`${c.name} is a new-construction community by ${c.builder} in ${c.city}, Texas, with homes from ${priceRangeLabel(c)} across ${c.sqftMin.toLocaleString()} to ${c.sqftMax.toLocaleString()} square feet and ${bedsLabel(c)}.`,
+	`It is zoned to ${c.schoolDistrict}.`,
+	c.mud ? 'The community sits in a special district, so the effective property tax rate is above the county rate.' : '',
+	city ? `${c.city} is ${city.commuteToDowntown} from downtown Austin.` : '',
+	c.tagline,
+].filter(Boolean).join(' ');
+
+// Derived FAQ. Every answer is built from data already on the page, so it can
+// never drift from what the page says above it.
+const faqs = [
+	{
+		question: `How much do homes cost at ${c.name}?`,
+		answer: `Homes at ${c.name} run ${priceRangeLabel(c)} from ${c.builder}, across ${c.sqftMin.toLocaleString()} to ${c.sqftMax.toLocaleString()} square feet with ${bedsLabel(c)}. Builder pricing moves with incentives and inventory, so treat this as the band rather than a current quote, and ask for what is actually on the table for a specific home.`,
+	},
+	{
+		question: `What school district is ${c.name} in?`,
+		answer: `${c.name} is zoned to ${c.schoolDistrict}. Confirm the attendance zone for the exact address rather than the community, because zones are redrawn as fast-growing districts open new campuses, and in this metro a single community can straddle more than one district.`,
+	},
+	...(c.mud ? [{
+		question: `Does ${c.name} have MUD or PID taxes?`,
+		answer: `${c.name} sits in a special district, which adds to the property tax rate above the county figure. ${city?.taxNotes || 'Ask for the current combined rate for your specific phase and the district\'s remaining debt schedule, because rates differ between phases of the same community and fall over time as the district pays down its infrastructure debt.'}`,
+	}] : []),
+	...(c.hoa ? [{
+		question: `What are the HOA dues at ${c.name}?`,
+		answer: `HOA dues at ${c.name} are ${c.hoa}. Ask what the dues cover, whether an amenity or special district assessment is billed separately, and request the HOA financials and reserve study before you are past your option period.`,
+	}] : []),
+	{
+		question: `Is ${c.name} a good place to buy?`,
+		answer: `${c.highlights.slice(0, 2).join(' ')} On the other side: ${c.watchOuts.slice(0, 2).join(' ')} Whether that trade works depends on your commute, your school constraint and how long you expect to stay.`,
+	},
+];
 
 const title = `${c.name} by ${c.builder} — New Construction in ${c.city}, TX | 512 Austin Home`;
 const description = `${c.name} by ${c.builder} in ${c.city}, Texas. ${priceRangeLabel(c)}, ${c.sqftMin.toLocaleString()}–${c.sqftMax.toLocaleString()} sqft, ${c.schoolDistrict}. ${c.tagline}`;
@@ -66,6 +107,7 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} image={c.heroImage}>
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
@@ -148,6 +190,12 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 				<p class="text-text-muted text-xs mt-3">Builder incentives change monthly. Text me before you visit so I can confirm what's currently stackable — on a $500K new build, combined incentives often reach $15K–$30K.</p>
 			</div>
 		)}
+
+		<!-- THE SHORT ANSWER — citable block, stays first and stays factual -->
+		<section class="mb-10">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">{shortAnswer}</p>
+		</section>
 
 		<!-- Summary -->
 		<section class="prose mb-10">
@@ -283,6 +331,104 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 
 		<!-- Contact form fallback -->
 		<ContactForm heading={`Prefer to message first?`} subheading={`Tell me what you're looking for at ${c.name} and I'll send current inventory, incentives, and my notes on the best lots.`} />
+
+
+		<!-- CITY AND BUILDER CONTEXT — derived, so it cannot contradict those pages -->
+		{city && (
+			<section class="mb-10">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">Buying in {c.city}</h2>
+				<dl class="divide-y divide-border border-y border-border">
+					{city.county && (
+						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+							<dt class="text-sm uppercase tracking-wider text-text-muted">County</dt>
+							<dd class="sm:col-span-2 text-primary">{city.county}</dd>
+						</div>
+					)}
+					{city.commuteNotes && (
+						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+							<dt class="text-sm uppercase tracking-wider text-text-muted">Commute</dt>
+							<dd class="sm:col-span-2 text-primary leading-relaxed">{city.commuteNotes}</dd>
+						</div>
+					)}
+					{city.taxNotes && (
+						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+							<dt class="text-sm uppercase tracking-wider text-text-muted">MUD and PID taxes</dt>
+							<dd class="sm:col-span-2 text-primary leading-relaxed">{city.taxNotes}</dd>
+						</div>
+					)}
+				</dl>
+			</section>
+		)}
+
+		<!-- WHAT A BUYER'S AGENT WATCHES FOR — city-level, applied here -->
+		{city?.agentWatchesFor && (
+			<section class="mb-10">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">What I watch for at a {c.city} community</h2>
+				<ul class="space-y-4 list-none pl-0">
+					{city.agentWatchesFor.map((item) => (
+						<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">{item}</li>
+					))}
+				</ul>
+			</section>
+		)}
+
+		<!-- BUILDER CONTEXT -->
+		{builder && (
+			<section class="mb-10">
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">Negotiating with {builder.name} here</h2>
+				<p class="text-text-muted text-sm mb-4">{builder.incentiveStyle}</p>
+				<ul class="space-y-3 list-none pl-0 mb-4">
+					{builder.negotiating.slice(0, 4).map((n) => (
+						<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">{n}</li>
+					))}
+				</ul>
+				<a href={`/builders/${builder.slug}/`} class="text-accent font-semibold text-sm no-underline hover:underline">Full buyer-side review of {builder.name} &rarr;</a>
+			</section>
+		)}
+
+		<!-- FAQ -->
+		<section class="mb-10">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">{c.name}, answered</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<!-- KEEP EXPLORING — inbound internal links are what earn the crawl here -->
+		<section class="mb-10">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				{city && (
+					<a href={`/new-construction/${city.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">New construction in {c.city}</span>
+						<span class="text-sm text-text-muted">Every community here, with schools, taxes and tradeoffs.</span>
+					</a>
+				)}
+				{builder && (
+					<a href={`/incentives/${builder.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">{builder.name} incentives</span>
+						<span class="text-sm text-text-muted">How their offers are structured and what they are worth.</span>
+					</a>
+				)}
+				<a href="/guides/builder-contract-red-flags/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Builder contract red flags</span>
+					<span class="text-sm text-text-muted">The clauses that cost buyers real money.</span>
+				</a>
+				<a href="/blog/austin-mud-pid-explained/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">MUD and PID taxes explained</span>
+					<span class="text-sm text-text-muted">Why a cheaper house can cost more per month.</span>
+				</a>
+			</div>
+		</section>
 
 		<p class="text-xs text-text-muted text-center mt-10">Community data last updated {c.updatedDate}. Prices, floor plans, and incentives change frequently — confirm current numbers before making decisions. Photos are property of {c.builder}.</p>
 	</article>
