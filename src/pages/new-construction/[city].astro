@@ -6,6 +6,8 @@ import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE, GBP_URL } from '../../consts';
 import { CITIES } from '../../data/cities';
 import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel } from '../../data/communities';
+import { EMPLOYERS } from '../../data/employers';
+import { COMPARISONS } from '../../data/comparisons';
 
 export async function getStaticPaths() {
 	return CITIES.map((city) => ({
@@ -26,6 +28,20 @@ const builders = [...new Set(communities.map((c) => c.builder))].sort();
 // A city that has been written up to the reference standard renders the full
 // page. One that has not yet falls back to the previous layout.
 const isReferencePage = Boolean(city.shortAnswer && city.caseFor && city.caseAgainst && city.agentWatchesFor);
+
+// Link the employers this city already names to their own pages. Those pages had
+// one inbound link each, and on this domain inbound internal links are what earn
+// the crawl rather than sitemap presence.
+const employerLinks = city.nearbyEmployers.map((label) => {
+	const match = EMPLOYERS.find((e) => label.toLowerCase().includes(e.name.toLowerCase()));
+	return { label, href: match ? `/moving-to-austin/${match.slug}/` : null };
+});
+
+const comparisons = COMPARISONS.filter((c) => c.a === city.slug || c.b === city.slug).map((c) => {
+	const otherSlug = c.a === city.slug ? c.b : c.a;
+	const other = CITIES.find((x) => x.slug === otherSlug);
+	return { href: `/compare/${c.slug}/`, label: `${city.name} vs ${other?.name ?? otherSlug}` };
+});
 
 const title = isReferencePage
 	? `New Construction Homes in ${city.name}, TX | Builders, Schools, Taxes | 512 Austin Home`
@@ -100,10 +116,19 @@ const updatedLabel = city.contentUpdated
 							<dd class="sm:col-span-2 text-primary leading-relaxed">{city.taxNotes}</dd>
 						</div>
 					)}
-					{city.nearbyEmployers.length > 0 && (
+					{employerLinks.length > 0 && (
 						<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
 							<dt class="text-sm uppercase tracking-wider text-text-muted">Major employers nearby</dt>
-							<dd class="sm:col-span-2 text-primary">{city.nearbyEmployers.join(', ')}</dd>
+							<dd class="sm:col-span-2 text-primary">
+								{employerLinks.map((e, i) => (
+									<>
+										{i > 0 && ', '}
+										{e.href
+											? <a href={e.href} class="text-accent no-underline hover:underline">{e.label}</a>
+											: <span>{e.label}</span>}
+									</>
+								))}
+							</dd>
 						</div>
 					)}
 				</dl>
@@ -253,6 +278,12 @@ const updatedLabel = city.contentUpdated
 			<section class="mb-16">
 				<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
 				<div class="grid sm:grid-cols-2 gap-4">
+					{comparisons.map((cmp) => (
+						<a href={cmp.href} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+							<span class="font-display font-bold text-primary block mb-1">{cmp.label}</span>
+							<span class="text-sm text-text-muted">Side by side, with a straight answer on who should pick which.</span>
+						</a>
+					))}
 					<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 						<span class="font-display font-bold text-primary block mb-1">All Austin new construction</span>
 						<span class="text-sm text-text-muted">Every city and community I cover.</span>

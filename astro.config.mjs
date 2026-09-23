@@ -55,9 +55,14 @@ function sourceFileForUrl(pathname) {
 	}
 
 	// Data-driven routes: the data file is what changes, not the template.
-	if (/^new-construction\/communities\/.+$/.test(p)) return 'src/data/communities.ts';
+	if (/^new-construction\/communities(\/.+)?$/.test(p)) return 'src/data/communities.ts';
 	if (/^new-construction\/.+$/.test(p)) return 'src/data/cities.ts';
 	if (/^sell\/.+$/.test(p)) return 'src/data/cities.ts';
+	if (/^builders(\/.+)?$/.test(p)) return 'src/data/builders.ts';
+	if (/^incentives(\/.+)?$/.test(p)) return 'src/data/incentives.ts';
+	if (/^guides(\/.+)?$/.test(p)) return 'src/data/guides.ts';
+	if (/^compare(\/.+)?$/.test(p)) return 'src/data/comparisons.ts';
+	if (/^moving-to-austin\/.+$/.test(p)) return 'src/data/employers.ts';
 
 	// Plain pages.
 	for (const candidate of [`src/pages/${p}.astro`, `src/pages/${p}/index.astro`]) {

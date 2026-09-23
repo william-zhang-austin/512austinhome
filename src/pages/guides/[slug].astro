@@ -13,6 +13,11 @@ export async function getStaticPaths() {
 
 const { guide } = Astro.props;
 
+// Every guide links to two siblings, so none of them depends on the index alone
+// for discovery.
+const gi = GUIDES.findIndex((g) => g.slug === guide.slug);
+const siblings = [GUIDES[(gi + 1) % GUIDES.length], GUIDES[(gi + 2) % GUIDES.length]];
+
 const title = `${guide.title} | 512 Austin Home`;
 const description = guide.shortAnswer.length > 155 ? `${guide.shortAnswer.slice(0, 152)}...` : guide.shortAnswer;
 
@@ -91,6 +96,12 @@ const updatedLabel = new Date(`${guide.contentUpdated}T12:00:00Z`).toLocaleDateS
 					<span class="font-display font-bold text-primary block mb-1">All buyer guides</span>
 					<span class="text-sm text-text-muted">Contracts, inspections, warranties, financing.</span>
 				</a>
+				{siblings.map((g) => (
+					<a href={`/guides/${g.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">{g.title}</span>
+						<span class="text-sm text-text-muted">{g.subtitle}</span>
+					</a>
+				))}
 				{(guide.related || []).map((r) => (
 					<a href={r.href} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 						<span class="font-display font-bold text-primary block mb-1">{r.label}</span>

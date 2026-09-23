@@ -16,6 +16,11 @@ export async function getStaticPaths() {
 
 const { employer } = Astro.props;
 
+// Two sibling employers, rotated, so every employer page has inbound links from
+// peers rather than depending on the hub alone.
+const ei = EMPLOYERS.findIndex((e) => e.slug === employer.slug);
+const siblings = [EMPLOYERS[(ei + 1) % EMPLOYERS.length], EMPLOYERS[(ei + 2) % EMPLOYERS.length]];
+
 const cheapest = [...employer.areas].sort((a, b) => {
 	const num = (s: string) => parseInt((s.match(/\$(\d+)K/) || [])[1] || '9999', 10);
 	return num(a.price) - num(b.price);
@@ -156,6 +161,12 @@ const description = `Where ${employer.name} employees live in Austin: ${employer
 					<span class="font-display font-bold text-primary block mb-1">Austin property taxes</span>
 					<span class="text-sm text-text-muted">The number that surprises relocating buyers most.</span>
 				</a>
+				{siblings.map((e) => (
+					<a href={`/moving-to-austin/${e.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">Where to live near {e.name}</span>
+						<span class="text-sm text-text-muted">{e.location}</span>
+					</a>
+				))}
 			</div>
 		</section>
 
