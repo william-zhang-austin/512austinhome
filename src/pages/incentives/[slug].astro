@@ -6,6 +6,8 @@ import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE } from '../../consts';
 import { BUILDERS, builderMentioned } from '../../data/builders';
 import { INCENTIVE_TYPES } from '../../data/incentives';
+import { offersForBuilder } from '../../data/current-offers';
+import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
 import { COMMUNITIES } from '../../data/communities';
 
 export async function getStaticPaths() {
@@ -22,6 +24,8 @@ const communities = COMMUNITIES.filter((c) => builderMentioned(c.builder, builde
 // Surface the incentive types this builder actually uses, so the page is about
 // them rather than a generic explainer with a name swapped in. Declared per
 // builder rather than inferred from the prose, which was fragile.
+const offers = offersForBuilder(builder.slug);
+
 const relevantTypes = builder.incentiveTypes
 	.map((slug) => INCENTIVE_TYPES.find((t) => t.slug === slug))
 	.filter((t): t is (typeof INCENTIVE_TYPES)[number] => Boolean(t));
@@ -54,10 +58,29 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 			<p class="text-lg text-primary leading-relaxed">{builder.incentiveStyle} {builder.affiliates ? `Their incentives are tied to affiliated services: ${builder.affiliates}` : 'They do not route incentives through an in-house lender as rigidly as the national volume builders, so an outside lender is usually less costly here.'}</p>
 		</section>
 
-		<div class="bg-surface border border-border rounded-xl p-6 mb-16">
-			<h2 class="font-display text-lg font-bold text-primary mb-2">No current offers are published here, on purpose</h2>
-			<p class="text-sm text-text-muted leading-relaxed">{builder.name}'s incentives change monthly and vary by community and by individual home. Any figure published on a public page would be out of date within weeks, and a stale number sends you into a sales office expecting something that no longer exists. What is below is the shape of their offers, which is stable. For what they are offering on a specific home this week, ask me.</p>
-		</div>
+		<IncentiveDisclosure builderName={builder.name} />
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">What {builder.name} is offering</h2>
+			{offers.length > 0 ? (
+				<div class="space-y-4">
+					{offers.map((o) => (
+						<div class="bg-surface border border-border rounded-xl p-6">
+							<p class="font-display text-lg font-bold text-primary mb-2">{o.headline}</p>
+							{o.detail && <p class="text-sm text-text-muted leading-relaxed mb-3">{o.detail}</p>}
+							{o.communities && o.communities.length > 0 && (
+								<p class="text-sm text-text-muted mb-3"><strong class="text-primary">Where:</strong> {o.communities.join(', ')}</p>
+							)}
+							<p class="text-xs text-text-muted">Confirmed {o.verifiedOn} · {o.source}</p>
+						</div>
+					))}
+				</div>
+			) : (
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<p class="text-sm text-text-muted leading-relaxed">I do not have a confirmed {builder.name} offer on file this week, and I would rather show you nothing than show you something I have not verified. Text me the community you are looking at and I will call their rep and come back with what is actually available, usually the same day.</p>
+				</div>
+			)}
+		</section>
 
 		{relevantTypes.length > 0 && (
 			<section class="mb-16">
@@ -93,19 +116,6 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 			</ul>
 		</section>
 
-		{builder.contractNotes && (
-			<section class="mb-16">
-				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">From actual closings</p>
-				<h2 class="font-display text-2xl font-bold text-primary mb-4">The clauses that decide whether you keep the incentive</h2>
-				<p class="text-text-muted text-sm mb-6">An incentive you lose at closing was never worth anything. These are from transactions I have closed with {builder.name}.</p>
-				<ul class="space-y-4 list-none pl-0">
-					{builder.contractNotes.map((c) => (
-						<li class="text-sm text-text-muted leading-relaxed bg-surface border border-border rounded-xl p-5">{c}</li>
-					))}
-				</ul>
-				<p class="text-xs text-text-muted mt-4">General information from past transactions, not legal advice. Contract terms change — have your own agent read the addenda for your deal.</p>
-			</section>
-		)}
 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-4">What to watch for with {builder.name}</h2>

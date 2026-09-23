@@ -1,0 +1,44 @@
+---
+// The standing disclosure for anything quoting a builder incentive.
+//
+// William's rule: state plainly that incentives can change at any moment and
+// that the reader should contact him for the latest. This component is the one
+// place that wording lives, so it cannot drift between pages.
+import { PHONE } from '../consts';
+import { OFFERS_AS_OF, offersAgeInDays } from '../data/current-offers';
+
+interface Props {
+	/** Optional builder name, to make the line specific. */
+	builderName?: string;
+}
+const { builderName } = Astro.props;
+
+const age = offersAgeInDays();
+const asOfLabel = OFFERS_AS_OF
+	? new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', {
+		year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+	})
+	: null;
+const subject = builderName ?? 'Builder';
+---
+
+<div class="bg-accent-light border-l-4 border-accent rounded-xl p-5 sm:p-6 mb-10">
+	<p class="font-display font-bold text-primary mb-2">{subject} incentives can change at any moment.</p>
+	<p class="text-sm text-text-muted leading-relaxed mb-3">
+		Builders add, cut and pull offers without notice, and what applies varies by community and by individual home. Anything shown here is a snapshot, not a quote, and it may already be out of date by the time you read it.
+		<strong class="text-primary"> Reach out to me for the latest and I will confirm what is actually on the table this week</strong>, including offers that are never advertised.
+	</p>
+	{asOfLabel && (
+		<p class="text-xs text-text-muted mb-3">
+			Offers below last reviewed {asOfLabel}{age !== null && age > 21 ? ` — that is ${age} days ago, so treat it as history and ask me for current terms.` : '.'}
+		</p>
+	)}
+	<div class="flex flex-col sm:flex-row gap-3">
+		<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
+			Call or text {PHONE}
+		</a>
+		<a href="/contact/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-accent border-2 border-accent rounded-lg hover:bg-white transition-all no-underline">
+			Ask for this week's offer
+		</a>
+	</div>
+</div>

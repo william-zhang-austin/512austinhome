@@ -100,19 +100,6 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 			)}
 		</section>
 
-		{builder.contractNotes && (
-			<section class="mb-16">
-				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">From actual closings</p>
-				<h2 class="font-display text-2xl font-bold text-primary mb-4">{builder.name} contract mechanics worth knowing</h2>
-				<p class="text-text-muted text-sm mb-6">These are the clauses that cost buyers real money, taken from transactions I have closed. Client details are omitted; the mechanics are not specific to any one buyer.</p>
-				<ul class="space-y-4 list-none pl-0">
-					{builder.contractNotes.map((c) => (
-						<li class="text-sm text-text-muted leading-relaxed bg-surface border border-border rounded-xl p-5">{c}</li>
-					))}
-				</ul>
-				<p class="text-xs text-text-muted mt-4">This is general information from past transactions, not legal advice, and contract terms change. Have your own agent read the addenda for your specific deal.</p>
-			</section>
-		)}
 
 		{communities.length > 0 && (
 			<section class="mb-16">

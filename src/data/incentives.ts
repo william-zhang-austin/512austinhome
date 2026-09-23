@@ -41,7 +41,7 @@ export const INCENTIVE_TYPES: IncentiveType[] = [
 	{
 		slug: 'price-reduction',
 		name: 'Price reduction',
-		what: 'A straight cut to the contract price. The rarest of the four, because it is the one that shows up in the public record.',
+		what: 'A straight cut to the purchase price. The rarest of the four, because it is the one that shows up in the public record.',
 		worth: 'It lowers your loan, your monthly payment, and your property tax basis, and it is the only incentive that keeps working after you refinance. Per dollar it is the cleanest thing you can get.',
 		catch: 'Builders resist it hardest, and for a reason that matters to you too: a recorded price cut becomes a comparable sale for every other home in the community, including yours when you sell. Builders protect the price and pay you in other ways to avoid that. This is genuinely a case where the builder\'s interest and yours partly align.',
 		typical: 'Mostly seen on standing inventory that has aged past a few months, and near quarter or year end.',
@@ -66,7 +66,7 @@ export const INCENTIVE_TYPES: IncentiveType[] = [
 		slug: 'extended-rate-lock',
 		name: 'Extended rate lock or float-down',
 		what: 'On a to-be-built home with a long construction timeline, the builder\'s lender locks your rate further out than a standard lock, sometimes with a one-time float-down if rates fall before closing.',
-		worth: 'On a build running six months or more this can be worth more than any cash concession, because the alternative is carrying the rate risk yourself on a house you are already contractually committed to buy.',
+		worth: 'On a build running six months or more this can be worth more than any cash concession, because the alternative is carrying the rate risk yourself on a house you are already committed to buy.',
 		catch: 'Extended locks cost money, and somebody pays. Ask explicitly whether the lock is free, built into the price, or charged at closing, and whether the float-down is automatic or has to be requested inside a window.',
 		typical: 'Standard part of the package from semi-custom and luxury builders on long builds. Rarely offered on inventory homes.',
 	},
@@ -83,7 +83,7 @@ export const INCENTIVE_FAQS = [
 	},
 	{
 		question: 'Do I lose the incentive if I use my own lender?',
-		answer: 'In most cases yes, at least the headline portion of it. Builders tie their largest incentives to their affiliated mortgage and title companies through an Affiliated Business Arrangement disclosure. You are legally free to use any lender, and you should still get an outside quote — but compare the all-in cost including fees rather than the rate alone, because the tied buydown often does win, and you want to know by how much rather than assume either way.',
+		answer: 'In most cases yes, at least the headline portion of it. Builders tie their largest incentives to their affiliated mortgage and title companies. You can use any lender you want, and you should still get an outside quote — but compare the all-in cost including fees rather than the rate alone, because the tied buydown often does win, and you want to know by how much rather than assume either way.',
 	},
 	{
 		question: 'Is a rate buydown better than a price cut?',

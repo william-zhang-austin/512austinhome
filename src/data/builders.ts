@@ -2,13 +2,16 @@
 //
 // EDITORIAL RULE FOR THIS FILE: everything here is written from the buyer's side
 // of the table. Where William has actually closed or negotiated with a builder,
-// say so plainly and name the mechanics. Where he has not, say that too. A page
-// that only lists strengths is an advertisement, and neither buyers nor language
-// models have any use for one.
+// say so plainly. Where he has not, say that too. A page that only lists
+// strengths is an advertisement, and neither buyers nor language models have any
+// use for one.
 //
-// Client-identifying detail never goes in this file. Contract mechanics from a
-// real closing do — the clause numbers and the dollar consequences are the whole
-// point, and they are not specific to any one buyer.
+// COMPLIANCE: William is a licensed Texas real estate agent, not an attorney.
+// Nothing in this file interprets a contract, an addendum, a clause or a
+// warranty term — that is the practice of law and it belongs to a real estate
+// attorney. What belongs here is builder business practice: how they price, how
+// they negotiate, what their incentives are tied to, and what to ask for in
+// writing. Client-identifying detail never goes in this file either.
 
 export interface Builder {
 	slug: string;
@@ -25,11 +28,6 @@ export interface Builder {
 	watchOuts: string[];
 	/** How they actually negotiate, from working with them. */
 	negotiating: string[];
-	/**
-	 * Clause-level contract mechanics observed in real transactions.
-	 * This is the section a competitor cannot copy from public marketing.
-	 */
-	contractNotes?: string[];
 	/** In-house lender, title, or insurance arms that affect incentive structure. */
 	affiliates?: string;
 	/** Typical incentive shapes seen from this builder. Not current offers. */
@@ -62,7 +60,7 @@ export const BUILDERS: Builder[] = [
 			'The headline incentive almost always requires financing through Lennar Mortgage and closing through Lennar Title. Price the loan against an outside lender anyway; the buydown often still wins, but you should know by how much.',
 			'Because pricing is bundled, there is less room to negotiate the base price itself. The money is in the incentive package, not the sticker.',
 			'Lot premiums are real and are quoted separately from the "included" pricing.',
-			'Their addenda put hard dates on the incentives, and missing one is expensive. See the contract notes.',
+			'Incentive offers carry hard dates. Ask for the deadline in writing up front and have your lender confirm they can meet it.',
 			'Finish-level is appropriate to the price point. Do not expect a move-up builder\'s trim, cabinetry, or sound isolation.',
 		],
 		negotiating: [
@@ -71,14 +69,6 @@ export const BUILDERS: Builder[] = [
 			'Quarter end and month end are genuinely different from mid-month. Lennar manages to closing counts.',
 			'Get the buydown quoted as a permanent rate on the specific loan product, not as "up to" language in a flyer.',
 			'Register your agent before the first visit. Lennar\'s on-site agents work for Lennar.',
-		],
-		contractNotes: [
-			'The Affiliated Business Addendum conditions the incentive on closing on or before a stated date, and extension is at Lennar\'s sole discretion. That date is the single most important number in the contract, and it does not move because your lender is slow.',
-			'The Texas addendum adds a penalty for closing past month end — in a deal I closed it was 2 percent of the sales price plus a per-day charge on late funds. On a $332,000 home that 2 percent was roughly $6,640.',
-			'The mortgage contingency can expire on the same date as the incentive, and it expires silently. Calendar it yourself; nobody will remind you.',
-			'Section 21 of the Lennar contract means any visible defect not written on the New Home Orientation List is waived, and no escrow holdbacks are permitted. The walkthrough list is the only leverage you get, so the orientation is not a formality.',
-			'A buyer-side concession can be written into the closing disclosure in a way that cancels out a broker bonus. Read the "total gross compensation including bonus and concessions" line and ask what changed if it does not add up.',
-			'Many Lennar communities in the metro sit in a MUD or PID. Lennar discloses the PID as a monthly CDD figure, which is easy to read past — at one Pflugerville community it was roughly $231 a month on top of taxes, and a PID can lien and foreclose.',
 		],
 		incentiveStyle: 'Large rate buydowns and closing-cost credits, conditioned on Lennar Mortgage and Lennar Title. Occasional broker bonuses on standing inventory. Rarely a base-price cut.',
 		incentiveTypes: ['rate-buydown', 'closing-cost-credit', 'broker-bonus'],
@@ -89,11 +79,11 @@ export const BUILDERS: Builder[] = [
 			},
 			{
 				question: 'Do I have to use Lennar Mortgage to get the incentive?',
-				answer: 'In most cases yes — the headline incentive is tied to Lennar Mortgage and usually Lennar Title through an Affiliated Business Addendum. You are free to use an outside lender, but you will typically lose the incentive. Run both quotes. The buydown often still comes out ahead, but you should see the number rather than assume it.',
+				answer: 'In most cases yes — the headline incentive is tied to using Lennar Mortgage and usually Lennar Title. You can use an outside lender, but you will typically lose the incentive. Run both quotes side by side. The buydown often still comes out ahead, but you should see the number rather than assume it.',
 			},
 			{
 				question: 'What is the biggest mistake buyers make with Lennar?',
-				answer: 'Treating the New Home Orientation walkthrough as a formality. The contract waives visible defects that are not written on that list and does not permit escrow holdbacks, so the list is the only leverage you have after closing. The second biggest is missing the incentive deadline in the Affiliated Business Addendum, which is extendable only at Lennar\'s discretion.',
+				answer: 'Treating the New Home Orientation walkthrough as a formality. It is your opportunity to document anything you want addressed, so bring an inspector, take photographs and write everything down. The second is not confirming the incentive deadline early enough for your lender to hit it comfortably. For what your paperwork actually obligates you to, ask a real estate attorney.',
 			},
 		],
 		contentUpdated: '2026-09-23',
@@ -173,7 +163,7 @@ export const BUILDERS: Builder[] = [
 			},
 			{
 				question: 'What is a design center minimum?',
-				answer: 'A contractual requirement to spend at least a set amount at the design center on a to-be-built home. It is common at Taylor Morrison and at other semi-custom builders, and it means the advertised base price is not achievable. Ask for the minimum in writing before you fall in love with a base price, and factor it into every comparison you make against a spec home.',
+				answer: 'A requirement to spend at least a set amount at the design center on a to-be-built home. It is common at Taylor Morrison and at other semi-custom builders, and it means the advertised base price is not achievable. Ask for the minimum in writing before you fall in love with a base price, and factor it into every comparison you make against a spec home.',
 			},
 		],
 		contentUpdated: '2026-09-23',
@@ -388,19 +378,19 @@ export const BUILDERS: Builder[] = [
 		priceRange: '$400K-$900K',
 		segment: 'Move-up and semi-custom, Texas-based',
 		firstHand: false,
-		shortAnswer: 'Perry Homes is a long-established Texas builder working the move-up and semi-custom bands in Austin, roughly $400,000 to $900,000. They build in the larger master plans including Wolf Ranch in Georgetown. Perry is known for a distinctive plan library with high ceilings and formal spaces, and for being relatively inflexible on changes once a contract is signed.',
+		shortAnswer: 'Perry Homes is a long-established Texas builder working the move-up and semi-custom bands in Austin, roughly $400,000 to $900,000. They build in the larger master plans including Wolf Ranch in Georgetown. Perry is known for a distinctive plan library with high ceilings and formal spaces, and for being relatively inflexible on changes once you are committed.',
 		strengths: [
 			'Distinctive, well-regarded floor plans with generous ceiling heights and natural light.',
 			'Long track record in Texas and a stable warranty organisation.',
 			'Strong presence in the better Georgetown and north-metro master plans.',
 		],
 		watchOuts: [
-			'Notably rigid about changes after contract. Decide before you sign, because afterwards is genuinely difficult.',
+			'Notably rigid about changes once you are committed. Decide early, because later is genuinely difficult.',
 			'Plan library is distinctive, which is a strength if it suits you and a problem if you want something it does not offer.',
 			'Incentives are modest compared to the volume builders.',
 		],
 		negotiating: [
-			'Get everything settled before contract. This is the builder where "we will sort that out later" costs the most.',
+			'Get everything settled before you commit. This is the builder where "we will sort that out later" costs the most.',
 			'Focus on closing costs and lot premium rather than base price.',
 			'Ask about completed inventory, where there is more room than on a to-be-built.',
 		],
@@ -409,7 +399,7 @@ export const BUILDERS: Builder[] = [
 		faqs: [
 			{
 				question: 'Can you make changes to a Perry home after signing?',
-				answer: 'Much less than at most builders. Perry runs a tightly standardised process and change orders after contract are difficult and expensive where they are possible at all. Treat the contract signing as the deadline for every structural and option decision, and walk a completed home of your exact plan beforehand if one is available anywhere in the metro.',
+				answer: 'Much less than at most builders. Perry runs a tightly standardised process and change orders are difficult and expensive where they are possible at all. Treat the day you commit as the deadline for every structural and option decision, and walk a completed home of your exact plan beforehand if one is available anywhere in the metro.',
 			},
 		],
 		contentUpdated: '2026-09-23',
@@ -466,7 +456,7 @@ export const BUILDERS: Builder[] = [
 			'At this price point resale is thinner and takes longer, so overbuilding for the neighbourhood is a real risk.',
 		],
 		negotiating: [
-			'The design studio allowance is the negotiation. Ask for it in dollars and get it in the contract.',
+			'The design studio allowance is the negotiation. Ask for it in dollars and get it in writing.',
 			'On a long build, extended locks and float-downs matter more than a price concession.',
 			'Look hard at the comparable resale market before overbuilding a lot. At this level the ceiling in a given community is real.',
 		],
