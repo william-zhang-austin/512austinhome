@@ -61,6 +61,7 @@ function sourceFileForUrl(pathname) {
 	if (/^builders(\/.+)?$/.test(p)) return 'src/data/builders.ts';
 	if (/^incentives(\/.+)?$/.test(p)) return 'src/data/incentives.ts';
 	if (/^guides(\/.+)?$/.test(p)) return 'src/data/guides.ts';
+	if (/^deals(\/.+)?$/.test(p)) return 'src/data/deals.ts';
 	if (/^compare(\/.+)?$/.test(p)) return 'src/data/comparisons.ts';
 	if (/^moving-to-austin\/.+$/.test(p)) return 'src/data/employers.ts';
 

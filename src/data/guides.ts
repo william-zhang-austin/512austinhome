@@ -267,3 +267,305 @@ export const GUIDES: Guide[] = [
 export function findGuide(slug: string) {
 	return GUIDES.find((g) => g.slug === slug);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Added 2026-09-23 after the compliance pass removed the two contract guides.
+// These four are the differentiated ones: what a buyer's agent actually does,
+// how builders actually negotiate, new build versus resale, and buying from
+// overseas — which is a large share of William's real book and something the
+// new-construction specialists competing for these terms cannot write at all.
+// All four stay inside an agent's lane: business practice and process, never
+// the meaning or effect of a document.
+// ─────────────────────────────────────────────────────────────────────────────
+
+GUIDES.push(
+	{
+		slug: 'buying-austin-new-construction-from-overseas',
+		title: 'Buying Austin New Construction From Overseas',
+		subtitle: 'What is different when you are buying before you land',
+		shortAnswer: 'You can buy a new construction home in Austin without being physically present, and a large share of my clients do. The three things that decide whether it goes well are financing (buyers without US credit history need a different loan product, and the builder\'s in-house lender may not offer one, which usually means losing the incentive), someone on the ground who will walk the actual lot and street on camera rather than resending builder photos, and understanding that Texas property taxes are the trade for no state income tax.',
+		sections: [
+			{
+				heading: 'Sort the financing before you fall for a house',
+				body: [
+					'This is the step that derails the most overseas purchases, and it derails them late. Buyers without US credit history or a US income record do not qualify for the same loan products, and the builder\'s in-house lender frequently has no foreign national program at all.',
+					'That matters more here than it would elsewhere, because the builder\'s largest incentive is usually tied to using their lender. If they cannot do your loan, the incentive goes with it, and you find that out at the worst possible moment.',
+					'Get the financing path confirmed in writing before you are emotionally committed to a specific home. If you are paying cash, get the proof-of-funds documentation sorted early too, because funds held overseas take longer to document than buyers expect.',
+				],
+			},
+			{
+				heading: 'What a real remote tour looks like',
+				body: [
+					'Builder photography sells the model home and tells you almost nothing about the house you would actually own. A useful remote tour is someone standing on your specific lot with a phone, on a live call or recording as you direct it.',
+				],
+				list: [
+					'The lot itself, its slope, and what backs onto it. A retention pond, a transmission line, or a road two streets over will not appear in any listing.',
+					'What is scheduled to be built on the empty land around you, and how many phases the community still has to go.',
+					'The street at school pickup time and in the evening, not at 11am on a Tuesday.',
+					'The drive from the house to the campus you will actually commute to, at rush hour.',
+					'The finished home rather than the model, because the model is the best-case version with every upgrade installed.',
+				],
+			},
+			{
+				heading: 'The property tax trade, stated plainly',
+				body: [
+					'Texas has no state income tax, and the trade is a property tax rate that runs well above two percent in most new-construction suburbs once a MUD or PID is included. On a $600,000 home that can be $1,200 to $1,400 a month before principal and interest.',
+					'Buyers arriving from places with low property taxes routinely budget from the wrong number and are genuinely shocked at the escrow figure. Work out the effective rate for the specific address before you set a price ceiling.',
+					'There is a second trap specific to new construction: the first-year tax bill is often assessed on unimproved land, which produces a low first bill and a much larger second one. Budget from the finished improved value plus any special district.',
+				],
+			},
+			{
+				heading: 'Practical things that are easy to underestimate',
+				body: [],
+				list: [
+					'Time zones. A builder who only responds during Central business hours is a real constraint when you are fifteen hours ahead, and it is worth having someone local who can act inside that window.',
+					'Notarisation and signing from abroad adds time. Raise it early with the title company rather than the week of closing.',
+					'Wiring funds internationally takes longer than domestic and is the most targeted step in the whole transaction for fraud. Confirm wire instructions by phone using a number you looked up yourself, never a number in an email.',
+					'Insurance quotes vary more than buyers expect across the metro, particularly in the Hill Country, and they are worth getting before you commit to a budget.',
+				],
+			},
+			{
+				heading: 'Why I do a lot of this',
+				body: [
+					'A large share of my clients are relocating, many of them Mandarin-speaking and buying from California, Taiwan or mainland China. I work in English and Mandarin, and I am used to being the person who physically attends the inspection and the builder orientation when the buyer is on another continent.',
+					'On new construction the builder pays my fee in most cases, disclosed in writing before we tour, so having someone on the ground usually costs the buyer nothing.',
+				],
+			},
+		],
+		faqs: [
+			{
+				question: 'Can a foreign national buy a house in Texas?',
+				answer: 'Yes. There is no citizenship or residency requirement to own residential property in Texas. The practical constraints are financing and documentation rather than eligibility: without US credit history you will be looking at a different loan product with different down payment expectations, and proving funds held overseas takes longer than a domestic buyer would expect. Sort both before you shop.',
+			},
+			{
+				question: 'Do I need to be in Austin to close on a home?',
+				answer: 'Usually not. Remote closings are common and many builders now run them online. Signing from abroad adds steps, so raise it with the title company early rather than the week of closing. What you do want covered locally is the inspection and the builder orientation walkthrough, because those are the two points where having someone physically present is worth the most.',
+			},
+			{
+				question: 'How much are property taxes in Austin compared to no state income tax?',
+				answer: 'Effective rates in most new-construction suburbs run above two percent once a MUD or PID is included, which on a $600,000 home is roughly $1,200 to $1,400 a month before principal and interest. Whether the trade favours you depends entirely on your income and how long you stay. Run it as a monthly all-in number for the specific address rather than comparing headline tax rates between states.',
+			},
+		],
+		related: [
+			{ label: 'Where to live near the major Austin employers', href: '/tech-employers/' },
+			{ label: 'Austin property taxes', href: '/blog/austin-property-tax-guide-2026/' },
+		],
+		contentUpdated: '2026-09-23',
+	},
+	{
+		slug: 'how-to-negotiate-with-an-austin-builder',
+		title: 'How to Negotiate With an Austin Builder',
+		subtitle: 'What actually moves, what never does, and when to ask',
+		shortAnswer: 'Builders rarely move on the base price, because a recorded price cut lowers the comparable sales for every unsold home in the community. What moves is the package: rate buydowns, closing cost contributions, design center allowances, lot premiums and broker bonuses on a specific home. The leverage comes from timing and from the individual house, not from the community, and it is strongest on a completed home that has been standing near a quarter or year end.',
+		sections: [
+			{
+				heading: 'Negotiate the package, not the price',
+				body: [
+					'This is the single most useful thing to understand about builder negotiation. Builders protect the sales price because it becomes a public comparable that affects every other home they have to sell in that community, and it affects your resale too.',
+					'So a builder who will not take $15,000 off the price will often find $15,000 in a buydown, closing cost contribution and design allowance. The money is the same to you and it is not the same to them.',
+				],
+			},
+			{
+				heading: 'Timing is the cheapest leverage you will ever get',
+				body: [
+					'Builders manage to closing counts. A home that closes inside the quarter is worth materially more to them than one that closes a week later at a slightly higher price, and the calendar year end is stronger still.',
+					'If your timeline is flexible by even two or three weeks, aligning it to a builder\'s quarter end costs you nothing and is worth more than most of what you could say in the sales office.',
+				],
+			},
+			{
+				heading: 'Ask about the specific house, not the community',
+				body: [
+					'The advertised program is marketing and it applies to everyone. What is negotiable is what sits on top of it for one address.',
+				],
+				list: [
+					'Ask which completed homes have been standing longest. Sales offices will generally tell you, and that list is where the concessions live.',
+					'Ask whether there is a broker bonus on the specific home. Builders post these on inventory they want gone and it can often be redirected to you as a closing cost contribution, but only if you know to ask.',
+					'Ask for the lot premium separately, and what the same plan costs on an interior lot.',
+					'Ask whether the buydown is permanent or temporary. They are advertised in nearly the same words and are worth very different amounts.',
+					'Ask for a design center allowance rather than a price cut if you are buying a to-be-built. It is the concession builders approve most readily.',
+				],
+			},
+			{
+				heading: 'Talk to the right person',
+				body: [
+					'The agent in the model home is pleasant, knowledgeable, and has limited discretion. Most of what is actually negotiable requires the sales manager, and that is a different conversation that usually happens through your agent rather than across the desk.',
+					'It is also worth remembering that everything you tell the on-site agent about your budget, your timeline and how much you love the house is information held by the other side of the negotiation. They are paid by the builder and they represent the builder.',
+				],
+			},
+			{
+				heading: 'What almost never moves',
+				body: [],
+				list: [
+					'The base price on a to-be-built home in a community that is selling well.',
+					'Option pricing at the design center, which is a published price list.',
+					'Anything at a builder whose whole model is transparent fixed pricing.',
+					'Structural changes at builders who run a tightly standardised process. Decide early there, because later is genuinely difficult.',
+				],
+			},
+			{
+				heading: 'Register your agent before the first visit',
+				body: [
+					'Most builders require your agent to be registered on your first visit to their sales office. Walking in alone and signing the guest book can cost you the ability to bring in a buyer\'s agent at that community, at some builders permanently.',
+					'It costs nothing to text your agent the builder and community name before you go, and on new construction the builder pays the fee in most cases, disclosed to you in writing before you tour.',
+				],
+			},
+		],
+		faqs: [
+			{
+				question: 'Do Austin builders negotiate on price?',
+				answer: 'Rarely on the base price, and the reason is worth knowing: a recorded price cut becomes a comparable sale that lowers the value of every unsold home in the community, including yours later. Builders would much rather pay you the same money through a rate buydown, closing cost contribution or design allowance, none of which shows up in the sales price. Negotiate the package and you will usually do better than pushing on the price.',
+			},
+			{
+				question: 'When is the best time to buy a new construction home in Austin?',
+				answer: 'Near the end of a quarter, and near the end of the calendar year most of all, because builders manage to closing counts. The second-best signal is any completed home that has been standing unsold for several months, since carrying cost is what funds a concession. If your move-in timing has any flexibility, that flexibility is the cheapest negotiating leverage available to you.',
+			},
+			{
+				question: 'What is a broker bonus and can I get it?',
+				answer: 'It is an additional payment a builder offers the buyer\'s agent on a specific home they want moved, advertised to agents rather than to buyers. It can frequently be redirected to you as a closing cost contribution, but you have to know it exists to ask. Have your agent ask whether one is posted on the specific home you are considering.',
+			},
+		],
+		related: [
+			{ label: 'What each builder incentive is worth', href: '/incentives/' },
+			{ label: 'Austin builders, reviewed', href: '/builders/' },
+		],
+		contentUpdated: '2026-09-23',
+	},
+	{
+		slug: 'new-build-vs-resale-austin',
+		title: 'New Build or Resale in Austin?',
+		subtitle: 'The comparison most buyers run on price, which is the wrong number',
+		shortAnswer: 'A new build gets you current layouts, a builder warranty, lower maintenance for several years and access to incentives a private seller cannot match. A resale gets you mature trees, established neighborhoods, a known tax history, usually a larger lot for the money, and no builder still selling competing homes down the street. In Austin the deciding number is usually the effective tax rate, because a new build in a young MUD can cost more per month than a more expensive resale that is not in one.',
+		sections: [
+			{
+				heading: 'Why the price comparison misleads here',
+				body: [
+					'Most new construction in the Austin metro sits in a Municipal Utility District or Public Improvement District, and most established neighborhoods do not. That difference can be half a percent to a full percent of the home value every year.',
+					'The practical effect is that a Leander new build can carry a higher monthly payment than a more expensive Cedar Park resale one exit south. Buyers who compare purchase prices systematically get this backwards. Compare the all-in monthly figure including taxes and any special district.',
+				],
+			},
+			{
+				heading: 'What the new build genuinely wins on',
+				body: [],
+				list: [
+					'Incentives. A builder can buy your rate down; a private seller cannot, and that is often worth more than any price negotiation on a resale.',
+					'Maintenance. Roof, HVAC, water heater and appliances are new, which removes the three or four expenses that hit resale buyers hardest in the first years.',
+					'A builder warranty period, which a resale does not come with.',
+					'Current layouts and energy performance, which is a real monthly number in an Austin summer rather than a brochure point.',
+					'You are the first owner, so there is no deferred maintenance someone else chose not to do.',
+				],
+			},
+			{
+				heading: 'What the resale genuinely wins on',
+				body: [],
+				list: [
+					'Mature trees and established landscaping, which matter more in this climate than buyers from cooler places expect.',
+					'A known tax history rather than a first-year estimate on unimproved land.',
+					'Usually a larger lot for the same money, and neighborhoods that are already finished rather than under construction.',
+					'Often no MUD or PID, which is frequently the largest single monthly difference between the two.',
+					'No builder down the street selling brand-new competing homes with an incentive package attached when you go to sell.',
+				],
+			},
+			{
+				heading: 'The resale-competition point is underrated',
+				body: [
+					'While a builder is still selling homes in your subdivision, your resale competes against a brand-new house plus whatever incentive the builder is offering that month. That caps what you can get, and it lasts until the community finishes building out.',
+					'It matters much less if you plan to stay past buildout, and a great deal if you might move in three years. Ask how many phases remain before you assume a new build is the safer asset.',
+				],
+			},
+			{
+				heading: 'How I would decide it',
+				body: [
+					'If your constraint is the monthly payment and you plan to stay past the community buildout, the new build usually wins, because the buydown is real money a private seller cannot match.',
+					'If your constraint is the house itself, the lot, or the neighborhood being finished, and especially if you might sell within a few years, the resale usually wins.',
+					'Either way, run both as an all-in monthly number for two specific addresses rather than as a general question. The general question has no answer.',
+				],
+			},
+		],
+		faqs: [
+			{
+				question: 'Is new construction more expensive than resale in Austin?',
+				answer: 'Per square foot, usually yes, but that is not the number that decides it. Most new communities carry a MUD or PID that adds meaningfully to the effective tax rate, while most established neighborhoods do not, so the monthly gap is often wider than the price gap. Against that, builders can buy your rate down and a private seller cannot. Compare two specific addresses on all-in monthly cost.',
+			},
+			{
+				question: 'Do new construction homes hold their value in Austin?',
+				answer: 'They appreciate, but the early years are held back by the builder still selling new homes in the same subdivision with incentives attached, which is what your resale competes against. That effect fades once the community finishes building out. If you might sell within a few years, ask how many phases remain before you buy; if you are staying past buildout, it matters much less.',
+			},
+			{
+				question: 'Is it cheaper to buy a spec home or a resale?',
+				answer: 'A standing spec home is where the largest builder concessions are, particularly near a quarter end, so on an effective basis it can beat a resale even at a higher list price. The offsetting factors are the special district on the tax bill and the resale competition while the community builds out. It is genuinely a two-address comparison rather than a rule.',
+			},
+		],
+		related: [
+			{ label: 'MUD and PID taxes explained', href: '/blog/austin-mud-pid-explained/' },
+			{ label: 'Compare Austin suburbs', href: '/compare/' },
+		],
+		contentUpdated: '2026-09-23',
+	},
+	{
+		slug: 'buyer-agent-new-construction',
+		title: 'Do You Need an Agent to Buy New Construction?',
+		subtitle: 'The builder pays the fee. Here is what you get for it.',
+		shortAnswer: 'You do not need one, and going without does not lower your price, because the builder pays the buyer agent fee out of a marketing budget rather than adding it to your sales price. What you give up is someone on your side during the negotiation, the inspection and the orientation walkthrough. Most builders also require your agent to be registered on your first visit, so the decision is usually made before you realise you are making it.',
+		sections: [
+			{
+				heading: 'Going alone does not get you a discount',
+				body: [
+					'This is the most common misunderstanding about new construction, and builders do nothing to correct it. The buyer agent fee comes out of the builder\'s marketing budget. It is not added to your price, and it is not subtracted when you arrive unrepresented.',
+					'So the choice is not "pay for an agent or save the money". It is "use the representation the builder is already paying for, or decline it".',
+				],
+			},
+			{
+				heading: 'Whose side the sales office is on',
+				body: [
+					'The agent in the model home works for the builder. They can be genuinely helpful and knowledgeable, and they still represent the other side of your transaction.',
+					'Everything you tell them about your budget, your timeline, your rate approval and how much your family loves the house is information in the hands of the party you are negotiating against. That is not a criticism of them. It is their job.',
+				],
+			},
+			{
+				heading: 'What the work actually is',
+				body: [],
+				list: [
+					'Knowing which homes have been standing longest and what the builder has already reduced, which changes what is realistic to ask for.',
+					'Asking whether a broker bonus exists on the specific home and whether it can be redirected to you, which you would not know to ask.',
+					'Pricing the builder\'s tied loan against an outside lender on all-in cost rather than the advertised rate.',
+					'Getting the effective tax rate for the specific phase, including any MUD or PID, before you set your budget.',
+					'Being at the inspection and the orientation walkthrough, and making sure everything you want addressed is documented rather than mentioned.',
+					'Telling you when a question is a lawyer\'s question rather than an agent\'s, and that you should have a real estate attorney look at your paperwork before you sign it.',
+				],
+			},
+			{
+				heading: 'The registration rule decides this for most people',
+				body: [
+					'Most Austin builders require your agent to be registered on your first visit to the sales office. If you tour alone and sign the guest book, many builders will not pay a buyer agent commission on that community afterwards, and some treat it as permanent.',
+					'That means the decision is usually made on a Saturday morning by someone who did not know they were making it. It costs nothing to text an agent the builder and community name before you go.',
+				],
+			},
+			{
+				heading: 'What an agent is not',
+				body: [
+					'I am a licensed Texas real estate agent, not an attorney. I do not interpret builder contracts, addenda or warranty terms, and anyone in my position who offers to is doing something they should not. Those questions go to a real estate attorney.',
+					'What I do is represent you on price, terms, timing and process, and tell you plainly when something belongs in front of a lawyer.',
+				],
+			},
+		],
+		faqs: [
+			{
+				question: 'Do I save money buying new construction without a realtor?',
+				answer: 'No. The builder does not reduce the price for an unrepresented buyer, because the buyer agent fee comes from a marketing budget rather than from your sales price. You pay the same and receive less. If you would rather not use an agent that is a legitimate choice, but it should be made knowing that the savings are not real.',
+			},
+			{
+				question: 'Does the builder pay the buyer agent commission in Texas?',
+				answer: 'On new construction, most builders do, and it is typically paid from their marketing budget. It is not universal and it is not guaranteed, so it should be disclosed to you in writing before you tour. The part that catches people out is registration: most builders require your agent to be present or registered on your very first visit.',
+			},
+			{
+				question: 'Can I use my own agent at any Austin builder?',
+				answer: 'At almost all of them, provided your agent is registered on your first visit. That registration requirement is nearly universal in this market and is enforced literally, so the practical answer is yes if you plan ahead and frequently no if you toured alone first. Text your agent the builder and community name before you go.',
+			},
+		],
+		related: [
+			{ label: 'You visited a builder without an agent. Now what?', href: '/guides/registered-with-builder-already/' },
+			{ label: 'How to negotiate with an Austin builder', href: '/guides/how-to-negotiate-with-an-austin-builder/' },
+		],
+		contentUpdated: '2026-09-23',
+	},
+);
