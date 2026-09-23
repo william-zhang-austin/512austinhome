@@ -204,6 +204,7 @@ export const GUIDES: Guide[] = [
 		],
 		related: [
 			{ label: 'What each builder incentive is worth', href: '/incentives/' },
+			{ label: 'Builder rate buydowns explained', href: '/deals/rate-buydowns/' },
 		],
 		contentUpdated: '2026-09-23',
 	},

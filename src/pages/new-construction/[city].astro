@@ -8,6 +8,8 @@ import { CITIES } from '../../data/cities';
 import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel } from '../../data/communities';
 import { EMPLOYERS } from '../../data/employers';
 import { COMPARISONS } from '../../data/comparisons';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { CITY_LINKS } from '../../data/search-links';
 
 export async function getStaticPaths() {
 	return CITIES.map((city) => ({
@@ -86,6 +88,8 @@ const updatedLabel = city.contentUpdated
 				<p class="text-lg text-primary leading-relaxed">{city.shortAnswer}</p>
 			</section>
 		)}
+
+		<InventoryCTA link={CITY_LINKS[city.slug]} />
 
 		{/* THE FACTS */}
 		{isReferencePage && (
@@ -287,6 +291,10 @@ const updatedLabel = city.contentUpdated
 					<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 						<span class="font-display font-bold text-primary block mb-1">All Austin new construction</span>
 						<span class="text-sm text-text-muted">Every city and community I cover.</span>
+					</a>
+					<a href="/new-construction/best-schools/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">New homes in the best school districts</span>
+						<span class="text-sm text-text-muted">Where strong schools and new builds actually overlap.</span>
 					</a>
 					<a href="/deals/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 						<span class="font-display font-bold text-primary block mb-1">What is actually discounted</span>

@@ -6,6 +6,8 @@ import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE } from '../../consts';
 import { BUILDERS, builderMentioned } from '../../data/builders';
 import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { BUILDER_LINKS } from '../../data/search-links';
 
 export async function getStaticPaths() {
 	return BUILDERS.map((builder) => ({
@@ -67,6 +69,8 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 				<p class="text-sm text-text-muted leading-relaxed">I have not personally closed a {builder.name} transaction. What follows is from touring their communities, reading their contracts, and representing buyers against them in the same submarkets. I would rather say that than imply experience I do not have.</p>
 			</div>
 		)}
+
+		<InventoryCTA link={BUILDER_LINKS[builder.slug]} />
 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-2">The case for and against {builder.name}</h2>

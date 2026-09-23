@@ -8,6 +8,8 @@ import { BUILDERS, builderMentioned } from '../../data/builders';
 import { INCENTIVE_TYPES } from '../../data/incentives';
 import { offersForBuilder } from '../../data/current-offers';
 import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { BUILDER_LINKS } from '../../data/search-links';
 import { COMMUNITIES } from '../../data/communities';
 
 export async function getStaticPaths() {
@@ -59,6 +61,8 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 		</section>
 
 		<IncentiveDisclosure builderName={builder.name} />
+
+		<InventoryCTA link={BUILDER_LINKS[builder.slug]} />
 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-6">What {builder.name} is offering</h2>

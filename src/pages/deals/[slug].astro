@@ -4,6 +4,8 @@ import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { TOPIC_LINKS } from '../../data/search-links';
 import { PHONE } from '../../consts';
 import { DEAL_PAGES } from '../../data/deals';
 import { CURRENT_OFFERS } from '../../data/current-offers';
@@ -47,6 +49,8 @@ const updatedLabel = new Date(`${deal.contentUpdated}T12:00:00Z`).toLocaleDateSt
 		</section>
 
 		<IncentiveDisclosure />
+
+		<InventoryCTA link={TOPIC_LINKS[deal.slug]} />
 
 		<section class="mb-12">
 			<h2 class="font-display text-2xl font-bold text-primary mb-4">Where the discount actually comes from</h2>

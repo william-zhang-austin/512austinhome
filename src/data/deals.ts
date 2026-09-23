@@ -35,6 +35,51 @@ export const DEALS_PREMISE =
 
 export const DEAL_PAGES: DealPage[] = [
 	{
+		slug: 'rate-buydowns',
+		title: 'Builder Rate Buydowns in Austin',
+		subtitle: 'The biggest incentive in the market, and the easiest one to misread',
+		shortAnswer: 'A rate buydown is the builder paying your lender to lower your mortgage rate, and it is the largest single incentive in Austin new construction. There are two kinds that are advertised in nearly the same words: a permanent buydown lowers your rate for the life of the loan, while a temporary 2-1 buydown lowers it for the first two years and then steps back up. Buydowns are almost always tied to the builder\'s own mortgage company, and a permanent one usually beats an equal price cut if you keep the loan past about five years.',
+		whereItComesFrom: [
+			'Builders protect the sales price because a recorded price cut lowers the comparables for every home they still have to sell. Paying your lender instead does not show up in the sale price, so it is the concession they prefer to give.',
+			'The builder\'s own mortgage company is how they deliver it. That is why the headline rate usually requires financing through them, and often their title company too.',
+			'A buydown costs the builder points up front. The more inventory pressure they are under, the more points they are willing to buy, which is why the lowest advertised rates tend to sit on completed homes near a quarter end.',
+			'Adjustable products let them advertise a lower number. An ARM that is fixed for five or seven years can be offered at a noticeably lower starting rate than a 30-year fixed for the same cost to the builder.',
+		],
+		howToSpot: [
+			'Ask whether it is permanent or temporary. A 2-1 buydown and a permanent rate buy are advertised in nearly identical language and are worth very different amounts.',
+			'Ask which loan product the rate applies to. A 30-year fixed, an FHA fixed and a 7/6 ARM can all be advertised in the same email, and the lowest number is usually the ARM.',
+			'Read the assumptions under the rate. Builder rate examples usually assume an excellent credit score, a large down payment and a primary residence. If those are not you, the rate you get will be higher.',
+			'Get a complete Loan Estimate from the builder\'s lender and from an outside lender on the same day, and compare total cost including fees, not the advertised rate.',
+			'Check the lock and close deadline. Rate offers carry dates, and the lowest ones are often first come first served.',
+		],
+		watchFor: [
+			'A temporary buydown means your payment rises in year two or three. Budget for the full note rate, not the teaser.',
+			'An ARM means your rate can change after the fixed period. It can be the right product if you expect to sell or refinance before then, and the wrong one if you do not.',
+			'A tied loan can carry higher fees that recover part of the buydown. The rate alone does not tell you whether the builder\'s loan is actually cheaper.',
+			'If you refinance or sell early, you lose the rest of the buydown\'s value. A price reduction keeps working after a refinance; a buydown does not.',
+			'I can explain how these work and push for a better package, but I am not your lender. Have a licensed loan officer confirm the numbers for your situation.',
+		],
+		faqs: [
+			{
+				question: 'What is a builder rate buydown?',
+				answer: 'It is the builder paying your lender, in points, to lower your mortgage interest rate. In Austin it is the single largest incentive builders offer, because unlike a price cut it does not lower the recorded sale price and therefore does not drag down the comparables for every other home they are selling. It is almost always tied to using the builder\'s own mortgage company.',
+			},
+			{
+				question: 'Is a 2-1 buydown the same as a permanent buydown?',
+				answer: 'No. A 2-1 buydown lowers your rate by two points in the first year and one point in the second, then returns to the full note rate for the remaining term. A permanent buydown lowers the note rate itself for the life of the loan. They are marketed in similar language and the permanent one is worth considerably more, so ask which one is on the table and get it in writing.',
+			},
+			{
+				question: 'Is a rate buydown better than a lower price?',
+				answer: 'It depends on how long you keep the loan. A permanent buydown usually wins if you hold the mortgage beyond roughly five years, because the monthly saving adds up. A price reduction wins if you expect to refinance or sell sooner, and it also lowers your property tax basis, which a buydown does not. Run both as a total cost over how long you actually expect to stay.',
+			},
+			{
+				question: 'Do I have to use the builder\'s lender to get the buydown?',
+				answer: 'In most cases yes, because the buydown is paid through their mortgage company. You can use any lender you want, but you will usually give up the buydown. Get a full Loan Estimate from both and compare the total cost including fees, because the builder\'s loan often does come out ahead, and you want to know by how much.',
+			},
+		],
+		contentUpdated: '2026-09-23',
+	},
+	{
 		slug: 'quick-move-in',
 		title: 'Quick Move-In Deals in Austin',
 		subtitle: 'Where the largest builder concessions actually sit',

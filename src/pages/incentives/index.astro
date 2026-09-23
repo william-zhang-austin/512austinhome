@@ -8,6 +8,8 @@ import { INCENTIVE_TYPES, INCENTIVE_FAQS } from '../../data/incentives';
 import { BUILDERS } from '../../data/builders';
 import { CURRENT_OFFERS } from '../../data/current-offers';
 import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { TOPIC_LINKS } from '../../data/search-links';
 
 const title = 'Austin Builder Incentives | What They Are Worth | 512 Austin Home';
 const description = 'Austin new construction builder incentives explained: rate buydowns, closing cost credits, price reductions, design allowances and extended rate locks — what each is actually worth, and the catch in each one.';
@@ -33,6 +35,8 @@ const description = 'Austin new construction builder incentives explained: rate 
 		</section>
 
 		<IncentiveDisclosure />
+
+		<InventoryCTA link={TOPIC_LINKS['incentives']} />
 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-6">What builders are offering right now</h2>
@@ -134,6 +138,10 @@ const description = 'Austin new construction builder incentives explained: rate 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
 			<div class="grid sm:grid-cols-2 gap-4">
+				<a href="/deals/rate-buydowns/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Builder rate buydowns</span>
+					<span class="text-sm text-text-muted">Permanent versus 2-1, ARM versus fixed, and the catch.</span>
+				</a>
 				<a href="/deals/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 					<span class="font-display font-bold text-primary block mb-1">What is actually discounted</span>
 					<span class="text-sm text-text-muted">Where the real deals are, and how to spot one.</span>

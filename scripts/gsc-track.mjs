@@ -42,6 +42,11 @@ const WATCHLIST = [
   '/new-construction/communities/travisso/',
   '/new-construction/georgetown/',
   '/blog/best-austin-real-estate-agents-2026/',
+  // Added 2026-09-23: own terms William named directly.
+  '/deals/rate-buydowns/',
+  '/new-construction/best-schools/',
+  '/incentives/',
+  '/blog/new-construction-luxury-750k-plus-austin-2026/',
 ];
 
 function pull() {

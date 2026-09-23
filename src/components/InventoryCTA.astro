@@ -1,0 +1,26 @@
+---
+// Sends a reader who wants to see actual homes to the matching inventory: a New
+// Home Buddy saved search, William's IDX site, or his NHB personal link as the
+// always-working fallback. The label only promises a filter when the link has one.
+import { resolveLink, type SearchLink } from '../data/search-links';
+
+interface Props {
+	link?: SearchLink;
+	/** Optional one-line context under the button. */
+	note?: string;
+}
+const { link, note } = Astro.props;
+const resolved = resolveLink(link);
+---
+
+{(
+	<div class="bg-surface border-2 border-accent rounded-xl p-6 mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+		<div>
+			<p class="font-display font-bold text-primary mb-1">Ready to see actual homes?</p>
+			<p class="text-sm text-text-muted">{note ?? 'Current inventory with pricing, updated by the builders themselves. Incentives change constantly, so ask me what applies to a specific home.'}</p>
+		</div>
+		<a href={resolved.href} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline whitespace-nowrap">
+			{resolved.label} &rarr;
+		</a>
+	</div>
+)}

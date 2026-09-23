@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
+import { TOPIC_LINKS } from '../../data/search-links';
+
+// District groupings are derived from the community data, so this page can never
+// list a community under the wrong district or claim one we do not cover.
+// Quality claims are limited to what the site already states elsewhere; campus
+// ratings are pointed at the Texas Education Agency rather than asserted here.
+const districtOf = (sd: string) => sd.replace(/\s*\(.*\)$/, '').trim();
+
+const DISTRICTS = [
+	{
+		name: 'Leander ISD',
+		note: 'The strongest large district with meaningful new construction in the metro, and the one most relocating families ask about first. It is also the fastest-growing, so attendance zones get redrawn as new campuses open.',
+	},
+	{
+		name: 'Round Rock ISD',
+		note: 'Large, established and consistently well regarded across the whole district rather than in pockets. New construction here is limited because the area is largely built out, so what exists is worth knowing about.',
+	},
+	{
+		name: 'Dripping Springs ISD',
+		note: 'Among the top-performing districts in the metro, on the Hill Country side. New construction is concentrated at the luxury end.',
+	},
+	{
+		name: 'Liberty Hill ISD',
+		note: 'Smaller and fast-improving, and the value play in the Georgetown area. Several Georgetown-address communities are zoned here rather than to Georgetown ISD.',
+	},
+	{
+		name: 'Georgetown ISD',
+		note: 'The established district for the Georgetown area. Confirm zoning by address, because Georgetown-area lots can land in several different districts.',
+	},
+];
+
+const groups = DISTRICTS.map((d) => ({
+	...d,
+	communities: COMMUNITIES.filter((c) => districtOf(c.schoolDistrict) === d.name).sort((a, b) => a.priceFrom - b.priceFrom),
+})).filter((g) => g.communities.length > 0);
+
+const total = groups.reduce((n, g) => n + g.communities.length, 0);
+
+const faqs = [
+	{
+		question: 'Which Austin school districts have new construction homes?',
+		answer: `Of the districts most often ranked at the top in the Austin area, the ones with meaningful new construction are Leander ISD and Round Rock ISD, followed by Dripping Springs, Liberty Hill and Georgetown ISD. I currently cover ${total} new-construction communities zoned to those five districts. The two districts usually ranked highest overall, Eanes ISD and Lake Travis ISD, are largely built out and have very little new construction at all.`,
+	},
+	{
+		question: 'Can I get a new build in Eanes ISD or Lake Travis ISD?',
+		answer: 'Rarely. Both districts cover established, largely built-out areas west of Austin, so new construction there is mostly infill or custom homes at the top of the market rather than production-builder communities with incentives. If a top-rated district and a new build with builder incentives are both firm requirements, Leander ISD is usually where those two meet.',
+	},
+	{
+		question: 'Is Leander ISD good for new construction?',
+		answer: 'It is the district where strong schools and new-construction inventory overlap the most in the Austin metro, with communities spanning entry-level to luxury. The caution is growth: the district is expanding fast and attendance zones are redrawn as campuses open, so confirm the zone for the exact address and ask how stable it is, not just what it is today.',
+	},
+	{
+		question: 'How do I check which school a new home is zoned to?',
+		answer: 'Check the specific address with the school district directly rather than trusting the community name or the builder brochure. In this metro a single community can straddle more than one district, and Georgetown or Leander addresses can be zoned to a different district than the city name suggests. For campus performance, the Texas Education Agency publishes ratings by school.',
+	},
+];
+
+const title = 'New Construction Homes in the Best Austin School Districts | 512 Austin Home';
+const description = `New construction in Austin's strongest school districts: ${total} communities zoned to Leander, Round Rock, Dripping Springs, Liberty Hill and Georgetown ISD, and why the top-ranked districts have almost none.`;
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'New Construction', url: '/new-construction/' },
+		{ name: 'Best School Districts', url: '/new-construction/best-schools/' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">New Construction in Austin's Best School Districts</h1>
+			<p class="text-lg text-text-muted">Where strong schools and new-build inventory actually overlap</p>
+		</header>
+
+		<section class="mb-10">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">The two districts usually ranked highest in the Austin area, Eanes ISD and Lake Travis ISD, are largely built out and have almost no production new construction. If you want a new build and strong schools, the overlap is mainly in Leander ISD and Round Rock ISD, with Dripping Springs, Liberty Hill and Georgetown ISD behind them. I currently cover {total} new-construction communities zoned to those five districts. Always confirm the zone for the exact address, because communities here can straddle district lines.</p>
+		</section>
+
+		<InventoryCTA link={TOPIC_LINKS['best-schools']} />
+
+		{groups.map((g) => (
+			<section class="mb-12">
+				<h2 class="font-display text-2xl font-bold text-primary mb-2">{g.name}</h2>
+				<p class="text-sm text-text-muted leading-relaxed mb-5">{g.note}</p>
+				<div class="space-y-3">
+					{g.communities.map((c) => (
+						<a href={`/new-construction/communities/${c.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors group">
+							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+								<span class="font-display font-bold text-primary group-hover:text-accent transition-colors">{c.name}</span>
+								<span class="text-accent font-bold text-sm">{priceRangeLabel(c)}</span>
+							</div>
+							<span class="text-sm text-text-muted">{c.city} · {c.builder}{c.schoolDistrict !== g.name ? ` · ${c.schoolDistrict.replace(g.name, '').replace(/[()]/g, '').trim()}` : ''}</span>
+						</a>
+					))}
+				</div>
+			</section>
+		))}
+
+		<section class="mb-16">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">What I watch for when schools are the priority</h2>
+			<ul class="space-y-4 list-none pl-0">
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">Zoning is by address, not by community or city name. I confirm the exact address with the district before a buyer commits, because the builder brochure is not the authority.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">In fast-growing districts, the zone you buy into may not be the one your child starts in. I ask the district about planned campuses and boundary changes, not just current assignments.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">Top-district new builds often sit in a MUD or PID, so the effective tax rate is higher than the district name suggests. I run the all-in monthly number before a buyer sets their budget around the schools.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">District ratings describe averages. For a family with a specific child, the elementary campus matters more than the district ranking, and the Texas Education Agency publishes ratings by school.</li>
+			</ul>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">New homes and schools, answered</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href="/blog/top-austin-school-districts/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Best Austin school districts, ranked</span>
+					<span class="text-sm text-text-muted">The full district comparison, resale included.</span>
+				</a>
+				<a href="/compare/leander-vs-cedar-park/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Leander vs Cedar Park</span>
+					<span class="text-sm text-text-muted">Same district, new build versus established resale.</span>
+				</a>
+				<a href="/new-construction/leander/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction in Leander</span>
+					<span class="text-sm text-text-muted">Where most of the Leander ISD new builds are.</span>
+				</a>
+				<a href="/blog/new-construction-luxury-750k-plus-austin-2026/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Luxury new construction</span>
+					<span class="text-sm text-text-muted">$750K and up, including Dripping Springs ISD.</span>
+				</a>
+			</div>
+		</section>
+
+		<ContactForm heading="Schools are the priority?" subheading="Tell me the grades, the budget and where you work. I'll send the communities zoned to the districts that fit, with the address-level zoning confirmed." />
+
+		<p class="text-xs text-text-muted text-center mt-10">Reviewed September 23, 2026. School zoning and district boundaries change — confirm the assignment for a specific address with the district.</p>
+	</div>
+</BaseLayout>

@@ -4,6 +4,8 @@ import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
+import InventoryCTA from '../../components/InventoryCTA.astro';
+import { TOPIC_LINKS } from '../../data/search-links';
 import { PHONE } from '../../consts';
 import { DEAL_PAGES, DEALS_PREMISE } from '../../data/deals';
 import { CURRENT_OFFERS } from '../../data/current-offers';
@@ -53,6 +55,8 @@ const faqs = [
 		</section>
 
 		<IncentiveDisclosure />
+
+		<InventoryCTA link={TOPIC_LINKS['quick-move-in']} note="Move-in ready homes are where the largest concessions usually are. Ask me what applies to a specific one." />
 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-6">What is on the table right now</h2>
