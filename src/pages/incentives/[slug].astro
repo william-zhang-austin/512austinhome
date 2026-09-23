@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
+import { PHONE } from '../../consts';
+import { BUILDERS } from '../../data/builders';
+import { INCENTIVE_TYPES } from '../../data/incentives';
+import { COMMUNITIES } from '../../data/communities';
+
+export async function getStaticPaths() {
+	return BUILDERS.map((builder) => ({
+		params: { slug: builder.slug },
+		props: { builder },
+	}));
+}
+
+const { builder } = Astro.props;
+
+const communities = COMMUNITIES.filter((c) =>
+	c.builder.toLowerCase().includes(builder.name.toLowerCase().replace(' homes', '')),
+);
+
+// Surface the incentive types this builder actually uses, so the page is about
+// them rather than a generic explainer with a name swapped in. Declared per
+// builder rather than inferred from the prose, which was fragile.
+const relevantTypes = builder.incentiveTypes
+	.map((slug) => INCENTIVE_TYPES.find((t) => t.slug === slug))
+	.filter((t): t is (typeof INCENTIVE_TYPES)[number] => Boolean(t));
+
+const title = `${builder.name} Incentives in Austin | What They Actually Offer | 512 Austin Home`;
+const description = `How ${builder.name} structures builder incentives in Austin: the shape of their offers, what each one is worth, the catch in each, and how to negotiate on top of the advertised package.`;
+
+const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
+	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: builder.faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Builder Incentives', url: '/incentives/' },
+		{ name: builder.name, url: `/incentives/${builder.slug}/` },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">{builder.name} Incentives in Austin</h1>
+			<p class="text-sm uppercase tracking-widest text-text-muted">{builder.segment} · {builder.priceRange}</p>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">{builder.incentiveStyle} {builder.affiliates ? `Their incentives are tied to affiliated services: ${builder.affiliates}` : 'They do not route incentives through an in-house lender as rigidly as the national volume builders, so an outside lender is usually less costly here.'}</p>
+		</section>
+
+		<div class="bg-surface border border-border rounded-xl p-6 mb-16">
+			<h2 class="font-display text-lg font-bold text-primary mb-2">No current offers are published here, on purpose</h2>
+			<p class="text-sm text-text-muted leading-relaxed">{builder.name}'s incentives change monthly and vary by community and by individual home. Any figure published on a public page would be out of date within weeks, and a stale number sends you into a sales office expecting something that no longer exists. What is below is the shape of their offers, which is stable. For what they are offering on a specific home this week, ask me.</p>
+		</div>
+
+		{relevantTypes.length > 0 && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">The incentives {builder.name} actually uses</h2>
+				<div class="space-y-6">
+					{relevantTypes.map((t) => (
+						<div class="bg-surface border border-border rounded-xl p-6">
+							<h3 class="font-display text-lg font-bold text-primary mb-3">{t.name}</h3>
+							<dl class="space-y-3">
+								<div>
+									<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">What it is worth to you</dt>
+									<dd class="text-sm text-text-muted leading-relaxed">{t.worth}</dd>
+								</div>
+								<div>
+									<dt class="text-xs uppercase tracking-wider text-accent mb-1">The catch</dt>
+									<dd class="text-sm text-text-muted leading-relaxed">{t.catch}</dd>
+								</div>
+							</dl>
+						</div>
+					))}
+				</div>
+			</section>
+		)}
+
+		<section class="mb-16">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">How to negotiate on top of the {builder.name} package</h2>
+			<p class="text-text-muted text-sm mb-6">The advertised program is usually fixed, because it is marketing. What sits on top of it for one specific home is not.</p>
+			<ul class="space-y-4 list-none pl-0">
+				{builder.negotiating.map((n) => (
+					<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">{n}</li>
+				))}
+			</ul>
+		</section>
+
+		{builder.contractNotes && (
+			<section class="mb-16">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">From actual closings</p>
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">The clauses that decide whether you keep the incentive</h2>
+				<p class="text-text-muted text-sm mb-6">An incentive you lose at closing was never worth anything. These are from transactions I have closed with {builder.name}.</p>
+				<ul class="space-y-4 list-none pl-0">
+					{builder.contractNotes.map((c) => (
+						<li class="text-sm text-text-muted leading-relaxed bg-surface border border-border rounded-xl p-5">{c}</li>
+					))}
+				</ul>
+				<p class="text-xs text-text-muted mt-4">General information from past transactions, not legal advice. Contract terms change — have your own agent read the addenda for your deal.</p>
+			</section>
+		)}
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">What to watch for with {builder.name}</h2>
+			<ul class="space-y-3 list-none pl-0">
+				{builder.watchOuts.map((w) => <li class="text-sm text-text-muted leading-relaxed">{w}</li>)}
+			</ul>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href={`/builders/${builder.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">{builder.name}, reviewed</span>
+					<span class="text-sm text-text-muted">The full buyer-side review: strengths, watch-outs, communities.</span>
+				</a>
+				<a href="/incentives/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">All builder incentives</span>
+					<span class="text-sm text-text-muted">Every incentive type, what it is worth, and the catch.</span>
+				</a>
+				<a href="/builders/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Compare builders</span>
+					<span class="text-sm text-text-muted">Buyer-side reviews of every builder in the metro.</span>
+				</a>
+				{communities.length > 0 && (
+					<a href="/new-construction/communities/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">Where {builder.name} builds</span>
+						<span class="text-sm text-text-muted">{communities.length} {communities.length === 1 ? 'community' : 'communities'} I cover.</span>
+					</a>
+				)}
+			</div>
+		</section>
+
+		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-10 text-center text-white">
+			<h2 class="font-display text-2xl font-bold mb-3">What is {builder.name} offering right now?</h2>
+			<p class="text-white/70 mb-6 max-w-lg mx-auto">Tell me the community and I'll find out what is actually on the table this week, including the parts that are not advertised.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all no-underline">Book a call</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-all no-underline">Call {PHONE}</a>
+			</div>
+		</div>
+
+		<div id="schedule" class="mb-10 scroll-mt-20">
+			<TidyCalEmbed
+				heading={`Get the current ${builder.name} offer`}
+				subheading={`Pick a time. Tell me which ${builder.name} community you're looking at and I'll come to the call with what they're actually offering there.`}
+			/>
+		</div>
+
+		<ContactForm heading={`Which ${builder.name} community?`} subheading={`Tell me what you're looking at and I'll send you what's currently on the table, plus what I'd watch for in their contract.`} />
+
+		<p class="text-xs text-text-muted text-center mt-10">Reviewed and updated {updatedLabel}. Incentive programs change frequently — confirm current terms before making decisions.</p>
+	</div>
+</BaseLayout>

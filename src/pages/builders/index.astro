@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { BUILDERS } from '../../data/builders';
+
+const firstHand = BUILDERS.filter((b) => b.firstHand);
+const others = BUILDERS.filter((b) => !b.firstHand);
+
+const title = 'Austin New Home Builders | Honest Buyer-Side Reviews | 512 Austin Home';
+const description = 'Buyer-side reviews of the new home builders active in Austin, TX: price range, what each does well, what to watch for, how they negotiate, and the contract clauses that cost buyers money.';
+
+const faqs = [
+	{
+		question: 'Who is the best new home builder in Austin?',
+		answer: 'There is no single best builder, and any page that names one is selling something. The right builder depends on your price band and on what you are optimising for. If you want the lowest monthly payment, the high-volume builders buy rates down hardest. If you want the best house at a given price, the Texas-based move-up builders generally specify better. If you want flexibility on the plan, the semi-custom builders are the only ones who will genuinely say yes.',
+	},
+	{
+		question: 'Do all Austin builders pay a buyer agent commission?',
+		answer: 'Most do on new construction, and it is typically paid from the builder\'s marketing budget rather than added to your price. It is not universal and it is not guaranteed, so it should be disclosed to you in writing before you tour. The important part is registration: most builders require your agent to be registered on your first visit, and walking in alone can forfeit representation at that community.',
+	},
+	{
+		question: 'Why do builders require my agent to register on the first visit?',
+		answer: 'Because the registration decides who gets paid, and the builder would rather not pay a buyer agent commission on a buyer who arrived alone. The rule is enforced literally: signing the guest book without your agent present can be enough to lose representation at that community, at some builders permanently. It costs nothing to text your agent the builder and community name before you go.',
+	},
+	{
+		question: 'Are builder incentives better than a price reduction?',
+		answer: 'Usually for the builder, sometimes for you. Builders prefer incentives because a recorded price reduction lowers the comparable sales for every other home in the community, while a rate buydown or closing-cost credit does not. For you, a buydown is worth more than an equivalent price cut if you keep the loan, and worth less if you refinance or sell early. Run both as a monthly number over how long you actually expect to stay.',
+	},
+];
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Builders', url: '/builders/' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Austin New Home Builders</h1>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">There are roughly two dozen builders active in the Austin metro, and they fall into three groups: high-volume national builders competing on incentives at the entry level, Texas-based move-up builders competing on specification, and semi-custom builders competing on flexibility. Which group is right depends on whether your constraint is the monthly payment, the house itself, or getting a specific plan. These are buyer-side reviews, so each one includes what to watch for, not only what they do well.</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Builders I have personally worked with</h2>
+			<p class="text-text-muted text-sm mb-6">Where I have closed or actively negotiated a deal, the page includes the contract mechanics from those transactions — the clauses that cost buyers real money.</p>
+			<div class="space-y-4">
+				{firstHand.map((b) => (
+					<a href={`/builders/${b.slug}/`} class="block bg-surface border border-border rounded-xl p-6 no-underline hover:border-accent transition-colors group">
+						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+							<h3 class="font-display text-lg font-bold text-primary group-hover:text-accent transition-colors">{b.name}</h3>
+							<span class="text-accent font-bold text-sm">{b.priceRange}</span>
+						</div>
+						<p class="text-sm text-text-muted mb-2">{b.segment}</p>
+						<p class="text-sm text-text-muted">{b.shortAnswer.split('. ').slice(0, 2).join('. ')}.</p>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">Other builders active in the metro</h2>
+			<p class="text-text-muted text-sm mb-6">I have toured these communities and represented buyers against them in the same submarkets, but I have not closed a transaction with them. The pages say so.</p>
+			<div class="space-y-4">
+				{others.map((b) => (
+					<a href={`/builders/${b.slug}/`} class="block bg-surface border border-border rounded-xl p-6 no-underline hover:border-accent transition-colors group">
+						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+							<h3 class="font-display text-lg font-bold text-primary group-hover:text-accent transition-colors">{b.name}</h3>
+							<span class="text-accent font-bold text-sm">{b.priceRange}</span>
+						</div>
+						<p class="text-sm text-text-muted mb-2">{b.segment}</p>
+						<p class="text-sm text-text-muted">{b.shortAnswer.split('. ').slice(0, 2).join('. ')}.</p>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Austin builders, answered</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href="/incentives/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Builder incentives</span>
+					<span class="text-sm text-text-muted">How each builder structures incentives and what they are actually worth.</span>
+				</a>
+				<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction by city</span>
+					<span class="text-sm text-text-muted">Builders, schools, taxes and tradeoffs, suburb by suburb.</span>
+				</a>
+				<a href="/new-construction/communities/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Community guides</span>
+					<span class="text-sm text-text-muted">Every community I cover, with builders, schools and HOA.</span>
+				</a>
+				<a href="/blog/new-construction-mistakes-austin/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction mistakes</span>
+					<span class="text-sm text-text-muted">What goes wrong most often, and when it is still fixable.</span>
+				</a>
+			</div>
+		</section>
+
+		<ContactForm heading="Not sure which builder fits?" subheading="Tell me your budget, the suburbs you're considering, and what matters most — payment, finish, or flexibility. I'll tell you which builders are actually worth your Saturday." />
+	</div>
+</BaseLayout>

@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
+import { PHONE } from '../../consts';
+import { BUILDERS } from '../../data/builders';
+import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
+
+export async function getStaticPaths() {
+	return BUILDERS.map((builder) => ({
+		params: { slug: builder.slug },
+		props: { builder },
+	}));
+}
+
+const { builder } = Astro.props;
+
+// Match communities whose builder field mentions this builder. The field is free
+// text and often lists several builders for one master plan, so match loosely
+// but on the full name to avoid "Perry Homes" catching "Perry Homes, Coventry".
+const communities = COMMUNITIES.filter((c) =>
+	c.builder.toLowerCase().includes(builder.name.toLowerCase().replace(' homes', '')),
+).sort((a, b) => a.priceFrom - b.priceFrom);
+
+const title = `${builder.name} Austin, TX | Honest Buyer-Side Review | 512 Austin Home`;
+const description = `A buyer-side look at ${builder.name} in Austin: price range, what they do well, what to watch for, where they build, and how to negotiate one.`;
+
+const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
+	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: builder.faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Builders', url: '/builders/' },
+		{ name: builder.name, url: `/builders/${builder.slug}/` },
+	] }} />
+	<SchemaMarkup type="organization" data={{
+		name: builder.name,
+		description: builder.shortAnswer,
+		url: `/builders/${builder.slug}/`,
+		areaServed: 'Austin',
+	}} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">{builder.name} in Austin</h1>
+			<p class="text-sm uppercase tracking-widest text-text-muted">{builder.segment} · {builder.priceRange}</p>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">{builder.shortAnswer}</p>
+		</section>
+
+		{builder.firstHand ? (
+			<div class="bg-accent-light rounded-xl p-5 mb-12 border-l-4 border-accent">
+				<p class="text-sm text-primary leading-relaxed"><strong>I have personally closed or negotiated deals with {builder.name}.</strong> The contract notes below come from real transactions, not from their marketing material.</p>
+			</div>
+		) : (
+			<div class="bg-surface rounded-xl p-5 mb-12 border border-border">
+				<p class="text-sm text-text-muted leading-relaxed">I have not personally closed a {builder.name} transaction. What follows is from touring their communities, reading their contracts, and representing buyers against them in the same submarkets. I would rather say that than imply experience I do not have.</p>
+			</div>
+		)}
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">The case for and against {builder.name}</h2>
+			<p class="text-text-muted text-sm mb-6">No builder is right for everyone. Here is how I would frame it for a client.</p>
+			<div class="grid sm:grid-cols-2 gap-6">
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-4">What they do well</h3>
+					<ul class="space-y-3 list-none pl-0">
+						{builder.strengths.map((s) => <li class="text-sm text-text-muted leading-relaxed">{s}</li>)}
+					</ul>
+				</div>
+				<div class="bg-surface border border-border rounded-xl p-6">
+					<h3 class="font-display text-base font-bold text-primary mb-4">What to watch for</h3>
+					<ul class="space-y-3 list-none pl-0">
+						{builder.watchOuts.map((w) => <li class="text-sm text-text-muted leading-relaxed">{w}</li>)}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">Negotiating with {builder.name}</h2>
+			<p class="text-text-muted text-sm mb-6">{builder.incentiveStyle}</p>
+			<ul class="space-y-4 list-none pl-0">
+				{builder.negotiating.map((n) => (
+					<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">{n}</li>
+				))}
+			</ul>
+			{builder.affiliates && (
+				<p class="text-sm text-text-muted mt-6 leading-relaxed"><strong class="text-primary">Affiliated services:</strong> {builder.affiliates}</p>
+			)}
+		</section>
+
+		{builder.contractNotes && (
+			<section class="mb-16">
+				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">From actual closings</p>
+				<h2 class="font-display text-2xl font-bold text-primary mb-4">{builder.name} contract mechanics worth knowing</h2>
+				<p class="text-text-muted text-sm mb-6">These are the clauses that cost buyers real money, taken from transactions I have closed. Client details are omitted; the mechanics are not specific to any one buyer.</p>
+				<ul class="space-y-4 list-none pl-0">
+					{builder.contractNotes.map((c) => (
+						<li class="text-sm text-text-muted leading-relaxed bg-surface border border-border rounded-xl p-5">{c}</li>
+					))}
+				</ul>
+				<p class="text-xs text-text-muted mt-4">This is general information from past transactions, not legal advice, and contract terms change. Have your own agent read the addenda for your specific deal.</p>
+			</section>
+		)}
+
+		{communities.length > 0 && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">{builder.name} communities around Austin</h2>
+				<div class="space-y-4">
+					{communities.map((c) => (
+						<a href={`/new-construction/communities/${c.slug}/`} class="block bg-surface border border-border rounded-xl p-6 no-underline hover:border-accent transition-colors group">
+							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+								<h3 class="font-display text-lg font-bold text-primary group-hover:text-accent transition-colors">{c.name}</h3>
+								<span class="text-accent font-bold text-sm">{priceRangeLabel(c)}</span>
+							</div>
+							<p class="text-sm text-text-muted">{c.city} &middot; {c.schoolDistrict}</p>
+						</a>
+					))}
+				</div>
+			</section>
+		)}
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">Whose side is the {builder.name} sales agent on?</h2>
+			<p class="text-text-muted text-sm leading-relaxed mb-3">The agent in the model home is paid by {builder.name} and represents {builder.name}. They can be helpful, knowledgeable and genuinely pleasant, and they still do not work for you. Everything you tell them about your budget, your timeline and how much you love the house is information held by the other side of the negotiation.</p>
+			<p class="text-text-muted text-sm leading-relaxed">On new construction the builder pays my fee in most cases, disclosed in writing before we tour. Register me before your first visit — walking into a sales office alone and signing the guest book can cost you the right to representation at that community entirely.</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">{builder.name}, answered</h2>
+			<div class="space-y-4">
+				{builder.faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href="/builders/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">All Austin builders</span>
+					<span class="text-sm text-text-muted">Buyer-side reviews of every builder I work with.</span>
+				</a>
+				<a href={`/incentives/${builder.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">{builder.name} incentives</span>
+					<span class="text-sm text-text-muted">How their incentives are structured and what they are worth.</span>
+				</a>
+				<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction by city</span>
+					<span class="text-sm text-text-muted">Builders, schools, taxes and tradeoffs, suburb by suburb.</span>
+				</a>
+				<a href="/blog/austin-mud-pid-explained/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">MUD and PID taxes explained</span>
+					<span class="text-sm text-text-muted">How special districts change what you actually pay.</span>
+				</a>
+			</div>
+		</section>
+
+		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-10 text-center text-white">
+			<h2 class="font-display text-2xl font-bold mb-3">Touring {builder.name}? Get an agent on your side first.</h2>
+			<p class="text-white/70 mb-6 max-w-lg mx-auto">Fifteen minutes. I'll go through what {builder.name} is currently offering and register you before your first visit, at no cost to you.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all no-underline">Book a call</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-all no-underline">Call {PHONE}</a>
+			</div>
+		</div>
+
+		<div id="schedule" class="mb-10 scroll-mt-20">
+			<TidyCalEmbed
+				heading={`Book a ${builder.name} consultation`}
+				subheading={`Pick a time. I'll share what ${builder.name} is currently offering, which of their communities fit what you want, and register you before your first visit.`}
+			/>
+		</div>
+
+		<ContactForm heading={`Questions about ${builder.name}?`} subheading={`Tell me which community you're looking at and I'll send you my notes on it, current incentives, and what I'd watch for in the contract.`} />
+
+		<p class="text-xs text-text-muted text-center mt-10">Reviewed and updated {updatedLabel}. Builder pricing, incentives and contract terms change frequently — confirm current terms before making decisions.</p>
+	</div>
+</BaseLayout>

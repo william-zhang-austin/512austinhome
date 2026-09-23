@@ -230,6 +230,28 @@ function buildBreadcrumbSchema(d: Record<string, any>) {
 }
 
 /**
+ * Organization entity for a homebuilder. Lets a model resolve "Lennar" on this
+ * page to the same real-world builder it knows from elsewhere, rather than
+ * treating it as a string.
+ */
+function buildOrganizationSchema(d: Record<string, any>) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": d.name,
+		"description": d.description,
+		...(d.url && { "url": d.url.startsWith('http') ? d.url : `${SITE_URL}${d.url}` }),
+		...(d.areaServed && {
+			"areaServed": {
+				"@type": "City",
+				"name": d.areaServed,
+				"containedInPlace": { "@type": "State", "name": "Texas" },
+			},
+		}),
+	};
+}
+
+/**
  * City entity for the new-construction and sell city pages.
  *
  * Entity markup, not conversion markup: the city, the county it sits in, and
@@ -312,6 +334,9 @@ if (type === 'article') {
 }
 if (type === 'faq') {
 	schemas.push(JSON.stringify(buildFaqSchema(data)));
+}
+if (type === 'organization') {
+	schemas.push(JSON.stringify(buildOrganizationSchema(data)));
 }
 if (type === 'city') {
 	schemas.push(JSON.stringify(buildCitySchema(data)));

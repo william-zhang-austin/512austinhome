@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
+import { PHONE } from '../../consts';
+import { INCENTIVE_TYPES, INCENTIVE_FAQS } from '../../data/incentives';
+import { BUILDERS } from '../../data/builders';
+
+const title = 'Austin Builder Incentives | What They Are Worth | 512 Austin Home';
+const description = 'Austin new construction builder incentives explained: rate buydowns, closing cost credits, price reductions, design allowances and broker bonuses — what each is actually worth, and the catch in each one.';
+---
+
+<BaseLayout title={title} description={description}>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: INCENTIVE_FAQS }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Builder Incentives', url: '/incentives/' },
+	] }} />
+
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Austin Builder Incentives</h1>
+			<p class="text-sm uppercase tracking-widest text-text-muted">What each one is worth, and the catch in each one</p>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">Austin builders compete mainly through incentives rather than price, because a recorded price cut lowers the comparable sales for every unsold home in the community. The six shapes you will see are rate buydowns, closing cost credits, price reductions, design center allowances, broker bonuses, and extended rate locks. They are not interchangeable: a permanent rate buydown is usually worth more than an equal price cut if you keep the loan past about five years, and a design allowance is worth close to nothing if it buys things you did not want.</p>
+		</section>
+
+		<div class="bg-surface border border-border rounded-xl p-6 mb-16">
+			<h2 class="font-display text-lg font-bold text-primary mb-2">Why there is no list of current offers on this page</h2>
+			<p class="text-sm text-text-muted leading-relaxed">Builder incentives change monthly and sometimes weekly, and they differ by community and by individual home. A table of offers published on a website is out of date within weeks, and a stale number is worse than no number — it sends you into a sales office expecting something that no longer exists. What is on this page is the part that does not go stale. For what a specific builder is offering on a specific home this week, ask me and I will find out.</p>
+		</div>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">What each incentive is really worth</h2>
+			<div class="space-y-6">
+				{INCENTIVE_TYPES.map((t) => (
+					<div class="bg-surface border border-border rounded-xl p-6">
+						<h3 class="font-display text-lg font-bold text-primary mb-3">{t.name}</h3>
+						<dl class="space-y-3">
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">What it is</dt>
+								<dd class="text-sm text-text-muted leading-relaxed">{t.what}</dd>
+							</div>
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">What it is worth to you</dt>
+								<dd class="text-sm text-text-muted leading-relaxed">{t.worth}</dd>
+							</div>
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-accent mb-1">The catch</dt>
+								<dd class="text-sm text-text-muted leading-relaxed">{t.catch}</dd>
+							</div>
+							<div>
+								<dt class="text-xs uppercase tracking-wider text-text-muted mb-1">Typical in Austin</dt>
+								<dd class="text-sm text-text-muted leading-relaxed">{t.typical}</dd>
+							</div>
+						</dl>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">How each builder structures incentives</h2>
+			<p class="text-text-muted text-sm mb-6">Builders have consistent habits. The amounts change; the shape usually does not.</p>
+			<div class="space-y-3">
+				{BUILDERS.map((b) => (
+					<a href={`/incentives/${b.slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors group">
+						<h3 class="font-display text-base font-bold text-primary group-hover:text-accent transition-colors mb-1">{b.name}</h3>
+						<p class="text-sm text-text-muted">{b.incentiveStyle}</p>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">On your side of the table</p>
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">What I watch for on an incentive package</h2>
+			<ul class="space-y-4 list-none pl-0">
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">Whether the buydown is permanent or temporary. A 2-1 buydown and a permanent rate buy are advertised in nearly the same words and are worth very different amounts.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">The deadline the incentive is conditioned on. Builder addenda routinely tie the incentive to closing on or before a stated date, extendable only at the builder's discretion, and a late closing can trigger a separate penalty of a percentage of the sales price plus a daily charge.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">Whether a broker bonus exists on the specific home, and whether it can be redirected to you as a closing-cost concession.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">Whether a concession written for you cancels out a bonus elsewhere on the statement. Read the total compensation line, not the individual items.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">The all-in cost of the tied loan against an outside quote, fees included, not the headline rate.</li>
+				<li class="text-sm text-text-muted leading-relaxed border-l-2 border-accent pl-4">Whether the mortgage contingency expires on the same date as the incentive. It often does, and it expires silently.</li>
+			</ul>
+			<p class="text-sm text-text-muted mt-6 leading-relaxed">On new construction the builder pays my fee in most cases, disclosed in writing before we tour. None of this costs you anything, and all of it has to happen before you walk into a sales office alone.</p>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Builder incentives, answered</h2>
+			<div class="space-y-4">
+				{INCENTIVE_FAQS.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<a href="/builders/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Austin builders</span>
+					<span class="text-sm text-text-muted">Buyer-side reviews: what each does well and what to watch for.</span>
+				</a>
+				<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">New construction by city</span>
+					<span class="text-sm text-text-muted">Builders, schools, taxes and tradeoffs, suburb by suburb.</span>
+				</a>
+				<a href="/blog/austin-new-home-builder-incentives-2026/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Builder incentives in 2026</span>
+					<span class="text-sm text-text-muted">What the incentive environment has looked like this year.</span>
+				</a>
+				<a href="/blog/save-money-new-construction-austin/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Saving money on a new build</span>
+					<span class="text-sm text-text-muted">Where the money actually is, beyond the incentive sheet.</span>
+				</a>
+			</div>
+		</section>
+
+		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-10 text-center text-white">
+			<h2 class="font-display text-2xl font-bold mb-3">Want the real offer on a specific home?</h2>
+			<p class="text-white/70 mb-6 max-w-lg mx-auto">Tell me the builder and community. I'll find out what is actually on the table this week, including anything that is not advertised.</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a href="#schedule" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-white/90 transition-all no-underline">Book a call</a>
+				<a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-all no-underline">Call {PHONE}</a>
+			</div>
+		</div>
+
+		<div id="schedule" class="mb-10 scroll-mt-20">
+			<TidyCalEmbed
+				heading="Get the current offer on a specific home"
+				subheading="Pick a time. Tell me the builder and community, and I'll come to the call with what they're actually offering — including the parts that are not on the flyer."
+			/>
+		</div>
+
+		<ContactForm heading="Which builder and community?" subheading="Tell me what you're looking at and I'll send you what's currently on the table there, plus what I'd watch for in that builder's contract." />
+	</div>
+</BaseLayout>
