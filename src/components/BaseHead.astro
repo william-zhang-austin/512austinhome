@@ -64,3 +64,10 @@ const ogImage = image || new URL('/og-default.jpg', Astro.site).href;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={ogImage} />
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script is:inline async src="https://plausible.io/js/pa-OaYtCB0WlOngL9rgiyxwV.js"></script>
+<script is:inline>
+	window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+	plausible.init()
+</script>
