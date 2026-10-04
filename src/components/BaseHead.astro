@@ -71,3 +71,21 @@ const ogImage = image || new URL('/og-default.jpg', Astro.site).href;
 	window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
 	plausible.init()
 </script>
+<script is:inline>
+	// Plausible goals: phone, email, home-search clicks, and Tally contact form sends
+	document.addEventListener('click', function (e) {
+		var a = e.target.closest && e.target.closest('a[href]');
+		if (!a) return;
+		var h = a.getAttribute('href') || '';
+		if (h.indexOf('tel:') === 0) plausible('Phone Click');
+		else if (h.indexOf('mailto:') === 0) plausible('Email Click');
+		else if (/nhb\.app|lifeinaustintx\.com/.test(a.hostname)) plausible('Home Search Click', { props: { destination: a.hostname } });
+	});
+	window.addEventListener('message', function (e) {
+		if (e.origin !== 'https://tally.so') return;
+		try {
+			var d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+			if (d && d.event === 'Tally.FormSubmitted') plausible('Contact Form Submit');
+		} catch (_) {}
+	});
+</script>
