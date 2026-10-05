@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
-import { SITE_DESCRIPTION, IDX_URL, PHONE, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, GBP_URL } from '../consts';
+import { SITE_DESCRIPTION, IDX_URL, PHONE, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, GBP_URL, GOOGLE_REVIEW_COUNT, GOOGLE_RATING } from '../consts';
 import { REVIEWS } from '../data/reviews';
 import { CITIES } from '../data/cities';
 import { BUILDERS } from '../data/builders';
@@ -212,7 +212,7 @@ const homeFaqs = [
 		<div class="max-w-4xl mx-auto px-5 sm:px-8 py-16 sm:py-20 text-center">
 			<span class="accent-bar mx-auto mb-6"></span>
 			<p class="font-display text-xl sm:text-2xl lg:text-[1.65rem] text-primary leading-[1.45] tracking-tight">
-				<strong class="font-bold">William Zhang is a licensed Austin, Texas real estate agent</strong> (eXp Realty, TREC #{TREC_LICENSE}): a University of Texas at Austin alum and Pflugerville resident with over 12 years in Austin. He specializes in <strong class="font-bold">new construction negotiation</strong>, has helped 30+ families, and maintains a <strong class="font-bold">{avgRating}-star average</strong> across {totalReviews} client reviews on Google and RateMyAgent.
+				<strong class="font-bold">William Zhang is a licensed Austin, Texas real estate agent</strong> (eXp Realty, TREC #{TREC_LICENSE}): a University of Texas at Austin alum and Pflugerville resident with over 12 years in Austin. He specializes in <strong class="font-bold">new construction negotiation</strong>, has helped 30+ families, and maintains a <strong class="font-bold">{GOOGLE_RATING}-star rating</strong> across {GOOGLE_REVIEW_COUNT} Google reviews.
 			</p>
 			<p class="mt-6 text-text-muted text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
 				He works with <strong class="text-primary">first-time home buyers, move-up buyers and sellers, relocation clients, new construction buyers, and real estate investors</strong> across Austin, Cedar Park, Round Rock, Pflugerville, Lakeway, Georgetown, Leander, Hutto, Kyle, Buda, and the surrounding Central Texas suburbs. Bilingual in English and Mandarin Chinese.
@@ -615,7 +615,7 @@ const homeFaqs = [
 					<span aria-hidden="true">★★★★★</span>
 				</div>
 				<span class="font-display font-bold text-primary text-lg">{avgRating} / 5.0</span>
-				<span class="text-text-muted text-sm">· {totalReviews} verified reviews</span>
+				<span class="text-text-muted text-sm">· {GOOGLE_REVIEW_COUNT} Google reviews</span>
 			</div>
 			<h2 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-3">What Austin Clients Say</h2>
 			<p class="text-text-muted">Verified reviews from buyers and relocation clients across Google and RateMyAgent.</p>

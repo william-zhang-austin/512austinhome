@@ -20,6 +20,11 @@ export const NAP_REGION = 'TX';
 export const NAP_ZIP = '78759';
 export const NAP_PHONE = '(512) 766-3188';
 
+// Google Business Profile review count + rating. Update by hand when new reviews come in
+// (the REVIEWS list in data/reviews.ts holds only the ones with text on the site).
+export const GOOGLE_REVIEW_COUNT = 8;
+export const GOOGLE_RATING = '5.0';
+
 // Additional profile URLs for Person/Agent sameAs (entity consolidation signal for LLMs + Google).
 // Add LinkedIn, Zillow, Realtor.com, Homes.com, Facebook, Instagram profile URLs here as they are claimed.
 export const SAME_AS: string[] = [
