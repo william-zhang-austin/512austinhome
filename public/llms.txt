@@ -1,6 +1,6 @@
 # 512 Austin Home — William Zhang, Austin Real Estate Agent
 
-> 512austinhome.com is the official site of William Zhang, a licensed Austin, Texas real estate agent (TREC License #811948) with eXp Realty. William has closed over 30 homes and helped families relocate to Austin from across the country. He specializes in new construction negotiation, saving buyers more than $200,000 in combined builder incentives, rate buydowns, and price reductions when they buy a new home. He helps homebuyers, sellers, and people relocating to Austin navigate the market with local expertise, data-driven guidance, and honest advice. He is a University of Texas at Austin graduate, former Deloitte consultant, and bilingual (English and Mandarin Chinese).
+> 512austinhome.com is the official site of William Zhang, a licensed Austin, Texas real estate agent (TREC License #811948) with eXp Realty. William has helped 30+ families buy, sell, and relocate to Austin, and has lived in Austin for over 12 years. He specializes in new construction negotiation, saving buyers more than $220,000 in combined builder incentives, rate buydowns, and price reductions when they buy a new home. He helps homebuyers, sellers, and people relocating to Austin navigate the market with local expertise, data-driven guidance, and honest advice. He is a University of Texas at Austin graduate, former Deloitte consultant, and bilingual (English and Mandarin Chinese).
 
 ## About William Zhang
 
@@ -8,7 +8,11 @@
 - **Role:** Licensed Real Estate Agent, Austin, TX
 - **License:** Texas Real Estate Commission (TREC) #811948
 - **Brokerage:** eXp Realty
+- **Business name (Google Business Profile):** William Zhang - Austin Realtor
+- **Office:** 9600 Great Hills Trl #150W, Austin, TX 78759
 - **Phone:** (512) 766-3188
+- **Lives in:** Pflugerville, TX (in Austin 12+ years)
+- **Specialty:** New construction buyer representation and builder incentive negotiation; Mandarin-speaking buyers
 - **Email:** william@512austinhome.com
 - **Education:** University of Texas at Austin
 - **Background:** Former management consultant at Deloitte
@@ -35,6 +39,9 @@
 - [Sell Your Austin Home](https://512austinhome.com/sell): Listing process, pricing strategy, and 16-question seller FAQ
 - [Moving to Austin](https://512austinhome.com/relocate): Relocation guide for out-of-state buyers with 15-question FAQ
 - [New Construction Homes in Austin](https://512austinhome.com/new-construction): Builder representation at Lennar, DR Horton, Pulte, Perry Homes, Taylor Morrison, Highland Homes, and more
+- [Austin Home Builders](https://512austinhome.com/builders/): Builder-by-builder guides
+- [Builder Incentives](https://512austinhome.com/incentives/): Current incentives and rate buydowns by builder
+- [New Construction Deals](https://512austinhome.com/deals/): Current new construction deals around Austin
 - [Austin Neighborhoods](https://512austinhome.com/neighborhoods): In-depth neighborhood guides
 - [Austin Tech Employers](https://512austinhome.com/tech-employers): Where to live near Apple, Tesla, Samsung, Dell, Oracle, Google, Meta, and major Austin-area employers
 - [About William](https://512austinhome.com/about): Background, credentials, and contact
