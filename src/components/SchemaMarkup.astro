@@ -1,6 +1,7 @@
 ---
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES, GBP_URL, NAP_NAME, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP } from '../consts';
 import { REVIEWS } from '../data/reviews';
+import { videoUploadDate } from '../data/video-dates';
 
 interface Props {
 	type: 'agent' | 'article' | 'faq' | 'neighborhood' | 'service' | 'breadcrumb' | 'website' | 'reviews';
@@ -159,7 +160,8 @@ function buildArticleSchema(d: Record<string, any>) {
 				"@type": "VideoObject",
 				"name": d.title,
 				"description": d.description,
-				"uploadDate": d.pubDate,
+				"uploadDate": videoUploadDate(d.youtubeId, d.pubDate),
+				"contentUrl": `https://www.youtube.com/watch?v=${d.youtubeId}`,
 				"embedUrl": `https://www.youtube.com/embed/${d.youtubeId}`,
 				"thumbnailUrl": `https://img.youtube.com/vi/${d.youtubeId}/maxresdefault.jpg`,
 			}
