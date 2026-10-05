@@ -566,3 +566,265 @@ GUIDES.push(
 		contentUpdated: '2026-09-23',
 	},
 );
+
+// Added 2026-10-05: the questions ChatGPT and Google AI Mode answer when someone
+// asks who to contact before buying new construction in Austin.
+GUIDES.push(
+	{
+		slug: 'is-a-buyers-agent-free-on-new-construction',
+		title: 'Is a Buyer\'s Agent Free on New Construction in Austin?',
+		subtitle: 'Who pays, where it is written down, and the cases where it is not free',
+		shortAnswer: 'On most Austin new construction, yes. The builder pays the buyer agent\'s fee from its marketing budget, and the sales price is the same whether or not you bring an agent. Since August 2024 you sign a written buyer representation agreement before touring, and that agreement states the agent\'s fee and who pays it. It stops being free when you visit the builder alone first, or when a builder pays less than your agreement states.',
+		sections: [
+			{
+				heading: 'Who actually pays',
+				body: [
+					'Builders budget for buyer agent fees the same way they budget for model homes and signs. It is a cost of selling houses, and it is already in their pricing whether you use it or not.',
+					'That is the part most buyers miss. Walking into the sales office alone does not get you a discount. The builder simply keeps the money.',
+				],
+			},
+			{
+				heading: 'Where it is written down',
+				body: [
+					'Since the 2024 changes to how buyer agents are paid, Texas buyers sign a written buyer representation agreement before touring homes with an agent. The agreement states what the agent is paid and how.',
+					'On new construction, the builder offers the fee in writing too, usually on its agent registration or broker participation terms. Ask to see both before your first visit, so you know the number on each side.',
+				],
+			},
+			{
+				heading: 'When it is not free',
+				body: [],
+				list: [
+					'You toured the community alone and signed the guest book. Many builders then refuse to pay a buyer agent on that community, so representation would come out of your pocket or not at all.',
+					'The builder pays less than your representation agreement states. The agreement says what happens to the difference. Read that clause before you sign, and ask the agent how they handle it.',
+					'A small or custom builder that does not work with buyer agents at all. This is rare in the Austin master plans but common with one-off lot builders.',
+				],
+			},
+			{
+				heading: 'What you get for it',
+				body: [
+					'Someone on your side of the negotiation, which on new construction is mostly about the incentive package rather than the price. Someone who prices the builder\'s loan against an outside lender. Someone at the inspection and the walkthrough making sure problems are written down.',
+					'The full list is in the guide on whether you need an agent at all.',
+				],
+			},
+		],
+		faqs: [
+			{ question: 'Does using a buyer\'s agent raise the price of a new build?', answer: 'No. The builder pays the buyer agent fee from its marketing budget, and the price is the same with or without an agent. Buyers who arrive alone do not get the fee back as a discount.' },
+			{ question: 'Do I have to sign a buyer agreement for new construction in Texas?', answer: 'Yes, if you want an agent to represent you. Since August 2024, buyers sign a written buyer representation agreement before touring, and it states what the agent is paid. On new construction the builder usually pays that fee.' },
+			{ question: 'What if the builder pays less than my agreement says?', answer: 'Your buyer representation agreement says what happens to the difference. Read that clause before you sign it and ask your agent how they handle it. Have a real estate attorney review it if anything is unclear.' },
+			{ question: 'Can I get the commission as a discount if I go alone?', answer: 'Almost never at the large Austin builders. The fee is a marketing budget item, and builders do not lower the price for unrepresented buyers. You give up representation without getting the money.' },
+		],
+		related: [
+			{ label: 'Do you need an agent to buy new construction?', href: '/guides/buyer-agent-new-construction/' },
+			{ label: 'Best realtor for new construction in Austin', href: '/best-realtor-new-construction-austin/' },
+		],
+		contentUpdated: '2026-10-05',
+	},
+	{
+		slug: 'before-your-first-builder-visit',
+		title: 'Before Your First Builder Visit in Austin: A Checklist',
+		subtitle: 'The registration rule, what to bring, and what not to say in the sales office',
+		shortAnswer: 'Contact your buyer\'s agent before you set foot in a builder\'s sales office, because most Austin builders only pay a buyer agent who is registered on your first visit. Text your agent the builder and community name, write the agent\'s name on the registration card, bring a pre-approval but keep your maximum budget to yourself, and leave with the price sheet, the incentive deadline in writing and the tax rate for that phase. Do not put down a deposit on the first visit.',
+		sections: [
+			{
+				heading: 'Why the first visit matters more than the rest',
+				body: [
+					'Most Austin builders decide on your first visit whether they will pay a buyer agent. If you sign the guest book alone, many will not pay one on that community afterwards, and some treat that as permanent.',
+					'Nobody in the sales office is going to tell you this. The decision gets made on a Saturday morning by someone who did not know they were making it.',
+				],
+			},
+			{
+				heading: 'Before you go',
+				body: [],
+				list: [
+					'Choose your agent and sign the buyer representation agreement.',
+					'Text your agent the builder and the community name. Some builders want the agent with you in person on the first visit, others accept a call or an email ahead of time. Your agent will know which.',
+					'Get pre-approved with an outside lender, so you can compare the builder\'s loan against a real number.',
+					'Look up the community\'s MUD or PID status, so the tax rate does not surprise you.',
+				],
+			},
+			{
+				heading: 'In the sales office',
+				body: [],
+				list: [
+					'Write your agent\'s name and brokerage on the registration card. Ask the sales agent to confirm in writing that your agent is registered.',
+					'Talk about the homes, not your budget. Your maximum price and how much you love the house are negotiating information.',
+					'Ask which homes are complete and unsold, and how long each has been standing.',
+					'Ask for the current incentive in writing, with its deadline and whether it requires the builder\'s lender or title company.',
+					'Ask for the effective tax rate for the exact phase, including MUD or PID.',
+				],
+			},
+			{
+				heading: 'What to leave with, and what to leave behind',
+				body: [
+					'Leave with the price sheet, the incentive terms and deadline in writing, the lot premium for any lot you liked, and the tax rate.',
+					'Leave your checkbook behind. A reservation deposit on the first visit locks you into the builder\'s timeline before your agent has compared it to anything.',
+				],
+			},
+		],
+		faqs: [
+			{ question: 'Do I need my realtor with me on my first visit to a builder?', answer: 'It depends on the builder. Many Austin builders require the agent in person on the first visit, and some accept registration by phone or email beforehand. Text your agent before you go and they will handle it either way.' },
+			{ question: 'What happens if I sign the guest book without an agent?', answer: 'Many builders treat you as an unrepresented buyer for that community and will not pay a buyer agent afterwards. It is sometimes recoverable if you act immediately, before signing anything.' },
+			{ question: 'Should I tell the builder my budget?', answer: 'Not your maximum. The builder\'s sales agent represents the builder, and your budget is negotiating information. Share your price range and let your agent handle the rest.' },
+			{ question: 'Should I put a deposit down on the first visit?', answer: 'No. Get the price sheet, incentive terms and tax rate first, and let your agent compare them with other communities before you commit.' },
+		],
+		related: [
+			{ label: 'You visited a builder without an agent. Now what?', href: '/guides/registered-with-builder-already/' },
+			{ label: 'Questions to ask an Austin builder', href: '/guides/questions-to-ask-an-austin-builder/' },
+		],
+		contentUpdated: '2026-10-05',
+	},
+	{
+		slug: 'questions-to-ask-an-austin-builder',
+		title: 'Questions to Ask an Austin Home Builder',
+		subtitle: 'The ones that change the price, the payment and the resale',
+		shortAnswer: 'The questions that matter most at an Austin builder are about money and timing, not finishes: which homes have been standing longest and what they have been reduced by, whether the incentive requires the builder\'s lender or title company, what the effective tax rate is for that phase including MUD or PID, how many phases are left to build, what the lot premium is, and when the incentive deadline falls. Ask for every answer in writing.',
+		sections: [
+			{
+				heading: 'Price and incentives',
+				body: [],
+				list: [
+					'Which completed homes have been standing longest, and what has each already been reduced by?',
+					'What is the current incentive, and what is its deadline?',
+					'Does the incentive require your lender, your title company, or both?',
+					'Can the incentive go to a rate buydown, closing costs or the design center, and is the split my choice?',
+					'What is the lot premium on this lot, and is it negotiable?',
+				],
+			},
+			{
+				heading: 'The monthly payment',
+				body: [],
+				list: [
+					'What is the effective tax rate for this phase, including any MUD or PID?',
+					'Is the advertised rate a permanent buydown or a temporary one that steps up?',
+					'What are the HOA dues, and what do they cover?',
+				],
+			},
+			{
+				heading: 'The build and the community',
+				body: [],
+				list: [
+					'How many phases are left, and how many homes will be built after mine?',
+					'What is planned on the empty land next to and behind this lot?',
+					'What is the realistic completion date for a to-be-built home, and what happens if it slips?',
+					'Can I bring a third-party inspector to the pre-drywall and final inspections?',
+				],
+			},
+			{
+				heading: 'Questions for an attorney, not the sales office',
+				body: [
+					'What the purchase agreement, addenda and warranty actually commit you to is a legal question. The builder\'s sales agent cannot answer it for you, and neither can your real estate agent. Have a real estate attorney review the paperwork before you sign.',
+				],
+			},
+		],
+		faqs: [
+			{ question: 'What is the most important question to ask a builder?', answer: 'Which completed homes have been standing longest and what each has been reduced by. Aged inventory is where Austin builders have the most room to negotiate.' },
+			{ question: 'Should I ask about MUD and PID taxes?', answer: 'Yes, for the exact phase you are buying in. MUD and PID can push the effective tax rate well above the county rate and change the monthly payment more than the interest rate does.' },
+			{ question: 'Can I bring my own inspector to a new build?', answer: 'Most Austin builders allow a third-party inspector at pre-drywall and final. Ask before you sign and get the answer in writing.' },
+		],
+		related: [
+			{ label: 'Before your first builder visit: checklist', href: '/guides/before-your-first-builder-visit/' },
+			{ label: 'How to negotiate with an Austin builder', href: '/guides/how-to-negotiate-with-an-austin-builder/' },
+		],
+		contentUpdated: '2026-10-05',
+	},
+	{
+		slug: 'lennar-vs-dr-horton-austin',
+		title: 'Lennar vs D.R. Horton in Austin',
+		subtitle: 'Two entry-level volume builders, compared from the buyer\'s side',
+		shortAnswer: 'Lennar and D.R. Horton are the two highest-volume entry-level builders in the Austin metro. D.R. Horton reaches lower prices, roughly $250,000 to $450,000, with a more basic finish and tighter lots. Lennar runs roughly $280,000 to $550,000 with its "Everything\'s Included" features. Both put most of their incentive money into rate buydowns tied to their own lenders, so compare the all-in monthly payment, not the price.',
+		sections: [
+			{
+				heading: 'At a glance',
+				body: [],
+				list: [
+					'Price range: D.R. Horton roughly $250K to $450K, including the Express brand at the bottom. Lennar roughly $280K to $550K.',
+					'Finishes: Lennar includes most features as standard. D.R. Horton is more basic, and Express more basic still.',
+					'Lots: D.R. Horton lots are typically small and homes sit close together. Check the plat for setbacks.',
+					'Financing: Lennar incentives usually require Lennar Mortgage and Lennar Title. D.R. Horton incentives are tied to DHI Mortgage almost without exception.',
+					'Where they build: both concentrate in the north and east value suburbs, where MUD and PID rates run highest.',
+				],
+			},
+			{
+				heading: 'Where Lennar wins',
+				body: [
+					'Fewer design center surprises, because what you see in the model is close to what you get. Lennar\'s buydowns are among the most aggressive in the market. I have closed a Lennar purchase with the rate bought down to 4.25 percent on an FHA loan and the builder covering the closing costs.',
+				],
+			},
+			{
+				heading: 'Where D.R. Horton wins',
+				body: [
+					'The lowest real entry point into new construction in the metro, and quick move-in inventory almost always available. If the payment is the constraint, D.R. Horton is often where the numbers work.',
+				],
+			},
+			{
+				heading: 'How to choose',
+				body: [
+					'Get the incentive from each builder in writing on a specific home, then compare the all-in monthly payment including taxes, HOA and the bought-down rate. Price the tied loan against an outside lender either way.',
+					'Walk a completed home at each, not just the decorated model. And ask how many phases are left, because buying near the end of a build-out is better for resale.',
+				],
+			},
+		],
+		faqs: [
+			{ question: 'Is Lennar or D.R. Horton cheaper in Austin?', answer: 'D.R. Horton usually has the lower entry price, roughly $250,000 to $450,000 against Lennar\'s $280,000 to $550,000. Compare the monthly payment after incentives, though, because both builders put most of their money into rate buydowns.' },
+			{ question: 'Do I have to use Lennar Mortgage or DHI Mortgage?', answer: 'Not to buy the home, but usually to get the headline incentive. Price the builder\'s loan against an outside lender before you decide. The buydown often still wins, and you should know by how much.' },
+			{ question: 'Which has better quality, Lennar or D.R. Horton?', answer: 'Lennar\'s standard features are more complete, and D.R. Horton\'s finish is more basic. Both are high-volume builders, so hire a third-party inspector at pre-drywall and final either way.' },
+		],
+		related: [
+			{ label: 'Lennar: buyer-side review', href: '/builders/lennar/' },
+			{ label: 'D.R. Horton: buyer-side review', href: '/builders/dr-horton/' },
+			{ label: 'Lennar current incentives', href: '/incentives/lennar/' },
+			{ label: 'D.R. Horton current incentives', href: '/incentives/dr-horton/' },
+		],
+		contentUpdated: '2026-10-05',
+	},
+	{
+		slug: 'perry-homes-vs-highland-homes-austin',
+		title: 'Perry Homes vs Highland Homes in Austin',
+		subtitle: 'Two Texas move-up builders, compared from the buyer\'s side',
+		shortAnswer: 'Perry Homes and Highland Homes are both Texas-based move-up builders in the Austin metro, roughly $400,000 to $900,000, often in the same master plans in Georgetown and Leander. Highland is known for above-average standard features and strong warranty scores. Perry is known for distinctive floor plans with high ceilings, and for being rigid about changes once you commit. Both negotiate mostly through closing costs and allowances rather than base price.',
+		sections: [
+			{
+				heading: 'At a glance',
+				body: [],
+				list: [
+					'Price range: both roughly $400K to $900K in the Austin metro.',
+					'Standard features: Highland\'s are above the market at the price point, particularly trim and cabinetry. Perry\'s strength is the plan library itself.',
+					'Changes: Perry is notably rigid once you are committed. Highland offers real structural options on most plans.',
+					'Build time: Highland\'s to-be-built timelines run longer than the volume builders.',
+					'Where they build: both have strong positions in the better north-metro master plans, including Georgetown and Leander.',
+				],
+			},
+			{
+				heading: 'Where Highland wins',
+				body: [
+					'More house as standard and a strong warranty track record. Highland is usually the better fit if you want to customize the plan, as long as you watch the design center spend, because the option list is long and good.',
+				],
+			},
+			{
+				heading: 'Where Perry wins',
+				body: [
+					'Floor plans with generous ceiling heights and natural light that many buyers fall for on sight. Perry suits buyers who find a plan they love and do not need to change it.',
+				],
+			},
+			{
+				heading: 'How to choose',
+				body: [
+					'Settle every change before you commit at Perry, because later is genuinely difficult. At Highland, ask for a design center allowance, which is the concession they approve most readily.',
+					'Both builders run year-end events with larger incentives than usual. Check the current offers before you decide, because the gap between them changes month to month.',
+				],
+			},
+		],
+		faqs: [
+			{ question: 'Is Perry Homes or Highland Homes better quality?', answer: 'Highland is known for above-average standard features and strong customer-satisfaction and warranty scores. Perry is known for its floor plans. Walk a completed home from each and hire a third-party inspector either way.' },
+			{ question: 'Which is more flexible on changes?', answer: 'Highland offers real structural options on most plans. Perry is notably rigid once you are committed, so settle every change before you sign.' },
+			{ question: 'Do Perry and Highland offer incentives?', answer: 'Both lean on closing-cost credits and allowances rather than price cuts, and both run year-end events. Check the current incentive pages for the latest terms in writing.' },
+		],
+		related: [
+			{ label: 'Perry Homes: buyer-side review', href: '/builders/perry-homes/' },
+			{ label: 'Highland Homes: buyer-side review', href: '/builders/highland-homes/' },
+			{ label: 'Perry Homes current incentives', href: '/incentives/perry-homes/' },
+			{ label: 'Highland Homes current incentives', href: '/incentives/highland-homes/' },
+		],
+		contentUpdated: '2026-10-05',
+	},
+);
