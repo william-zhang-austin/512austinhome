@@ -1,0 +1,29 @@
+# After every successful Vercel production deploy, tell Bing (and the other
+# IndexNow engines: Yandex, Seznam, Naver, Yep) which pages exist, so new and
+# changed pages get recrawled without a manual URL submission.
+# Bing's index feeds ChatGPT search. Google does not use IndexNow.
+name: IndexNow ping
+
+on:
+  deployment_status:
+
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit sitemap URLs to IndexNow
+        run: |
+          set -euo pipefail
+          HOST=512austinhome.com
+          KEY=be76b8e94a540b1225ba746c9391da67
+          curl -fsS "https://$HOST/sitemap-0.xml" | grep -oE '<loc>[^<]+' | sed 's/<loc>//' > urls.txt
+          echo "Submitting $(wc -l < urls.txt) URLs"
+          python3 - <<PY
+          import json, urllib.request
+          urls = [u.strip() for u in open('urls.txt') if u.strip()]
+          body = json.dumps({"host": "$HOST", "key": "$KEY", "keyLocation": "https://$HOST/$KEY.txt", "urlList": urls}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=body, headers={"Content-Type": "application/json; charset=utf-8"})
+          with urllib.request.urlopen(req) as r:
+              print("IndexNow status", r.status)
+          PY
