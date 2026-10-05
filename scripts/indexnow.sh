@@ -10,7 +10,7 @@ KEY=be76b8e94a540b1225ba746c9391da67
 HOST=512austinhome.com
 SEO="$HOME/.claude/skills/seo/bin/claude-seo"
 if [ $# -gt 0 ]; then
-  URLS=$(printf 'https://%s%s\n' "$HOST" "$@")
+  URLS=$(for p in "$@"; do printf 'https://%s%s\n' "$HOST" "$p"; done)
 else
   URLS=$(curl -s "https://$HOST/sitemap-0.xml" | grep -oE '<loc>[^<]+' | sed 's/<loc>//')
 fi
