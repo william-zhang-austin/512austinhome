@@ -1,5 +1,5 @@
 ---
-import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES } from '../consts';
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP } from '../consts';
 import { REVIEWS } from '../data/reviews';
 
 interface Props {
@@ -113,14 +113,16 @@ const localBusinessSchema = {
 	"email": EMAIL,
 	"address": {
 		"@type": "PostalAddress",
-		"addressLocality": "Austin",
-		"addressRegion": "TX",
+		"streetAddress": NAP_STREET,
+		"addressLocality": NAP_CITY,
+		"addressRegion": NAP_REGION,
+		"postalCode": NAP_ZIP,
 		"addressCountry": "US",
 	},
 	"geo": {
 		"@type": "GeoCoordinates",
-		"latitude": 30.2672,
-		"longitude": -97.7431,
+		"latitude": 30.3955,
+		"longitude": -97.7539,
 	},
 	"openingHours": "Mo-Su 09:00-18:00",
 	"priceRange": "$$",

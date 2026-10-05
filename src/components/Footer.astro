@@ -1,5 +1,5 @@
 ---
-import { YOUTUBE_URL, GBP_URL, IDX_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE } from '../consts';
+import { YOUTUBE_URL, GBP_URL, IDX_URL, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, NAP_NAME, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP, NAP_PHONE } from '../consts';
 const year = new Date().getFullYear();
 ---
 
@@ -14,6 +14,11 @@ const year = new Date().getFullYear();
 				<p class="text-sm leading-relaxed max-w-xs">
 					Your Austin real estate agent. Local market expertise, honest advice, and data-driven guidance for buyers and sellers.
 				</p>
+				<address class="not-italic text-sm leading-relaxed mt-5">
+					<span class="block font-semibold text-white">{NAP_NAME}</span>
+					<span class="block">{NAP_STREET}, {NAP_CITY}, {NAP_REGION} {NAP_ZIP}</span>
+					<a href={`tel:${NAP_PHONE.replace(/[^0-9+]/g, '')}`} class="block hover:text-accent transition-colors duration-200 no-underline">{NAP_PHONE}</a>
+				</address>
 			</div>
 
 			<!-- Navigation -->
