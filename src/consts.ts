@@ -18,7 +18,7 @@ export const NAP_STREET = '9600 Great Hills Trl #150W';
 export const NAP_CITY = 'Austin';
 export const NAP_REGION = 'TX';
 export const NAP_ZIP = '78759';
-export const NAP_PHONE = '+1 512-766-3188';
+export const NAP_PHONE = '(512) 766-3188';
 
 // Additional profile URLs for Person/Agent sameAs (entity consolidation signal for LLMs + Google).
 // Add LinkedIn, Zillow, Realtor.com, Homes.com, Facebook, Instagram profile URLs here as they are claimed.

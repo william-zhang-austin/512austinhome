@@ -1,5 +1,5 @@
 ---
-import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP } from '../consts';
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES, NAP_NAME, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP } from '../consts';
 import { REVIEWS } from '../data/reviews';
 
 interface Props {
@@ -107,7 +107,7 @@ const agentSchema = {
 const localBusinessSchema = {
 	"@context": "https://schema.org",
 	"@type": "LocalBusiness",
-	"name": "512 Austin Home — William Zhang, Realtor",
+	"name": NAP_NAME,
 	"url": SITE_URL,
 	"telephone": PHONE,
 	"email": EMAIL,
