@@ -1,5 +1,5 @@
 ---
-import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES, NAP_NAME, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP } from '../consts';
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, PHONE, EMAIL, BROKERAGE, TREC_LICENSE, YOUTUBE_URL, YOUTUBE_ZH_URL, IDX_URL, SAME_AS, SERVICES, GBP_URL, NAP_NAME, NAP_STREET, NAP_CITY, NAP_REGION, NAP_ZIP } from '../consts';
 import { REVIEWS } from '../data/reviews';
 
 interface Props {
@@ -65,6 +65,7 @@ const personSchema = {
 		"identifier": TREC_LICENSE,
 	},
 	"memberOf": { "@type": "Organization", "name": BROKERAGE },
+	"worksFor": { "@id": `${SITE_URL}#agent` },
 	"sameAs": SAME_AS,
 };
 
@@ -72,7 +73,24 @@ const agentSchema = {
 	"@context": "https://schema.org",
 	"@type": "RealEstateAgent",
 	"@id": `${SITE_URL}#agent`,
-	"name": "William Zhang",
+	"name": NAP_NAME,
+	"alternateName": ["William Zhang", "512 Austin Home"],
+	"address": {
+		"@type": "PostalAddress",
+		"streetAddress": NAP_STREET,
+		"addressLocality": NAP_CITY,
+		"addressRegion": NAP_REGION,
+		"postalCode": NAP_ZIP,
+		"addressCountry": "US",
+	},
+	"geo": {
+		"@type": "GeoCoordinates",
+		"latitude": 30.3955,
+		"longitude": -97.7539,
+	},
+	"hasMap": GBP_URL,
+	"priceRange": "$$",
+	// openingHours omitted until the GBP hours are confirmed; a wrong value is worse than none.
 	"jobTitle": "Licensed Real Estate Agent",
 	"url": SITE_URL,
 	"telephone": PHONE,
@@ -87,6 +105,9 @@ const agentSchema = {
 		{ "@type": "City", "name": "Lakeway", "containedInPlace": { "@type": "State", "name": "Texas" } },
 		{ "@type": "City", "name": "Georgetown", "containedInPlace": { "@type": "State", "name": "Texas" } },
 		{ "@type": "City", "name": "Leander", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Hutto", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Manor", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Dripping Springs", "containedInPlace": { "@type": "State", "name": "Texas" } },
 	],
 	"worksFor": { "@type": "RealEstateAgent", "name": BROKERAGE },
 	"employee": { "@id": `${SITE_URL}/about#william-zhang` },
@@ -104,30 +125,8 @@ const agentSchema = {
 	// Real reviews are emitted as standalone Review entities on /reviews/ only (type='reviews').
 };
 
-const localBusinessSchema = {
-	"@context": "https://schema.org",
-	"@type": "LocalBusiness",
-	"name": NAP_NAME,
-	"url": SITE_URL,
-	"telephone": PHONE,
-	"email": EMAIL,
-	"address": {
-		"@type": "PostalAddress",
-		"streetAddress": NAP_STREET,
-		"addressLocality": NAP_CITY,
-		"addressRegion": NAP_REGION,
-		"postalCode": NAP_ZIP,
-		"addressCountry": "US",
-	},
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 30.3955,
-		"longitude": -97.7539,
-	},
-	"openingHours": "Mo-Su 09:00-18:00",
-	"priceRange": "$$",
-	"sameAs": SAME_AS,
-};
+// LocalBusiness merged into agentSchema (RealEstateAgent is a LocalBusiness subtype),
+// so Google sees one business entity with one @id instead of three disconnected ones.
 
 function buildArticleSchema(d: Record<string, any>) {
 	return {
@@ -214,6 +213,9 @@ const serviceSchemas = SERVICES.map((s) => ({
 		{ "@type": "City", "name": "Lakeway", "containedInPlace": { "@type": "State", "name": "Texas" } },
 		{ "@type": "City", "name": "Georgetown", "containedInPlace": { "@type": "State", "name": "Texas" } },
 		{ "@type": "City", "name": "Leander", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Hutto", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Manor", "containedInPlace": { "@type": "State", "name": "Texas" } },
+		{ "@type": "City", "name": "Dripping Springs", "containedInPlace": { "@type": "State", "name": "Texas" } },
 	],
 }));
 
@@ -311,7 +313,6 @@ const schemas: string[] = [];
 if (type === 'agent') {
 	schemas.push(JSON.stringify(personSchema));
 	schemas.push(JSON.stringify(agentSchema));
-	schemas.push(JSON.stringify(localBusinessSchema));
 	schemas.push(JSON.stringify(websiteSchema));
 	// Service entities are emitted only on pages that declare type='service',
 	// not on every page carrying the agent block.

@@ -21,7 +21,7 @@ const neighborhoods = await getCollection('neighborhoods');
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 			{neighborhoods.map((n) => (
-				<a href={`/neighborhoods/${n.id}`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
+				<a href={`/neighborhoods/${n.id}/`} class="card-hover bg-surface rounded-xl border border-border overflow-hidden no-underline group flex flex-col">
 					{n.data.heroImage && (
 						<div class="aspect-[16/9] overflow-hidden bg-warm-dark">
 							<Image
@@ -54,7 +54,7 @@ const neighborhoods = await getCollection('neighborhoods');
 			<h2 class="font-display text-2xl font-bold text-primary mb-3">Not Sure Which Neighborhood?</h2>
 			<p class="text-text-muted mb-6 max-w-lg mx-auto">Tell me your priorities — budget, commute, schools, lifestyle — and I'll recommend the best areas for you.</p>
 			<div class="flex flex-col sm:flex-row gap-4 justify-center">
-				<a href="/about#contact" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
+				<a href="/about/#contact" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all duration-200 no-underline">
 					Get a Recommendation
 				</a>
 				<a href={IDX_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">

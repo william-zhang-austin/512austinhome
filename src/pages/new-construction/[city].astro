@@ -5,6 +5,8 @@ import ContactForm from '../../components/ContactForm.astro';
 import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE, GBP_URL } from '../../consts';
 import { CITIES } from '../../data/cities';
+import { BUILDERS, builderMentioned } from '../../data/builders';
+import { getCollection } from 'astro:content';
 import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel } from '../../data/communities';
 import { EMPLOYERS } from '../../data/employers';
 import { COMPARISONS } from '../../data/comparisons';
@@ -26,6 +28,19 @@ const communities = COMMUNITIES.filter(
 // Builders are derived from the community data rather than hand-listed, so the
 // page can never claim a builder we do not actually have a community for.
 const builders = [...new Set(communities.map((c) => c.builder))].sort();
+// The same builders as linkable profiles, so the city page passes link equity to
+// the builder and incentive pages instead of naming them as plain text.
+const builderProfiles = BUILDERS.filter((b) => communities.some((c) => builderMentioned(c.builder, b))).sort((a, b) => a.name.localeCompare(b.name));
+const NEIGHBORHOOD_SLUGS = ['austin', 'cedar-park', 'lakeway', 'pflugerville', 'round-rock'];
+const hasNeighborhoodGuide = NEIGHBORHOOD_SLUGS.includes(city.slug);
+// Supporting posts for this city, linked with distinct anchors so they read as
+// depth under this page rather than rivals for the same query.
+const postKey = city.slug === 'austin' ? 'austin-city' : city.slug;
+const blogIds = new Set((await getCollection('blog')).map((p) => p.id));
+const supportingPosts = [
+	{ id: `${postKey}-new-construction-by-price-2026`, label: `${city.name} new construction by price point` },
+	{ id: `new-construction-homes-${postKey}-2026`, label: `${city.name} builder-by-builder breakdown` },
+].filter((p) => blogIds.has(p.id));
 
 // A city that has been written up to the reference standard renders the full
 // page. One that has not yet falls back to the previous layout.
@@ -46,7 +61,10 @@ const comparisons = COMPARISONS.filter((c) => c.a === city.slug || c.b === city.
 });
 
 const title = isReferencePage
-	? `New Construction Homes in ${city.name}, TX | Builders, Schools, Taxes | 512 Austin Home`
+	? (city.slug === 'austin'
+		? ['New Construction in the City of Austin, TX: Builders, Schools', 'New Construction in the City of Austin, TX']
+		: [`New Construction Homes in ${city.name}, TX: Builders, Schools, Taxes`, `New Construction Homes in ${city.name}, TX: Builders, Schools`, `New Construction Homes in ${city.name}, TX`]
+	  ).find((t) => t.length <= 60) ?? `New Construction Homes in ${city.name}, TX`
 	: `New Construction Homes in ${city.name}, TX — Save $5,000+ | 512 Austin Home`;
 
 const description = isReferencePage
@@ -163,13 +181,40 @@ const updatedLabel = city.contentUpdated
 			<section class="mb-16">
 				<h2 class="font-display text-2xl font-bold text-primary mb-4">Builders active in {city.name}</h2>
 				<p class="text-text-muted text-sm mb-4">Builders with communities on this page. Each one prices, negotiates, and handles upgrades differently, and the incentive packages are rarely the same two months running.</p>
-				<ul class="flex flex-wrap gap-2 list-none pl-0">
-					{builders.map((b) => (
-						<li class="text-sm text-primary bg-surface border border-border rounded-lg px-3 py-2">{b}</li>
-					))}
-				</ul>
+				{builderProfiles.length > 0 ? (
+					<ul class="grid sm:grid-cols-2 gap-3 list-none pl-0">
+						{builderProfiles.map((b) => (
+							<li class="bg-surface border border-border rounded-lg px-4 py-3 flex items-center justify-between gap-3">
+								<a href={`/builders/${b.slug}/`} class="text-sm font-semibold text-primary hover:text-accent no-underline">{b.name} in {city.name}</a>
+								<a href={`/incentives/${b.slug}/`} class="text-xs font-semibold text-accent hover:text-accent-hover no-underline whitespace-nowrap">Incentives &rarr;</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<ul class="flex flex-wrap gap-2 list-none pl-0">
+						{builders.map((b) => (
+							<li class="text-sm text-primary bg-surface border border-border rounded-lg px-3 py-2">{b}</li>
+						))}
+					</ul>
+				)}
 			</section>
 		)}
+
+		{/* RELATED — neighborhood guide, selling, incentives */}
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">More on {city.name}</h2>
+			<ul class="flex flex-wrap gap-2.5 list-none pl-0">
+				{hasNeighborhoodGuide && (
+					<li><a href={`/neighborhoods/${city.slug}/`} class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-surface border border-border rounded-full hover:border-accent hover:text-accent no-underline">Living in {city.name}: neighborhood guide</a></li>
+				)}
+				{supportingPosts.map((p) => (
+					<li><a href={`/blog/${p.id}/`} class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-surface border border-border rounded-full hover:border-accent hover:text-accent no-underline">{p.label}</a></li>
+				))}
+				<li><a href={`/sell/${city.slug}/`} class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-surface border border-border rounded-full hover:border-accent hover:text-accent no-underline">Selling a home in {city.name}</a></li>
+				<li><a href="/incentives/" class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-surface border border-border rounded-full hover:border-accent hover:text-accent no-underline">Current builder incentives</a></li>
+				<li><a href="/deals/" class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-surface border border-border rounded-full hover:border-accent hover:text-accent no-underline">New construction deals</a></li>
+			</ul>
+		</section>
 
 		{/* THE CASE FOR AND AGAINST — the section that makes the page citable rather than promotional */}
 		{city.caseFor && city.caseAgainst && (

@@ -47,7 +47,7 @@ const faqs = [
 	...RELOCATION_FAQS,
 ];
 
-const title = `Where to Live Near ${employer.name} Austin | Commutes, Prices, Schools | 512 Austin Home`;
+const title = [`Where to Live Near ${employer.name} Austin | Commutes, Prices, Schools`, `Where to Live Near ${employer.name} Austin: Commutes, Schools`, `Where to Live Near ${employer.name} Austin`].find((t) => t.length <= 60) ?? `Where to Live Near ${employer.name} Austin`;
 const description = `Where ${employer.name} employees live in Austin: ${employer.areas.map((a) => a.name.replace(/\s*\(.*\)/, '')).slice(0, 4).join(', ')} — with commute times, price ranges, school districts, and what to watch for if you are relocating.`;
 ---
 

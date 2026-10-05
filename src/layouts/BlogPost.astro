@@ -8,9 +8,9 @@ import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { SITE_URL } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { primaryGuide?: { href: string; label: string } };
 
-const { title, description, pubDate, updatedDate, heroImage, youtubeId, tags, canonical, faqs } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, youtubeId, tags, canonical, faqs, primaryGuide } = Astro.props;
 ---
 
 <BaseLayout title={`${title} | 512 Austin Home`} description={description} canonical={canonical} type="article">
@@ -54,6 +54,12 @@ const { title, description, pubDate, updatedDate, heroImage, youtubeId, tags, ca
 			</div>
 			<span class="accent-bar mt-6"></span>
 		</header>
+
+		{primaryGuide && (
+			<p class="mb-8 bg-accent-light border border-border rounded-xl px-5 py-4 text-sm text-primary">
+				<strong>Main guide:</strong> <a href={primaryGuide.href} class="text-accent font-semibold no-underline hover:underline">{primaryGuide.label}</a>
+			</p>
+		)}
 
 		<!-- Hero image -->
 		{heroImage && (

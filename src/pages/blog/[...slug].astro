@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { CITIES } from '../../data/cities';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -12,8 +13,22 @@ export async function getStaticPaths() {
 
 const post = Astro.props;
 const { Content } = await render(post);
+
+// City new-construction posts compete with the city reference page for the same
+// query. Point each one at the page that should rank, so Google sees one primary.
+const cityMatch = post.id.match(/^new-construction-homes-([a-z-]+)-2026$/) || post.id.match(/^([a-z-]+)-new-construction-by-price-2026$/);
+let primaryGuide: { href: string; label: string } | undefined;
+if (cityMatch) {
+	const key = cityMatch[1] === 'austin-city' ? 'austin' : cityMatch[1];
+	if (post.id === 'new-construction-homes-austin-2026') {
+		primaryGuide = { href: '/new-construction/', label: 'New construction homes in Austin: builders and communities by city' };
+	} else {
+		const city = CITIES.find((c) => c.slug === key);
+		if (city) primaryGuide = { href: `/new-construction/${city.slug}/`, label: `New construction homes in ${city.name}: every community, builder, school district and tax rate` };
+	}
+}
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} primaryGuide={primaryGuide}>
 	<Content />
 </BlogPost>

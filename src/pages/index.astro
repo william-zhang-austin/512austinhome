@@ -120,7 +120,7 @@ const homeFaqs = [
 ];
 ---
 
-<BaseLayout title="Austin Real Estate Agent — Buy & Sell Homes | 512 Austin Home" description={SITE_DESCRIPTION}>
+<BaseLayout title="Austin New Construction Buyer's Agent | William Zhang, Realtor" description="Austin realtor William Zhang represents buyers at every major builder, negotiating incentives, rate buydowns and price cuts. 30+ families helped, 5.0 on Google.">
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="faq" data={{ questions: homeFaqs }} />
 
@@ -501,7 +501,7 @@ const homeFaqs = [
 				</div>
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 					{neighborhoods.slice(0, 6).map((n) => (
-						<a href={`/neighborhoods/${n.id}`} class="card-hover bg-surface rounded-2xl border border-border no-underline group overflow-hidden flex flex-col">
+						<a href={`/neighborhoods/${n.id}/`} class="card-hover bg-surface rounded-2xl border border-border no-underline group overflow-hidden flex flex-col">
 							{n.data.heroImage && (
 								<div class="relative aspect-[4/3] overflow-hidden bg-warm-dark">
 									<Image
@@ -667,7 +667,7 @@ const homeFaqs = [
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					{recentPosts.map((post) => (
-						<a href={`/blog/${post.id}`} class="card-hover bg-surface rounded-2xl border border-border overflow-hidden no-underline group flex flex-col">
+						<a href={`/blog/${post.id}/`} class="card-hover bg-surface rounded-2xl border border-border overflow-hidden no-underline group flex flex-col">
 							{post.data.heroImage && (
 								<div class="relative aspect-[16/9] overflow-hidden bg-warm-dark">
 									<Image

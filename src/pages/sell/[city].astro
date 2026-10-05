@@ -139,6 +139,16 @@ const description = `Sell your home in ${city.name}, Texas. Free home valuation,
 			</div>
 		</section>
 
+		<!-- Competing with new construction -->
+		<section class="mb-16 bg-surface border border-border rounded-2xl p-6 sm:p-8">
+			<h2 class="font-display text-xl font-bold text-primary mb-2">Your real competition: new construction in {city.name}</h2>
+			<p class="text-sm text-text-muted mb-4">Buyers looking at your home are also touring builder models down the road. See what the builders are offering so we price against them, not just against other resale listings.</p>
+			<div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+				<a href={`/new-construction/${city.slug}/`} class="text-accent font-semibold hover:text-accent-hover no-underline">New construction in {city.name} &rarr;</a>
+				<a href="/incentives/" class="text-accent font-semibold hover:text-accent-hover no-underline">Current builder incentives &rarr;</a>
+			</div>
+		</section>
+
 		<!-- MID-PAGE CTA -->
 		<div class="bg-primary rounded-2xl p-8 sm:p-10 mb-16 text-center text-white">
 			<h2 class="font-display text-2xl font-bold mb-3">What's Your {city.name} Home Worth?</h2>

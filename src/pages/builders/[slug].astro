@@ -6,6 +6,7 @@ import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE } from '../../consts';
 import { BUILDERS, builderMentioned } from '../../data/builders';
 import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
+import { CITIES } from '../../data/cities';
 import InventoryCTA from '../../components/InventoryCTA.astro';
 import { BUILDER_LINKS } from '../../data/search-links';
 
@@ -24,6 +25,9 @@ const { builder } = Astro.props;
 const communities = COMMUNITIES.filter(
 	(c) => builderMentioned(c.builder, builder),
 ).sort((a, b) => a.priceFrom - b.priceFrom);
+
+// Cities this builder has communities in, linked to their city pages.
+const builderCities = CITIES.filter((city) => communities.some((c) => c.city === city.name));
 
 const title = `${builder.name} Austin, TX | Honest Buyer-Side Review | 512 Austin Home`;
 const description = `A buyer-side look at ${builder.name} in Austin: price range, what they do well, what to watch for, where they build, and how to negotiate one.`;
@@ -144,6 +148,16 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 		</section>
 
 		<section class="mb-16">
+			{builderCities.length > 0 && (
+				<>
+					<h2 class="font-display text-2xl font-bold text-primary mb-4">Where {builder.name} builds around Austin</h2>
+					<ul class="flex flex-wrap gap-2.5 list-none pl-0 mb-12">
+						{builderCities.map((city) => (
+							<li><a href={`/new-construction/${city.slug}/`} class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-surface border border-border rounded-full hover:border-accent hover:text-accent no-underline">{city.name} new construction</a></li>
+						))}
+					</ul>
+				</>
+			)}
 			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
 			<div class="grid sm:grid-cols-2 gap-4">
 				<a href="/builders/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
+import { GOOGLE_REVIEW_COUNT, GOOGLE_RATING } from '../consts';
 import { REVIEWS } from '../data/reviews';
 import { GBP_URL, PHONE } from '../consts';
 
@@ -75,7 +76,7 @@ function formatDate(iso: string) {
 				<div class="bg-warm-dark rounded-2xl p-8 mb-12 flex items-center justify-between gap-6 flex-wrap">
 					<div>
 						<p class="font-display text-5xl font-bold text-primary">{avgRating} <span class="text-accent text-3xl">&#9733;</span></p>
-						<p class="text-text-muted text-sm mt-1">Based on {REVIEWS.length} client {REVIEWS.length === 1 ? 'review' : 'reviews'}</p>
+						<p class="text-text-muted text-sm mt-1">{GOOGLE_RATING} stars across {GOOGLE_REVIEW_COUNT} Google reviews</p>
 					</div>
 					<a href={GBP_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border-2 border-accent rounded-lg hover:bg-accent-light transition-all duration-200 no-underline">
 						Read on Google &rarr;

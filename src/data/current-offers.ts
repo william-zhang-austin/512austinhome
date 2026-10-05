@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The date the whole sheet was last reviewed. Shown on every incentives page. */
-export const OFFERS_AS_OF = '2026-09-23';
+export const OFFERS_AS_OF = '2026-10-04';
 
 export interface CurrentOffer {
 	/** Must match a slug in BUILDERS. */
@@ -36,7 +36,7 @@ export interface CurrentOffer {
 }
 
 /**
- * Sourced 2026-09-23 from builder emails sent directly to William's agent
+ * Sourced 2026-09-23 and refreshed 2026-10-04 from builder emails sent directly to William's agent
  * address. Only buyer-facing terms are recorded.
  *
  * DELIBERATELY EXCLUDED, AND DO NOT ADD THEM: agent commission rates, BTSA
@@ -48,10 +48,10 @@ export interface CurrentOffer {
 export const CURRENT_OFFERS: CurrentOffer[] = [
 	{
 		builderSlug: 'lennar',
-		headline: 'Up to $40,000 in price reductions on select homes closing before the end of October.',
-		detail: 'Applies to selected move-in ready inventory across Central Texas rather than to every home. Lennar also quotes FHA fixed rates as low as 4.25 percent in select communities and an FHA ARM as low as 3.375 percent, both through Lennar Mortgage. Lennar states that offers and seller contributions may require using their designated lender or closing agent and are subject to change or substitution without notice.',
-		source: 'Email from a Lennar Austin Division new home consultant',
-		verifiedOn: '2026-09-22',
+		headline: '5 percent toward closing costs, with an owner\'s title policy included.',
+		detail: 'On eligible homes. Lennar states that incentives are subject to change and vary by home, and that its offers may require using its designated lender or closing agent. Ask me which homes qualify.',
+		source: 'Email from a Lennar Austin new home consultant',
+		verifiedOn: '2026-10-02',
 	},
 	{
 		builderSlug: 'pulte-homes',
@@ -61,12 +61,47 @@ export const CURRENT_OFFERS: CurrentOffer[] = [
 		verifiedOn: '2026-09-18',
 	},
 	{
-		builderSlug: 'taylor-morrison',
-		headline: 'Semi-Annual Sale, running two weeks only.',
-		detail: 'Taylor Morrison runs this event twice a year and the savings vary by community and by home, with no single published figure. Separately they have released new pricing from the low $300s at Village Grove in Dripping Springs and at Sunfield in Buda. Ask me what it actually amounts to on a specific home.',
-		communities: ['Village Grove, Dripping Springs', 'Sunfield, Buda'],
-		source: 'Taylor Morrison Austin emails',
-		verifiedOn: '2026-09-19',
+		builderSlug: 'toll-brothers',
+		headline: '4.99 percent (5.76 percent APR) FHA 30-year fixed rate with as little as 3.5 percent down on select quick move-in homes.',
+		detail: 'Through Toll Brothers Mortgage Company, for buyers who sign on a select quick move-in home on or after 9/4/2026 and close by 10/30/2026. Toll\'s published example assumes a $509,224 price and a 660 minimum credit score; limited availability and subject to change. Toll is also running a National Sales Event for deposits 10/3 to 10/18 with savings that vary by home.',
+		source: 'Toll Brothers email',
+		verifiedOn: '2026-10-03',
+	},
+	{
+		builderSlug: 'perry-homes',
+		headline: 'Year End Sales Event: choose up to $50,000 in flex cash or a 5.49 percent rate (6.278 percent APR, 30-year fixed), plus a move-in package.',
+		detail: 'On qualifying inventory homes, which must close by 12/31/2026. Perry has also cut prices on inventory homes near Georgetown.',
+		communities: ['Parmer Ranch, Georgetown', 'Parkside on the River, Georgetown'],
+		source: 'Email from a Perry Homes Austin new home sales counselor',
+		verifiedOn: '2026-10-03',
+	},
+	{
+		builderSlug: 'highland-homes',
+		headline: 'Up to $50,000 in flex cash on to-be-built homes, or a reduced rate on quick move-in homes closing by 11/13/2026.',
+		detail: 'Flex cash applies to contracts from 10/1 to 10/31/2026 that close by 5/31/2027, and can go to design options or closing costs. The quick move-in rate is 4.49 percent in year one, then 5.49 percent fixed for years 2 to 30 (5.531 percent APR, conventional). Requires financing through Highland HomeLoans and cannot be combined with other offers.',
+		source: 'Highland Homes email',
+		verifiedOn: '2026-10-02',
+	},
+	{
+		builderSlug: 'dr-horton',
+		headline: 'Red Tag Event, 10/9 to 11/1/2026: special pricing on select homes, plus up to $10,000 in closing costs with DHI Mortgage.',
+		detail: 'Contracts during the event must close by 12/27/2026; first come, first served. The closing cost credit cannot exceed 2 percent of the final sales price and requires DHI Mortgage. Incentives vary by community and home.',
+		source: 'D.R. Horton Austin Division email',
+		verifiedOn: '2026-10-02',
+	},
+	{
+		builderSlug: 'meritage-homes',
+		headline: 'Below-market rates and up to $10,000 in closing costs on select quick move-in homes, contracts through 10/15/2026.',
+		detail: 'Requires financing through MTH Mortgage and using Carefree Title. The closing cost credit cannot exceed 3 percent of the base price. Meritage does not publish a single rate; ask me for the number on a specific home.',
+		source: 'Meritage Homes email',
+		verifiedOn: '2026-10-01',
+	},
+	{
+		builderSlug: 'coventry-homes',
+		headline: 'National Sales Event extended through 10/18/2026: savings on select quick move-in homes.',
+		detail: 'Applies to select inventory homes with contracts from 9/3 to 10/18/2026. Savings vary by home; in Coventry\'s own examples they ranged from $8,000 to $80,000.',
+		source: 'Coventry Homes email',
+		verifiedOn: '2026-10-01',
 	},
 ];
 

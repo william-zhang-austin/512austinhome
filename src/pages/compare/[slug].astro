@@ -48,7 +48,7 @@ const faqs = [
 	},
 ];
 
-const title = `${cityA.name} vs ${cityB.name} | Which Austin Suburb Is Right for You | 512 Austin Home`;
+const title = [`${cityA.name} vs ${cityB.name} | Which Austin Suburb Is Right for You`, `${cityA.name} vs ${cityB.name}: Which Austin Suburb Fits You`, `${cityA.name} vs ${cityB.name}: Austin Suburb Comparison`].find((t) => t.length <= 60) ?? `${cityA.name} vs ${cityB.name}: Austin Suburb Comparison`;
 const description = `${cityA.name} or ${cityB.name}? Commute times, school districts, new construction prices, MUD and PID taxes compared side by side, with a straight answer on who should pick which.`;
 
 const updatedLabel = new Date(`${cmp.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {

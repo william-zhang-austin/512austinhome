@@ -14,7 +14,23 @@ const canonicalURL = Astro.props.canonical
 	? new URL(Astro.props.canonical)
 	: new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image, type = 'website' } = Astro.props;
+const { title: rawTitle, description: rawDescription, image, type = 'website' } = Astro.props;
+
+// Keep titles inside Google's ~60-character display: the brand suffix is the
+// first thing to go, since the domain already shows beside every result.
+const SUFFIX = ' | 512 Austin Home';
+const title = rawTitle.length > 60 && rawTitle.endsWith(SUFFIX) ? rawTitle.slice(0, -SUFFIX.length) : rawTitle;
+
+// Keep meta descriptions under 160 characters: cut at the last full sentence
+// that fits, else at a word boundary.
+function trimDescription(d: string, max = 160) {
+	if (d.length <= max) return d;
+	const head = d.slice(0, max);
+	const sentenceEnd = Math.max(head.lastIndexOf('. '), head.lastIndexOf('? '), head.lastIndexOf('! '));
+	if (sentenceEnd >= 100) return head.slice(0, sentenceEnd + 1);
+	return head.slice(0, head.lastIndexOf(' ')).replace(/[,;:\-–—]+$/, '') + '…';
+}
+const description = trimDescription(rawDescription);
 const ogImage = image || new URL('/og-default.jpg', Astro.site).href;
 ---
 
