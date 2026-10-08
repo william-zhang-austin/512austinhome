@@ -19,7 +19,7 @@ const gi = GUIDES.findIndex((g) => g.slug === guide.slug);
 const siblings = [GUIDES[(gi + 1) % GUIDES.length], GUIDES[(gi + 2) % GUIDES.length]];
 
 const title = `${guide.title} | 512 Austin Home`;
-const description = guide.shortAnswer.length > 155 ? `${guide.shortAnswer.slice(0, 152)}...` : guide.shortAnswer;
+const description = guide.metaDescription ?? guide.shortAnswer;
 
 const updatedLabel = new Date(`${guide.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
 	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
@@ -47,6 +47,7 @@ const updatedLabel = new Date(`${guide.contentUpdated}T12:00:00Z`).toLocaleDateS
 			<p class="text-sm uppercase tracking-widest text-text-muted mb-3">Buyer's guide</p>
 			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">{guide.title}</h1>
 			<p class="text-lg text-text-muted">{guide.subtitle}</p>
+			<p class="text-sm text-text-muted mt-4">By <a href="/about/" class="text-accent no-underline hover:underline">William Zhang</a>, Austin Realtor &middot; Updated <time datetime={guide.contentUpdated}>{updatedLabel}</time></p>
 		</header>
 
 		<section class="mb-12">

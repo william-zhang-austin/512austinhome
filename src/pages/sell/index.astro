@@ -4,6 +4,7 @@ import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE, YOUTUBE_URL, GBP_URL } from '../../consts';
+import { CITIES } from '../../data/cities';
 
 const faqs = [
 	{
@@ -133,6 +134,18 @@ const faqs = [
 					<h3 class="font-display text-base font-bold text-primary mb-2">Full Net Sheet Before You List</h3>
 					<p class="text-sm text-text-muted">You'll know exactly what you'll walk away with. I provide a detailed net sheet covering commissions, title costs, taxes, and fees so there are zero surprises at closing.</p>
 				</div>
+			</div>
+		</section>
+
+		<!-- CITY PAGES -->
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">Selling in an Austin suburb?</h2>
+			<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+				{CITIES.map((c) => (
+					<a href={`/sell/${c.slug}/`} class="block bg-surface border border-border rounded-xl p-4 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary text-sm">Sell in {c.name}</span>
+					</a>
+				))}
 			</div>
 		</section>
 

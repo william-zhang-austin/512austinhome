@@ -22,16 +22,23 @@ const SUFFIX = ' | 512 Austin Home';
 const title = rawTitle.length > 60 && rawTitle.endsWith(SUFFIX) ? rawTitle.slice(0, -SUFFIX.length) : rawTitle;
 
 // Keep meta descriptions within Bing's and Google's display: cut at the last
-// full sentence that fits, else at a word boundary.
+// full sentence that fits, else at the last clause boundary, and always end on
+// a period rather than a mid-sentence "...".
 // 150, not 160: Bing's checker flags descriptions near 160, and counts
 // multi-byte characters (dashes, ellipses) as more than one.
+// The lookbehind keeps abbreviations like "D.R. Horton" from reading as a
+// sentence end.
+const SENTENCE_END = /(?<!\b(?:D\.R|Dr|St|Mr|Mrs|Ms|Jr|vs|U\.S|No))[.?!](?=\s|$)/g;
 function trimDescription(raw: string, max = 150) {
-	const d = raw.replace(/\s*[—–]\s*/g, ', ').replace(/…/g, '...');
+	const d = raw.replace(/(\d[\dKkM,.%+]*)\s*[—–]\s*(\$?\d)/g, '$1 to $2').replace(/\s*[—–]\s*/g, ', ').replace(/…/g, '...').trim();
 	if (d.length <= max) return d;
-	const head = d.slice(0, max);
-	const sentenceEnd = Math.max(head.lastIndexOf('. '), head.lastIndexOf('? '), head.lastIndexOf('! '));
-	if (sentenceEnd >= 90) return head.slice(0, sentenceEnd + 1);
-	return head.slice(0, head.lastIndexOf(' ', max - 4)).replace(/[,;:\-]+$/, '') + '...';
+	const head = d.slice(0, max + 1);
+	let sentenceEnd = -1;
+	for (const m of head.matchAll(SENTENCE_END)) if (m.index! < max) sentenceEnd = m.index!;
+	if (sentenceEnd >= 70) return head.slice(0, sentenceEnd + 1);
+	const clause = Math.max(head.lastIndexOf(', ', max - 1), head.lastIndexOf('; ', max - 1), head.lastIndexOf(': ', max - 1));
+	const cut = clause >= 90 ? clause : head.lastIndexOf(' ', max - 1);
+	return head.slice(0, cut).replace(/[\s,;:\-]+(and|or|the|a|an|of|to|for|with|from|in|on)?$/i, '').replace(/[,;:\-]+$/, '') + '.';
 }
 const description = trimDescription(rawDescription);
 const ogImage = image || new URL('/og-default.jpg', Astro.site).href;

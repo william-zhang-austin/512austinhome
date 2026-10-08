@@ -35,6 +35,14 @@ const description = `A buyer-side look at ${builder.name} in Austin: price range
 const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
 	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
+
+// Builders with a head-to-head guide link to it from Keep exploring.
+const COMPARISONS: Record<string, { slug: string; label: string }> = {
+	lennar: { slug: 'lennar-vs-dr-horton-austin', label: 'Lennar vs D.R. Horton' },
+	'dr-horton': { slug: 'lennar-vs-dr-horton-austin', label: 'Lennar vs D.R. Horton' },
+	'perry-homes': { slug: 'perry-homes-vs-highland-homes-austin', label: 'Perry Homes vs Highland Homes' },
+	'highland-homes': { slug: 'perry-homes-vs-highland-homes-austin', label: 'Perry Homes vs Highland Homes' },
+};
 ---
 
 <BaseLayout title={title} description={description}>
@@ -160,6 +168,12 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 			)}
 			<h2 class="font-display text-2xl font-bold text-primary mb-6">Keep exploring</h2>
 			<div class="grid sm:grid-cols-2 gap-4">
+				{COMPARISONS[builder.slug] && (
+					<a href={`/guides/${COMPARISONS[builder.slug].slug}/`} class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+						<span class="font-display font-bold text-primary block mb-1">{COMPARISONS[builder.slug].label}</span>
+						<span class="text-sm text-text-muted">The head-to-head: price, finishes, financing and how to choose.</span>
+					</a>
+				)}
 				<a href="/builders/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 					<span class="font-display font-bold text-primary block mb-1">All Austin builders</span>
 					<span class="text-sm text-text-muted">Buyer-side reviews of every builder I work with.</span>

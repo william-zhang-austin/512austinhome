@@ -15,4 +15,32 @@ const { heading = 'Schedule a Call', subheading = 'Pick a time that works for yo
 	<div class="tidycal-embed" data-path={TIDYCAL_PATH}></div>
 </section>
 
-<script src="https://asset-tidycal.b-cdn.net/js/embed.js" async is:inline></script>
+<script is:inline>
+	// Load TidyCal's embed script only when the calendar nears the viewport.
+	(function () {
+		if (window.__tidycalLazy) return;
+		window.__tidycalLazy = true;
+		var started = false;
+		function go() {
+			if (started) return;
+			started = true;
+			var s = document.createElement('script');
+			s.src = 'https://asset-tidycal.b-cdn.net/js/embed.js';
+			s.async = true;
+			document.head.appendChild(s);
+		}
+		function init() {
+			var els = document.querySelectorAll('div.tidycal-embed');
+			if (!('IntersectionObserver' in window)) return go();
+				// Backstop: a jump past the embed (anchor link, End key) never
+				// intersects, so the first scroll loads it too.
+				window.addEventListener('scroll', go, { once: true, passive: true });
+			var io = new IntersectionObserver(function (entries) {
+				if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); go(); }
+			}, { rootMargin: '600px 0px' });
+			els.forEach(function (el) { io.observe(el); });
+		}
+		if (document.readyState !== 'loading') init();
+		else document.addEventListener('DOMContentLoaded', init);
+	})();
+</script>

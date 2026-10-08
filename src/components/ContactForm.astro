@@ -30,20 +30,43 @@ const embedSrc = `https://tally.so/embed/${formId}?alignLeft=1&hideTitle=1&trans
 		class="w-full block"
 	></iframe>
 
-	<script is:inline src="https://tally.so/widgets/embed.js" async></script>
 	<script is:inline>
-		// Fallback: if the Tally widget script hasn't hydrated iframes by the time
-		// the user sees the page, set src directly so the form still loads.
+		// Load Tally's widget script only when a form gets near the viewport, so
+		// pages don't pay for ~200 KB of third-party JS on first paint. If the
+		// script fails or is slow, set the iframe src directly so the form loads.
 		(function () {
-			function load() {
+			if (window.__tallyLazy) return;
+			window.__tallyLazy = true;
+			var started = false;
+			function fallback() {
 				document.querySelectorAll('iframe[data-tally-src]:not([src])').forEach(function (el) {
 					el.src = el.getAttribute('data-tally-src');
 				});
 			}
-			if (typeof window.Tally === 'undefined') {
-				if (document.readyState !== 'loading') load();
-				else document.addEventListener('DOMContentLoaded', load);
+			function go() {
+				if (started) return;
+				started = true;
+				var s = document.createElement('script');
+				s.src = 'https://tally.so/widgets/embed.js';
+				s.async = true;
+				s.onload = function () { if (window.Tally) window.Tally.loadEmbeds(); };
+				s.onerror = fallback;
+				document.head.appendChild(s);
+				setTimeout(fallback, 4000);
 			}
+			function init() {
+				var els = document.querySelectorAll('iframe[data-tally-src]');
+				if (!('IntersectionObserver' in window)) return go();
+				// Backstop: a jump past the embed (anchor link, End key) never
+				// intersects, so the first scroll loads it too.
+				window.addEventListener('scroll', go, { once: true, passive: true });
+				var io = new IntersectionObserver(function (entries) {
+					if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); go(); }
+				}, { rootMargin: '600px 0px' });
+				els.forEach(function (el) { io.observe(el); });
+			}
+			if (document.readyState !== 'loading') init();
+			else document.addEventListener('DOMContentLoaded', init);
 		})();
 	</script>
 </section>

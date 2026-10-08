@@ -23,6 +23,8 @@ export interface Guide {
 	subtitle: string;
 	/** The citable block. 60-90 words, answers the query on its own. */
 	shortAnswer: string;
+	/** Optional hand-written meta description (<=150 chars). Falls back to shortAnswer. */
+	metaDescription?: string;
 	sections: GuideSection[];
 	faqs: { question: string; answer: string }[];
 	/** Related blog posts already on the site. */
@@ -500,6 +502,7 @@ GUIDES.push(
 	},
 	{
 		slug: 'buyer-agent-new-construction',
+		metaDescription: "Do you need your own agent to buy new construction in Austin? What a buyer's agent does at the builder, and why it starts on your first visit.",
 		title: 'Do You Need an Agent to Buy New Construction?',
 		subtitle: 'The builder pays the fee. Here is what you get for it.',
 		shortAnswer: 'You do not need one, and going without does not lower your price, because the builder pays the buyer agent fee out of a marketing budget rather than adding it to your sales price. What you give up is someone on your side during the negotiation, the inspection and the orientation walkthrough. Most builders also require your agent to be registered on your first visit, so the decision is usually made before you realise you are making it.',
@@ -621,6 +624,7 @@ GUIDES.push(
 	},
 	{
 		slug: 'before-your-first-builder-visit',
+		metaDescription: "Before you walk into an Austin builder's sales office: register your agent first, set your budget, and know what to ask on visit one.",
 		title: 'Before Your First Builder Visit in Austin: A Checklist',
 		subtitle: 'The registration rule, what to bring, and what not to say in the sales office',
 		shortAnswer: 'Contact your buyer\'s agent before you set foot in a builder\'s sales office, because most Austin builders only pay a buyer agent who is registered on your first visit. Text your agent the builder and community name, write the agent\'s name on the registration card, bring a pre-approval but keep your maximum budget to yourself, and leave with the price sheet, the incentive deadline in writing and the tax rate for that phase. Do not put down a deposit on the first visit.',
@@ -729,6 +733,7 @@ GUIDES.push(
 	},
 	{
 		slug: 'lennar-vs-dr-horton-austin',
+		metaDescription: 'Lennar vs D.R. Horton in Austin: how the two biggest entry-level builders compare on price, included features, incentives and locations.',
 		title: 'Lennar vs D.R. Horton in Austin',
 		subtitle: 'Two entry-level volume builders, compared from the buyer\'s side',
 		shortAnswer: 'Lennar and D.R. Horton are the two highest-volume entry-level builders in the Austin metro. D.R. Horton reaches lower prices, roughly $250,000 to $450,000, with a more basic finish and tighter lots. Lennar runs roughly $280,000 to $550,000 with its "Everything\'s Included" features. Both put most of their incentive money into rate buydowns tied to their own lenders, so compare the all-in monthly payment, not the price.',
