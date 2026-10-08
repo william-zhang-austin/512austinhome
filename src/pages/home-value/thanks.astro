@@ -1,0 +1,68 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import { PHONE } from '../../consts';
+
+// Tally form xXeGvy redirects here with ?t=<timeline answer>&c=<campaign>.
+const telHref = `tel:${PHONE.replace(/[^0-9+]/g, '')}`;
+const BOOKING_URL = 'https://tidycal.com/williamzhang/seller-consultation';
+const WHA_CHANNEL = 'https://www.youtube.com/channel/UCxJygzngrwwOlev0VCL-vIw';
+---
+
+<LandingLayout
+	title="Your Price Range Is On the Way | 512 Austin Home"
+	description="Thanks for requesting a home valuation. William Zhang will send your price range within 24 hours."
+	canonical="https://512austinhome.com/home-value/thanks/"
+>
+	<div class="max-w-2xl mx-auto px-5 sm:px-8 py-10 sm:py-16">
+		<p class="tag-pill mb-4">Request received</p>
+		<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-4">
+			Got it. Your price range is on the way.
+		</h1>
+		<p class="text-lg text-text-muted mb-8">Here's what happens next.</p>
+
+		<ol class="space-y-5 mb-10">
+			<li class="flex gap-4">
+				<span class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">1</span>
+				<p class="text-text-muted"><strong class="text-primary">I pull the recent sales near you.</strong> Real MLS closings, adjusted for your home.</p>
+			</li>
+			<li class="flex gap-4">
+				<span class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">2</span>
+				<p class="text-text-muted"><strong class="text-primary">Within 24 hours, you get your range by text and email,</strong> with a short video walking through the comps.</p>
+			</li>
+			<li class="flex gap-4">
+				<span class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">3</span>
+				<p class="text-text-muted"><strong class="text-primary">You decide what's next.</strong> List, wait, or just keep an eye on your equity.</p>
+			</li>
+		</ol>
+
+		<!-- Sellers with a timeline: the call is the main ask. "Just curious": the call drops to a quiet link. -->
+		<section id="ty-call" class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-8 border-l-4 border-accent">
+			<h2 class="font-display text-xl font-bold text-primary mb-2">Want to talk it through sooner?</h2>
+			<p class="text-text-muted text-sm mb-4">Pick a time and I'll walk you through your numbers and the best timing for your street.</p>
+			<div class="flex flex-col sm:flex-row gap-3">
+				<a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">Pick a time to talk</a>
+				<a href={telHref} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border border-accent rounded-lg hover:bg-white transition-all no-underline">Call {PHONE}</a>
+			</div>
+		</section>
+
+		<p id="ty-curious" class="hidden text-text-muted mb-8">
+			No call needed. I'll send your range, and you can reply any time with questions. If you'd like to talk, you can
+			<a href={BOOKING_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline font-semibold">pick a time here</a>.
+		</p>
+
+		<p class="text-sm text-text-muted">
+			While you wait, see what's being built near you on
+			<a href={WHA_CHANNEL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline font-semibold">What's Happening in Austin</a>.
+		</p>
+	</div>
+
+	<script is:inline>
+		(function () {
+			var t = (new URLSearchParams(location.search).get('t') || '').toLowerCase();
+			if (t.indexOf('curious') !== -1) {
+				document.getElementById('ty-call').classList.add('hidden');
+				document.getElementById('ty-curious').classList.remove('hidden');
+			}
+		})();
+	</script>
+</LandingLayout>

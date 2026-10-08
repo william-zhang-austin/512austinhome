@@ -1,114 +1,106 @@
 ---
 import LandingLayout from '../layouts/LandingLayout.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
-import ContactForm from '../components/ContactForm.astro';
 import { PHONE, YOUTUBE_URL, GBP_URL, BROKERAGE, TREC_LICENSE } from '../consts';
 
 const telHref = `tel:${PHONE.replace(/[^0-9+]/g, '')}`;
 
+// Seller valuation flow (v2, 2026-10-08):
+// step 1 = our own address box (Google Places suggestions when PUBLIC_GOOGLE_MAPS_KEY is set,
+// a plain text box otherwise) -> step 2 = Tally form xXeGvy, opened with the address and
+// tracking params pre-filled -> Tally redirects to /home-value/thanks/.
+// Replaced the Real Geeks widget, which sent sellers off-site to lifeinaustintx.com.
+const TALLY_FORM_ID = 'xXeGvy';
+const MAPS_KEY = import.meta.env.PUBLIC_GOOGLE_MAPS_KEY || '';
+
 const faqs = [
 	{
-		question: "How accurate is an online home valuation?",
-		answer: "An instant online valuation is a great starting point — it uses recent sales data to estimate your home's value in seconds. But algorithms can't see your renovations, your view, your lot, or your home's condition. That's why I follow up every instant estimate with a free, human valuation (a CMA) based on real comparable sales in your immediate neighborhood. The two together give you a realistic price range.",
+		question: "How do you work out what my home is worth?",
+		answer: "I look at the homes that actually sold near you in the last few months, then adjust for what an algorithm can't see: your upgrades, lot, floor plan, condition and where you sit in the neighborhood. You get a realistic price range, not a single number, plus a short video walking through the comps.",
 	},
 	{
 		question: "Is the home valuation really free?",
-		answer: "Yes. The instant estimate above is free and there's no obligation. If you'd like a more precise number, I'll prepare a full comparative market analysis for your specific address at no cost and with no pressure to list. Most sellers I work with start exactly this way.",
+		answer: "Yes. There's no cost and no obligation. Most sellers I work with start exactly this way, and plenty of homeowners just want to know their equity.",
 	},
 	{
-		question: "How much is my Austin home worth in 2026?",
-		answer: "It depends on your location, condition, size, recent upgrades, and current comparable sales in your immediate area. The Austin market in 2026 is more balanced than the 2021–2022 peak — well-priced homes still sell, but pricing accuracy matters more than ever. Enter your address above for an instant estimate, and I'll refine it with current MLS comps for your street.",
+		question: "How long does it take?",
+		answer: "The form takes about 30 seconds. I send your price range within 24 hours by text and email.",
 	},
 	{
 		question: "Do I have to list my home to get a valuation?",
-		answer: "No. The valuation is just information. Plenty of homeowners get a valuation simply to understand their equity, plan a future move, or decide whether now is the right time. There's no listing agreement and no commitment — just the numbers and honest advice.",
+		answer: "No. The valuation is just information. Plenty of homeowners get one to understand their equity, plan a future move, or decide whether now is the right time. There's no listing agreement and no commitment.",
 	},
 	{
 		question: "What's the difference between this and a Zillow Zestimate?",
-		answer: "The instant estimate uses live MLS-sourced data, which tends to be more current and local than national portals. More importantly, I personally review your address and adjust for the things algorithms miss — finishes, floor plan, location within the neighborhood, and what's actually selling right now. You get a data estimate plus a local agent's read, not just a number.",
+		answer: "A Zestimate is an algorithm working from public records. Texas is a non-disclosure state, so sale prices aren't public and online estimates are often off. I work from actual MLS sales near your home and adjust for the things algorithms miss, so you get a data range plus a local agent's read.",
 	},
 ];
 ---
 
 <LandingLayout
-	title="What's My Austin Home Worth? — Free Instant Home Valuation | 512 Austin Home"
-	description="Get a free, instant home valuation for your Austin, TX home. Enter your address for a current value estimate, then a no-obligation expert valuation from local agent William Zhang. Call (512) 766-3188."
+	title="What's My Austin Home Worth? Free Home Valuation | 512 Austin Home"
+	description="Get a free home valuation for your Austin, TX home: a real price range from recent sales near you, sent within 24 hours by local agent William Zhang. Call (512) 766-3188."
 	canonical="https://512austinhome.com/home-value/"
 >
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="faq" data={{ questions: faqs }} />
 
-	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
+	<div class="max-w-4xl mx-auto px-5 sm:px-8 py-8 sm:py-14">
 
-		<!-- HERO + VALUATION WIDGET (above the fold) -->
+		<!-- HERO + STEP 1 (above the fold on a phone: QR traffic lands here) -->
 		<header class="mb-10">
-			<p class="tag-pill mb-4">Free Austin Home Valuation</p>
-			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">
+			<p class="tag-pill mb-4">Free Home Valuation</p>
+			<h1 id="hv-headline" class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-3">
 				What's Your Austin Home Worth?
 			</h1>
-			<p class="text-lg sm:text-xl text-text-muted max-w-2xl mb-6">
-				Enter your address for an instant, data-driven estimate — then get a free, no-obligation valuation from a local Austin agent who knows your street.
+			<p id="hv-sub" class="text-lg sm:text-xl text-text-muted max-w-2xl mb-6">
+				Get a real price range built from the homes that actually sold near you. Free, no obligation, within 24 hours.
 			</p>
 
-			<!-- Real Geeks valuation widget -->
 			<div class="bg-surface border border-border rounded-2xl p-5 sm:p-7 shadow-sm">
-				<div
-					class="rg-valuation-root"
-					data-domain="lifeinaustintx.realgeeks.com"
-					data-background_color="#FFFFFF"
-					data-button_background_color="#00D20F"
-				></div>
-				<script type="text/javascript" is:inline>
-					(function() {
-						var rg = document.createElement('script'); rg.type = 'text/javascript'; rg.async = true;
-						rg.src = 'https://widgets.realgeeks.com/static/js/valuation_v4.min.js';
-						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rg, s);
-					})();
-				</script>
-				<p class="text-xs text-text-muted mt-4 text-center">
-					100% free &middot; No obligation &middot; Takes 30 seconds. Prefer to talk?
-					<a href={telHref} class="text-accent no-underline hover:underline font-semibold">Call {PHONE}</a>
-				</p>
-			</div>
+				<!-- Step 1: address -->
+				<form id="hv-step1" autocomplete="off" novalidate>
+					<label for="hv-address" class="block font-display font-semibold text-primary mb-2">Your property address</label>
+					<div class="relative">
+						<input
+							id="hv-address"
+							name="address"
+							type="text"
+							inputmode="text"
+							placeholder="Start typing your address"
+							class="w-full text-base sm:text-lg px-4 py-3.5 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent"
+							aria-autocomplete="list"
+							aria-controls="hv-suggestions"
+							required
+						/>
+						<ul
+							id="hv-suggestions"
+							role="listbox"
+							class="hidden absolute z-20 left-0 right-0 mt-1 bg-white border border-border rounded-xl shadow-lg overflow-hidden"
+						></ul>
+					</div>
+					<p id="hv-error" class="hidden text-sm text-red-600 mt-2">Please enter your street address.</p>
+					<button
+						type="submit"
+						class="mt-4 w-full inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-white bg-accent rounded-xl hover:bg-accent-hover transition-all"
+					>
+						Get my price range
+					</button>
+					<p class="text-xs text-text-muted mt-3 text-center">
+						Free &middot; No obligation &middot; About 30 seconds. Prefer to talk?
+						<a href={telHref} class="text-accent no-underline hover:underline font-semibold">Call {PHONE}</a>
+					</p>
+				</form>
 
-			<!--
-				ChatGPT Ads conversion hook.
-				The Real Geeks valuation widget is a CROSS-ORIGIN iframe, and on submit it
-				redirects the whole top window to lifeinaustintx.com to finish. We can't see
-				clicks inside the iframe, and firing on the other domain would lose the ChatGPT
-				ad-click attribution (separate cookie). So we fire the conversion HERE, on exit,
-				but ONLY if the visitor actually engaged the widget — detected via the iframe
-				stealing focus. This counts "valuation submitted" (engaged + redirected), not the
-				final Real Geeks lead; reconcile true closed leads in Follow Up Boss.
-			-->
-			<script is:inline>
-				(function () {
-					var engaged = false, fired = false;
-					function inWidget(el) {
-						return el && el.tagName === "IFRAME" && el.closest && el.closest(".rg-valuation-root");
-					}
-					// Clicking into the cross-origin valuation iframe blurs the parent window
-					// and makes the iframe the active element — our proxy for "engaged".
-					window.addEventListener("blur", function () {
-						setTimeout(function () { if (inWidget(document.activeElement)) engaged = true; }, 0);
-					});
-					function fire(reason) {
-						if (fired || !engaged) return;
-						fired = true;
-						try {
-							window.oaiq && window.oaiq("measure", "lead_created", {
-								type: "customer_action",
-								amount: 0,
-								currency: "USD"
-							});
-							console.debug("[oaiq] lead_created fired via:", reason);
-						} catch (e) { /* never block the redirect */ }
-					}
-					// Submit redirects the top window away → fire on exit (keepalive carries it).
-					window.addEventListener("pagehide", function () { fire("pagehide"); });
-					window.addEventListener("beforeunload", function () { fire("beforeunload"); });
-				})();
-			</script>
+				<!-- Step 2: Tally form, injected after step 1 -->
+				<div id="hv-step2" class="hidden">
+					<p class="text-sm text-text-muted mb-2">
+						<span id="hv-picked"></span>
+						<button type="button" id="hv-change" class="text-accent font-semibold hover:underline ml-1">Change</button>
+					</p>
+					<div id="hv-tally"></div>
+				</div>
+			</div>
 		</header>
 
 		<!-- TRUST STRIP -->
@@ -118,12 +110,12 @@ const faqs = [
 				<p class="text-xs text-text-muted mt-1"><a href={GBP_URL} target="_blank" rel="noopener" class="no-underline hover:text-accent">Google rating</a></p>
 			</div>
 			<div class="bg-surface p-5 text-center">
-				<div class="font-display text-2xl font-bold text-primary">Local</div>
-				<p class="text-xs text-text-muted mt-1">Austin-based agent</p>
+				<div class="font-display text-2xl font-bold text-primary">24 hrs</div>
+				<p class="text-xs text-text-muted mt-1">Your range, by text + email</p>
 			</div>
 			<div class="bg-surface p-5 text-center">
 				<div class="font-display text-2xl font-bold text-primary">MLS</div>
-				<p class="text-xs text-text-muted mt-1">Live comps, not guesses</p>
+				<p class="text-xs text-text-muted mt-1">Real sales, not guesses</p>
 			</div>
 			<div class="bg-surface p-5 text-center">
 				<div class="font-display text-2xl font-bold text-primary">{BROKERAGE}</div>
@@ -131,50 +123,21 @@ const faqs = [
 			</div>
 		</div>
 
-		<!-- MORE THAN AN ALGORITHM -->
+		<!-- WHAT YOU GET -->
 		<section class="mb-16">
-			<h2 class="font-display text-2xl font-bold text-primary mb-2">More Than an Algorithm</h2>
-			<p class="text-text-muted mb-6 max-w-2xl">An instant estimate is a great start. A real price comes from someone who actually knows your neighborhood.</p>
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">What You Get</h2>
 			<div class="grid sm:grid-cols-3 gap-4">
 				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Instant Estimate</h3>
-					<p class="text-sm text-text-muted">Get a current value range in seconds from live MLS-sourced sales data — no waiting, no phone call required.</p>
+					<h3 class="font-display text-base font-bold text-primary mb-2">A Real Price Range</h3>
+					<p class="text-sm text-text-muted">Built from the homes that sold near you in the last few months, adjusted for your upgrades, lot and condition.</p>
 				</div>
 				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Local Expert Review</h3>
-					<p class="text-sm text-text-muted">I refine the estimate with real comparable sales on your street and adjust for the upgrades, lot, and condition algorithms can't see.</p>
+					<h3 class="font-display text-base font-bold text-primary mb-2">A Short Video Walkthrough</h3>
+					<p class="text-sm text-text-muted">I walk you through the comps on screen so you can see exactly where the number comes from.</p>
 				</div>
 				<div class="bg-surface border border-border rounded-xl p-6">
-					<h3 class="font-display text-base font-bold text-primary mb-2">Honest Advice</h3>
-					<p class="text-sm text-text-muted">No pressure to list. Whether you're selling now or just curious about your equity, you'll get a straight answer and a clear price range.</p>
-				</div>
-			</div>
-		</section>
-
-		<!-- HOW IT WORKS -->
-		<section class="mb-16">
-			<h2 class="font-display text-2xl font-bold text-primary mb-6">How It Works</h2>
-			<div class="space-y-6">
-				<div class="flex gap-4">
-					<div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">1</div>
-					<div>
-						<h3 class="font-display font-bold text-primary mb-1">Enter Your Address</h3>
-						<p class="text-sm text-text-muted">Type your address into the box above. You'll get an instant value estimate based on current data for your area.</p>
-					</div>
-				</div>
-				<div class="flex gap-4">
-					<div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">2</div>
-					<div>
-						<h3 class="font-display font-bold text-primary mb-1">Get Your Instant Estimate</h3>
-						<p class="text-sm text-text-muted">See a current value range in seconds. Optionally, share where to send a more detailed analysis.</p>
-					</div>
-				</div>
-				<div class="flex gap-4">
-					<div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent text-white font-bold text-sm flex items-center justify-center">3</div>
-					<div>
-						<h3 class="font-display font-bold text-primary mb-1">Optional: Free Expert Valuation</h3>
-						<p class="text-sm text-text-muted">If you want a precise number, I'll pull real comps for your address and walk you through a no-obligation valuation. 15 minutes, no pressure.</p>
-					</div>
+					<h3 class="font-display text-base font-bold text-primary mb-2">Honest Timing Advice</h3>
+					<p class="text-sm text-text-muted">Whether to list now, wait, or stay put. No pressure to list, just a straight answer.</p>
 				</div>
 			</div>
 		</section>
@@ -183,9 +146,8 @@ const faqs = [
 		<section class="bg-accent-light rounded-2xl p-6 sm:p-8 mb-16 border-l-4 border-accent">
 			<h2 class="font-display text-xl font-bold text-primary mb-2">Who's Behind the Valuation</h2>
 			<p class="text-text-muted text-sm mb-3">
-				I'm William Zhang, a local Austin real estate agent with {BROKERAGE} (TREC&nbsp;#{TREC_LICENSE}). I price homes using current MLS data — not gut feel — and I'm honest about what your home is actually worth in today's market. I also run a
-				<a href={YOUTUBE_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">YouTube channel</a>
-				covering the Austin market, which is how a lot of out-of-state buyers find Austin before they ever arrive.
+				I'm William Zhang, a local Austin real estate agent with {BROKERAGE} (TREC&nbsp;#{TREC_LICENSE}). I price homes from current MLS sales, not gut feel, and I'm honest about what your home is actually worth in today's market. I also cover what's being built around Austin on
+				<a href={YOUTUBE_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">YouTube</a>.
 			</p>
 			<a href={telHref} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">
 				Call {PHONE}
@@ -207,41 +169,188 @@ const faqs = [
 				))}
 			</div>
 		</section>
-
-		<!-- SECONDARY CAPTURE -->
-		<ContactForm
-			formId="KYkWyM"
-			heading="Prefer a Personal Valuation?"
-			subheading="Tell me your address and timeline. I'll send back a market snapshot with real comparable sales for your neighborhood — no obligation."
-		/>
-
-		<!--
-			ChatGPT Ads conversion hook for the Tally form (the second lead path).
-			Tally posts a "Tally.FormSubmitted" message to the parent on submit (same page,
-			no redirect), so we fire lead_created directly. Separate once-guard from the
-			valuation-widget hook so each path can convert independently.
-		-->
-		<script is:inline>
-			(function () {
-				var fired = false;
-				window.addEventListener("message", function (e) {
-					if (typeof e.data !== "string" || e.data.indexOf("Tally.FormSubmitted") === -1) return;
-					var msg;
-					try { msg = JSON.parse(e.data); } catch (err) { return; }
-					if (!msg || msg.event !== "Tally.FormSubmitted") return;
-					if (msg.payload && msg.payload.formId && msg.payload.formId !== "KYkWyM") return;
-					if (fired) return;
-					fired = true;
-					try {
-						window.oaiq && window.oaiq("measure", "lead_created", {
-							type: "customer_action",
-							amount: 0,
-							currency: "USD"
-						});
-						console.debug("[oaiq] lead_created fired via: tally form");
-					} catch (err) { /* never block the form */ }
-				});
-			})();
-		</script>
 	</div>
+
+	<script is:inline define:vars={{ TALLY_FORM_ID, MAPS_KEY }}>
+		(function () {
+			var params = new URLSearchParams(location.search);
+			var campaign = (params.get('c') || params.get('utm_campaign') || '').toLowerCase();
+
+			// Headline that continues the video the viewer just watched (?c=<slug>).
+			var CONTEXT = {
+				pflugerville: {
+					h: "What Does Pflugerville's New Downtown Mean for Your Home's Value?",
+					s: 'Downtown East opens this winter. Find out where your home stands, with a real price range from recent sales near you.'
+				}
+			};
+			var ctxKey = Object.keys(CONTEXT).find(function (k) { return campaign.indexOf(k) !== -1; });
+			if (ctxKey) {
+				document.getElementById('hv-headline').textContent = CONTEXT[ctxKey].h;
+				document.getElementById('hv-sub').textContent = CONTEXT[ctxKey].s;
+			}
+
+			var input = document.getElementById('hv-address');
+			var list = document.getElementById('hv-suggestions');
+			var picked = null; // { address, city, zip, lat, lng }
+
+			function track(name, props) {
+				try { window.plausible && window.plausible(name, { props: props }); } catch (e) {}
+			}
+
+			// ---- Google Places suggestions (optional; plain text box if no key or load fails) ----
+			var places = null, token = null, suggestions = [], timer = null, active = -1;
+			function loadPlaces() {
+				if (!MAPS_KEY || places) return Promise.resolve(places);
+				(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({ key: MAPS_KEY, v: 'weekly' });
+				return google.maps.importLibrary('places').then(function (lib) {
+					places = lib;
+					token = new lib.AutocompleteSessionToken();
+					return lib;
+				}).catch(function () { places = null; return null; });
+			}
+
+			function closeList() { list.classList.add('hidden'); list.innerHTML = ''; active = -1; }
+
+			function render() {
+				list.innerHTML = '';
+				if (!suggestions.length) return closeList();
+				suggestions.forEach(function (s, i) {
+					var li = document.createElement('li');
+					li.setAttribute('role', 'option');
+					li.className = 'px-4 py-3 text-sm sm:text-base cursor-pointer hover:bg-accent-light' + (i === active ? ' bg-accent-light' : '');
+					li.textContent = s.placePrediction.text.toString();
+					li.addEventListener('mousedown', function (e) { e.preventDefault(); choose(i); });
+					list.appendChild(li);
+				});
+				list.classList.remove('hidden');
+			}
+
+			function choose(i) {
+				var pred = suggestions[i] && suggestions[i].placePrediction;
+				if (!pred) return;
+				input.value = pred.text.toString();
+				closeList();
+				var place = pred.toPlace();
+				place.fetchFields({ fields: ['formattedAddress', 'addressComponents', 'location'] }).then(function () {
+					var get = function (type) {
+						var c = (place.addressComponents || []).find(function (x) { return x.types.indexOf(type) !== -1; });
+						return c ? (c.longText || '') : '';
+					};
+					picked = {
+						address: (place.formattedAddress || input.value).replace(/, USA$/, ''),
+						city: get('locality') || get('sublocality') || get('administrative_area_level_3'),
+						zip: get('postal_code'),
+						lat: place.location ? place.location.lat().toFixed(6) : '',
+						lng: place.location ? place.location.lng().toFixed(6) : ''
+					};
+					input.value = picked.address;
+					token = places ? new places.AutocompleteSessionToken() : null;
+				}).catch(function () {});
+			}
+
+			input.addEventListener('focus', loadPlaces, { once: true });
+			input.addEventListener('input', function () {
+				picked = null;
+				clearTimeout(timer);
+				var q = input.value.trim();
+				if (q.length < 3) return closeList();
+				timer = setTimeout(function () {
+					loadPlaces().then(function (lib) {
+						if (!lib) return;
+						return lib.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+							input: q,
+							sessionToken: token,
+							includedRegionCodes: ['us'],
+							locationBias: { center: { lat: 30.35, lng: -97.7 }, radius: 50000 }
+						}).then(function (res) {
+							if (input.value.trim() !== q) return;
+							suggestions = (res.suggestions || []).filter(function (s) { return s.placePrediction; }).slice(0, 5);
+							active = -1;
+							render();
+						});
+					}).catch(function () {});
+				}, 200);
+			});
+			input.addEventListener('keydown', function (e) {
+				if (list.classList.contains('hidden')) return;
+				if (e.key === 'ArrowDown') { active = Math.min(active + 1, suggestions.length - 1); render(); e.preventDefault(); }
+				else if (e.key === 'ArrowUp') { active = Math.max(active - 1, 0); render(); e.preventDefault(); }
+				else if (e.key === 'Enter' && active >= 0) { choose(active); e.preventDefault(); }
+				else if (e.key === 'Escape') closeList();
+			});
+			input.addEventListener('blur', function () { setTimeout(closeList, 150); });
+
+			// ---- Step 1 -> Step 2 ----
+			var step1 = document.getElementById('hv-step1');
+			var step2 = document.getElementById('hv-step2');
+			var tallyBox = document.getElementById('hv-tally');
+
+			function loadTallyScript() {
+				if (window.Tally) return window.Tally.loadEmbeds();
+				var s = document.createElement('script');
+				s.src = 'https://tally.so/widgets/embed.js';
+				s.async = true;
+				s.onload = function () { window.Tally && window.Tally.loadEmbeds(); };
+				s.onerror = function () {
+					var f = tallyBox.querySelector('iframe');
+					if (f && !f.src) f.src = f.getAttribute('data-tally-src');
+				};
+				document.head.appendChild(s);
+			}
+
+			step1.addEventListener('submit', function (e) {
+				e.preventDefault();
+				var addr = input.value.trim();
+				if (addr.length < 5) { document.getElementById('hv-error').classList.remove('hidden'); input.focus(); return; }
+				document.getElementById('hv-error').classList.add('hidden');
+				var d = picked && picked.address === addr ? picked : { address: addr, city: '', zip: '', lat: '', lng: '' };
+
+				var q = new URLSearchParams({
+					alignLeft: '1', hideTitle: '1', transparentBackground: '1', dynamicHeight: '1',
+					address: d.address, city: d.city, zip: d.zip, lat: d.lat, lng: d.lng,
+					c: campaign, source: 'home-value'
+				});
+				['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+					if (params.get(k)) q.set(k, params.get(k));
+				});
+				tallyBox.innerHTML = '';
+				var iframe = document.createElement('iframe');
+				iframe.setAttribute('data-tally-src', 'https://tally.so/embed/' + TALLY_FORM_ID + '?' + q.toString());
+				iframe.setAttribute('title', 'Home valuation');
+				iframe.setAttribute('width', '100%');
+				iframe.setAttribute('height', '480');
+				iframe.setAttribute('frameborder', '0');
+				iframe.className = 'w-full block';
+				tallyBox.appendChild(iframe);
+
+				document.getElementById('hv-picked').textContent = d.address;
+				step1.classList.add('hidden');
+				step2.classList.remove('hidden');
+				loadTallyScript();
+				track('Valuation Started', { campaign: campaign || 'none', autocomplete: picked ? 'yes' : 'no', medium: params.get('utm_medium') || 'none' });
+			});
+
+			document.getElementById('hv-change').addEventListener('click', function () {
+				step2.classList.add('hidden');
+				step1.classList.remove('hidden');
+				input.focus();
+			});
+
+			// ---- Conversion: Tally posts Tally.FormSubmitted to the parent before redirecting ----
+			var fired = false;
+			window.addEventListener('message', function (e) {
+				if (typeof e.data !== 'string' || e.data.indexOf('Tally.FormSubmitted') === -1) return;
+				var msg;
+				try { msg = JSON.parse(e.data); } catch (err) { return; }
+				if (!msg || msg.event !== 'Tally.FormSubmitted') return;
+				if (msg.payload && msg.payload.formId && msg.payload.formId !== TALLY_FORM_ID) return;
+				if (fired) return;
+				fired = true;
+				track('Valuation Submitted', { campaign: campaign || 'none', medium: params.get('utm_medium') || 'none' });
+				try {
+					window.oaiq && window.oaiq('measure', 'lead_created', { type: 'customer_action', amount: 0, currency: 'USD' });
+				} catch (err) {}
+			});
+		})();
+	</script>
 </LandingLayout>
