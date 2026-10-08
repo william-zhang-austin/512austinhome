@@ -13,6 +13,16 @@
       "permanent": true
     },
     {
+      "source": "/blog/best-austin-home/blog/best-austin-neighborhoods-for-families-austin/",
+      "destination": "/blog/best-neighborhoods-for-families-austin/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/best-austin-neighborhoods-for-families-austin/",
+      "destination": "/blog/best-neighborhoods-for-families-austin/",
+      "permanent": true
+    },
+    {
       "source": "/homes/listing/:path*",
       "destination": "/buy/",
       "permanent": true
