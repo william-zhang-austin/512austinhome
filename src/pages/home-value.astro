@@ -327,6 +327,8 @@ const faqs = [
 				step1.classList.add('hidden');
 				step2.classList.remove('hidden');
 				loadTallyScript();
+				// Keep the form clear of the sticky header on phones.
+				window.scrollTo({ top: step2.getBoundingClientRect().top + window.scrollY - 84, behavior: 'smooth' });
 				track('Valuation Started', { campaign: campaign || 'none', autocomplete: picked ? 'yes' : 'no', medium: params.get('utm_medium') || 'none' });
 			});
 
