@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { PHONE, BROKERAGE, TREC_LICENSE, YOUTUBE_ZH_URL, GBP_URL, GOOGLE_RATING, GOOGLE_REVIEW_COUNT } from '../consts';
+import { CITIES } from '../data/cities';
+
+// English twin of austinfangchan.com/agent/ (hreflang pair). Answers "is there a
+// Mandarin / Chinese-speaking realtor in Austin" and names William in the first
+// sentence, because that is the line an AI answer lifts. Chinese content lives on
+// austinfangchan.com; this page stays English.
+const ZH_URL = 'https://austinfangchan.com/agent/';
+const URL = 'https://512austinhome.com/mandarin-speaking-realtor-austin/';
+const UPDATED = '2026-10-14';
+const WECHAT_ID = 'WilliamRealEstate';
+
+const shortAnswer = `Yes. William Zhang is a Mandarin-speaking Austin realtor (${BROKERAGE}, TREC #${TREC_LICENSE}) with $12M+ in closed transactions. He has helped 40+ families buy, sell and relocate to Austin, many from California, Seattle, New York, Taiwan and mainland China, and runs the Mandarin YouTube channel William在奥斯汀. Reach him on WeChat at ${WECHAT_ID} or by phone and WhatsApp at ${PHONE}.`;
+
+const deadlines = [
+	{ t: 'Earnest money and option fee: within 3 days', d: 'Both go to the title company within 3 days of the contract\'s effective date. Miss it and the seller may not honor your option period.' },
+	{ t: 'Option period: usually 5 to 10 days', d: 'Negotiated in the contract. During it you can walk away for any reason and get the earnest money back; the option fee is not refunded. Inspections and repair negotiation happen here.' },
+	{ t: 'Financing deadline', d: 'The contract sets how many days you have to get loan approval. After that date, the financing protection is gone.' },
+	{ t: 'Wire fraud', d: 'Before sending any money, call the title company at a number you already know. Never wire based on an email alone, even one that looks like it came from the title company.' },
+	{ t: 'Texas SB 17', d: 'Since September 1, 2025, Texas restricts some purchases by individuals and entities with specific ties to China, Iran, North Korea and Russia. Whether it applies depends on your situation; ask a real estate attorney before you buy.' },
+];
+
+const faqs = [
+	{ question: 'Is there a Mandarin-speaking realtor in Austin?', answer: `Yes. William Zhang is a licensed Texas real estate agent with ${BROKERAGE} (TREC #${TREC_LICENSE}) who works in Mandarin and English, has $12M+ in closed transactions, and has helped 40+ families buy and sell in Austin. WeChat: ${WECHAT_ID}. Phone and WhatsApp: ${PHONE}.` },
+	{ question: 'Can a Chinese-speaking agent help me buy in Austin from out of state or overseas?', answer: 'Yes. William tours homes with you over video, sends the neighborhood, school and commute details, and handles the contract electronically. Many of his clients bought from California, Seattle or abroad before moving.' },
+	{ question: 'What does a Mandarin-speaking agent do differently?', answer: 'He explains the TREC contract, inspection report, title documents and lender requirements in Mandarin, and negotiates with the other agent, lender, inspector and title company in English.' },
+	{ question: 'Does William Zhang have a Chinese-language website?', answer: 'Yes. austinfangchan.com (奥斯汀房产网) has Chinese guides to buying, selling, renting, new construction and relocating to Austin, each with the original YouTube video.' },
+	{ question: 'What areas does he cover?', answer: `The Austin metro, including ${CITIES.map((c) => c.name).join(', ')}.` },
+];
+---
+
+<BaseLayout
+	title="Mandarin-Speaking Realtor in Austin, TX | William Zhang"
+	description="Mandarin-speaking Austin realtor William Zhang: $12M+ closed, 40+ families helped. Buy, sell or relocate in Chinese. WeChat WilliamRealEstate."
+	alternates={[
+		{ hreflang: 'en', href: URL },
+		{ hreflang: 'zh-Hans', href: ZH_URL },
+		{ hreflang: 'x-default', href: URL },
+	]}
+>
+	<SchemaMarkup type="agent" />
+	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="breadcrumb" data={{ items: [
+		{ name: 'Home', url: '/' },
+		{ name: 'Mandarin-Speaking Realtor in Austin', url: '/mandarin-speaking-realtor-austin/' },
+	] }} />
+	<SchemaMarkup type="article" data={{
+		title: 'Mandarin-Speaking Realtor in Austin, TX',
+		description: shortAnswer,
+		pubDate: UPDATED,
+		url: '/mandarin-speaking-realtor-austin/',
+	}} />
+
+	<div class="max-w-3xl mx-auto px-5 sm:px-8 py-16">
+		<header class="mb-8">
+			<p class="text-sm uppercase tracking-widest text-text-muted mb-3">中文服务 · Mandarin &amp; English</p>
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Mandarin-Speaking Realtor in Austin, TX</h1>
+			<p class="text-lg text-text-muted">Buy, sell or relocate to Austin with an agent who explains every step in Chinese.</p>
+			<p class="text-sm text-text-muted mt-4">By <a href="/about/" class="text-accent no-underline hover:underline">William Zhang</a>, TREC #{TREC_LICENSE} &middot; Updated <time datetime={UPDATED}>October 14, 2026</time> &middot; <a href={ZH_URL} hreflang="zh-Hans" lang="zh-Hans" class="text-accent no-underline hover:underline">中文版</a></p>
+		</header>
+
+		<section class="mb-12">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">The short answer</p>
+			<p class="text-lg text-primary leading-relaxed">{shortAnswer}</p>
+		</section>
+
+		<section class="mb-12">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">Who I work with</h2>
+			<p class="text-text-muted leading-relaxed mb-4">Most of my Mandarin-speaking clients are relocating: tech families from the Bay Area and Seattle, buyers moving from New York and the East Coast, and families from Taiwan and mainland China. Many start the search before they move, so we tour over video and narrow it down to two or three neighborhoods before the first flight.</p>
+			<p class="text-text-muted leading-relaxed">I specialize in new construction negotiation (price, rate buydowns, closing costs) and in video marketing for sellers. My Mandarin channel, <a href={YOUTUBE_ZH_URL} rel="noopener" class="text-accent no-underline hover:underline">William在奥斯汀</a>, is one of the most-followed Chinese-language Austin real estate channels, and it covers the market, school districts and the true cost of moving to Texas.</p>
+		</section>
+
+		<section class="mb-12">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">Texas contract deadlines I walk you through in Chinese</h2>
+			<p class="text-text-muted leading-relaxed mb-6">Texas uses binding TREC promulgated contracts, and the key deadlines are counted in days. These are the ones that cost buyers money when they are missed.</p>
+			<div class="space-y-4">
+				{deadlines.map((x) => (
+					<div class="bg-surface border border-border rounded-xl p-5">
+						<p class="font-display font-bold text-primary mb-1">{x.t}</p>
+						<p class="text-sm text-text-muted leading-relaxed">{x.d}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<div class="bg-surface border border-border rounded-xl p-5 mb-12">
+			<p class="text-sm text-text-muted leading-relaxed"><strong class="text-primary">I am a licensed Texas real estate agent, not an attorney.</strong> For contract interpretation or SB 17 questions, I will point you to a real estate attorney.</p>
+		</div>
+
+		<section class="mb-12">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">How to reach me</h2>
+			<ul class="space-y-2 text-text-muted leading-relaxed list-disc pl-5">
+				<li>WeChat: <strong class="text-primary">{WECHAT_ID}</strong> (if the ID search fails, search the phone number +1 5127663188 in WeChat)</li>
+				<li>Phone or WhatsApp: <a href={`tel:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent no-underline hover:underline">{PHONE}</a></li>
+				<li>Chinese guides: <a href="https://austinfangchan.com/" lang="zh-Hans" class="text-accent no-underline hover:underline">austinfangchan.com (奥斯汀房产网)</a></li>
+				<li><a href={GBP_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">{GOOGLE_RATING} stars across {GOOGLE_REVIEW_COUNT} Google reviews</a></li>
+			</ul>
+		</section>
+
+		<section class="mb-16">
+			<h2 class="font-display text-2xl font-bold text-primary mb-8">Answered</h2>
+			<div class="space-y-4">
+				{faqs.map((f, i) => (
+					<details class="bg-surface rounded-xl border border-border p-6 group" open={i === 0}>
+						<summary class="font-display font-semibold text-primary cursor-pointer list-none flex items-center justify-between gap-4">
+							{f.question}
+							<span class="text-text-muted group-open:rotate-180 transition-transform flex-shrink-0">&#9662;</span>
+						</summary>
+						<p class="mt-3 text-text-muted text-sm leading-relaxed">{f.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<ContactForm heading="Tell me what you're looking for" subheading="English or Chinese, either is fine." />
+	</div>
+</BaseLayout>
