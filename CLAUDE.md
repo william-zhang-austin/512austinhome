@@ -41,7 +41,7 @@ Built with Astro + Tailwind. Optimized for local SEO and AI/LLM discoverability 
 ## What This Site Does NOT Do
 - No IDX/property search (that's lifeinaustintx.com)
 - No Mandarin content (that's the YouTube channel)
-- No CRM integration (leads from contact form get manually added to FUB)
+- CRM: /api/tally-fub/ (home-value Tally form) and /api/lead-fub/ (builder-incentives slide-in on new-construction pages) post leads to FUB as events. Other contact forms still get added by hand.
 
 ## Content Guidelines
 - Write for Austin homebuyers and sellers

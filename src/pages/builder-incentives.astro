@@ -1,0 +1,63 @@
+---
+// Delivery page for the builder-incentives slide-in (IncentivesCapture.astro).
+// noindex via LandingLayout: this is the lead magnet, not a ranking page.
+import LandingLayout from '../layouts/LandingLayout.astro';
+import IncentiveDisclosure from '../components/IncentiveDisclosure.astro';
+import { PHONE, TIDYCAL_URL } from '../consts';
+import { BUILDERS } from '../data/builders';
+import { CURRENT_OFFERS, OFFERS_AS_OF } from '../data/current-offers';
+
+const telHref = `tel:${PHONE.replace(/[^0-9+]/g, '')}`;
+const smsHref = `sms:${PHONE.replace(/[^0-9+]/g, '')}`;
+const fmt = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const month = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const offers = CURRENT_OFFERS.map((o) => ({ ...o, builder: BUILDERS.find((b) => b.slug === o.builderSlug) }));
+---
+
+<LandingLayout
+	title={`Austin Builder Incentives, ${month} | 512 Austin Home`}
+	description="Every current Austin new-construction builder incentive William Zhang has confirmed with the builders, on one page."
+	canonical="https://512austinhome.com/builder-incentives/"
+>
+	<div class="max-w-3xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
+		<p class="tag-pill mb-4">Your list</p>
+		<h1 class="font-display text-3xl sm:text-4xl font-bold text-primary tracking-tight mb-3">
+			Austin builder incentives, {month}
+		</h1>
+		<p class="text-lg text-text-muted mb-8">
+			Every offer below was confirmed with the builder or its sales rep. Bookmark this page: it changes when the offers do.
+		</p>
+
+		<IncentiveDisclosure />
+
+		{offers.length === 0 ? (
+			<p class="text-text-muted mb-10">No offers are confirmed right now. Text me and I'll tell you what's on the table this week.</p>
+		) : (
+			<ol class="space-y-4 mb-12">
+				{offers.map((o) => (
+					<li class="bg-surface border border-border rounded-xl p-5">
+						<div class="flex items-baseline justify-between gap-3 mb-1">
+							<a href={`/incentives/${o.builderSlug}/`} class="font-display text-base font-bold text-accent no-underline hover:underline">{o.builder?.name ?? o.builderSlug}</a>
+							<span class="text-xs text-text-muted whitespace-nowrap">Confirmed {fmt(o.verifiedOn)}</span>
+						</div>
+						<p class="text-primary font-semibold leading-snug">{o.headline}</p>
+						{o.communities && <p class="text-sm text-text-muted mt-1">Communities: {o.communities.join(', ')}</p>}
+						{o.detail && <p class="text-sm text-text-muted leading-relaxed mt-2">{o.detail}</p>}
+					</li>
+				))}
+			</ol>
+		)}
+
+		<section class="bg-accent-light rounded-2xl p-6 sm:p-8 border-l-4 border-accent">
+			<h2 class="font-display text-xl font-bold text-primary mb-2">Not on the list: the unadvertised ones</h2>
+			<p class="text-text-muted text-sm mb-4">
+				Builders often have quick move-in homes they will discount but won't post. Tell me which builders or areas you're looking at and I'll check what's actually available. Register me before your first visit to a sales office, because most builders only work with an agent who was there on day one.
+			</p>
+			<div class="flex flex-col sm:flex-row gap-3">
+				<a href={smsHref} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all no-underline">Text me</a>
+				<a href={telHref} class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border border-accent rounded-lg hover:bg-white transition-all no-underline">Call {PHONE}</a>
+				<a href={TIDYCAL_URL} target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent border border-accent rounded-lg hover:bg-white transition-all no-underline">Book a call</a>
+			</div>
+		</section>
+	</div>
+</LandingLayout>

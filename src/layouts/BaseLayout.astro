@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import IncentivesCapture from '../components/IncentivesCapture.astro';
 
 interface Props {
 	title: string;
@@ -14,6 +15,10 @@ interface Props {
 }
 
 const { title, description, image, canonical, type, alternates } = Astro.props;
+
+// Builder-incentives slide-in: new-construction intent pages only, never the homepage or
+// the best-realtor page (those are the pages AI answers cite).
+const showIncentivesCapture = /^\/(new-construction|builders|incentives|deals|compare)(\/|$)/.test(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -28,5 +33,6 @@ const { title, description, image, canonical, type, alternates } = Astro.props;
 			<slot />
 		</main>
 		<Footer />
+		{showIncentivesCapture && <IncentivesCapture />}
 	</body>
 </html>

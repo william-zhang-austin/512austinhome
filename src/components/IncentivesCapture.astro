@@ -1,0 +1,165 @@
+---
+// Builder-incentives lead capture: a slide-in, not a page-covering popup.
+//
+// Shown only on new-construction intent pages (see BaseLayout). Appears after the reader
+// scrolls ~55% of the page, or on exit intent (desktop). On phones it opens as a slim bar
+// at the bottom that expands to the form on tap, so it never covers the content (Google's
+// intrusive-interstitial rule). Dismissed = hidden for 14 days; signed up = never again.
+//
+// Posts to /api/lead-fub/ (FUB "Registration" event), then sends the reader to
+// /builder-incentives/, which is the list itself.
+import { OFFERS_AS_OF } from '../data/current-offers';
+
+const month = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
+---
+
+<div id="ic" class="ic hidden" role="dialog" aria-labelledby="ic-title" aria-modal="false">
+	<div class="ic-barwrap sm:hidden">
+		<button type="button" id="ic-bar" class="ic-bar">
+			<span><strong>{month}'s builder incentives</strong>, every Austin offer on one page</span>
+			<span aria-hidden="true" class="ic-bar-cta">Get it</span>
+		</button>
+		<button type="button" id="ic-bar-close" class="ic-bar-close" aria-label="Close">&times;</button>
+	</div>
+
+	<div id="ic-card" class="ic-card">
+		<button type="button" id="ic-close" class="ic-close" aria-label="Close">&times;</button>
+		<p class="text-xs font-semibold uppercase tracking-widest text-accent mb-2">Free list</p>
+		<h2 id="ic-title" class="font-display text-lg font-bold text-primary leading-snug mb-2">
+			Get {month}'s Austin builder incentives
+		</h2>
+		<p class="text-sm text-text-muted leading-relaxed mb-4">
+			Every current offer I've confirmed with the builders, on one page. I'll also tell you about the ones they don't advertise.
+		</p>
+
+		<form id="ic-form" novalidate>
+			<label class="ic-label" for="ic-name">Name</label>
+			<input class="ic-input" id="ic-name" name="name" type="text" autocomplete="name" required />
+			<label class="ic-label" for="ic-email">Email</label>
+			<input class="ic-input" id="ic-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+			<label class="ic-label" for="ic-phone">Mobile number</label>
+			<input class="ic-input" id="ic-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(512) 555-0123" required />
+			<div class="ic-hp" aria-hidden="true">
+				<label for="ic-website">Website</label>
+				<input id="ic-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+			</div>
+			<p id="ic-error" class="text-xs text-red-600 mb-2 hidden" role="alert"></p>
+			<button type="submit" id="ic-submit" class="w-full px-5 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all">
+				Send me the list
+			</button>
+			<p class="text-[11px] text-text-muted leading-snug mt-3">
+				By submitting, you agree that William Zhang (eXp Realty) may call or text you about Austin homes, including by automated means. Msg and data rates may apply. Reply STOP to opt out. Consent is not a condition of any purchase.
+			</p>
+		</form>
+	</div>
+</div>
+
+<style>
+	.ic { position: fixed; z-index: 60; right: 1rem; bottom: 1rem; width: 22rem; max-width: calc(100vw - 2rem); }
+	.ic-card { position: relative; background: var(--color-surface, #fff); border: 1px solid var(--color-border, #e5e7eb); border-radius: 1rem; padding: 1.25rem; box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.25); animation: ic-in 0.35s ease-out; }
+	.ic-close { position: absolute; top: 0.5rem; right: 0.75rem; font-size: 1.5rem; line-height: 1; color: #64748b; background: none; border: 0; cursor: pointer; padding: 0.25rem; }
+	.ic-label { display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; }
+	.ic-input { display: block; width: 100%; font-size: 16px; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; margin-bottom: 0.75rem; background: #fff; }
+	.ic-input:focus { outline: 2px solid #2563eb; outline-offset: 0; border-color: #2563eb; }
+	.ic-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+	.ic-barwrap { display: none; }
+	@keyframes ic-in { from { transform: translateY(1rem); opacity: 0; } to { transform: none; opacity: 1; } }
+
+	/* Phones: a slim bar first; the card opens only when tapped. */
+	@media (max-width: 639px) {
+		.ic { left: 0; right: 0; bottom: 0; width: auto; max-width: none; }
+		.ic-barwrap { display: flex; align-items: stretch; background: #1e3a8a; box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.2); }
+		.ic-bar-close { flex-shrink: 0; color: #fff; background: none; border: 0; font-size: 1.4rem; padding: 0 0.9rem 0 0.25rem; cursor: pointer; }
+		.ic-bar { display: flex; flex: 1; min-width: 0; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.75rem 1rem; font-size: 0.85rem; text-align: left; color: #fff; background: #1e3a8a; border: 0; }
+		.ic-bar-cta { flex-shrink: 0; font-weight: 700; background: #fff; color: #1e3a8a; border-radius: 999px; padding: 0.3rem 0.8rem; }
+		.ic-card { display: none; border-radius: 1rem 1rem 0 0; max-height: 85vh; overflow-y: auto; }
+		.ic.open .ic-card { display: block; }
+		.ic.open .ic-barwrap { display: none; }
+	}
+</style>
+
+<script is:inline>
+	(function () {
+		var KEY = 'ic-state';
+		var root = document.getElementById('ic');
+		if (!root) return;
+		function get() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (_) { return null; } }
+		function set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (_) {} }
+		var st = get();
+		if (st && (st.done || (st.until && Date.now() < st.until))) return;
+
+		var shown = false;
+		function track(n, p) { try { window.plausible && window.plausible(n, p ? { props: p } : undefined); } catch (_) {} }
+		function show(why) {
+			if (shown) return;
+			shown = true;
+			root.classList.remove('hidden');
+			track('Incentives Popup Shown', { trigger: why });
+		}
+		// Never compete with the page's own contact form or booking calendar: wait until neither is on screen.
+		function otherFormInView() {
+			var els = document.querySelectorAll('form:not(#ic-form), iframe');
+			for (var i = 0; i < els.length; i++) {
+				var r = els[i].getBoundingClientRect();
+				if (r.height > 0 && r.bottom > 0 && r.top < window.innerHeight) return true;
+			}
+			return false;
+		}
+		function onScroll() {
+			var h = document.documentElement;
+			if ((h.scrollTop + window.innerHeight) / h.scrollHeight < 0.55 || otherFormInView()) return;
+			show('scroll');
+			window.removeEventListener('scroll', onScroll);
+		}
+		window.addEventListener('scroll', onScroll, { passive: true });
+		document.addEventListener('mouseout', function (e) {
+			if (!e.relatedTarget && e.clientY <= 0 && window.innerWidth >= 640) show('exit');
+		});
+
+		document.getElementById('ic-bar').addEventListener('click', function () {
+			root.classList.add('open');
+			track('Incentives Popup Opened');
+		});
+		function dismiss() {
+			root.classList.add('hidden');
+			set({ until: Date.now() + 14 * 86400000 });
+		}
+		document.getElementById('ic-close').addEventListener('click', dismiss);
+		document.getElementById('ic-bar-close').addEventListener('click', dismiss);
+
+		var form = document.getElementById('ic-form');
+		var err = document.getElementById('ic-error');
+		var btn = document.getElementById('ic-submit');
+		function fail(msg) { err.textContent = msg; err.classList.remove('hidden'); }
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			err.classList.add('hidden');
+			var name = form.name.value.trim();
+			var email = form.email.value.trim();
+			var digits = form.phone.value.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+			if (name.length < 2) return fail('Please enter your name.');
+			if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please enter a valid email.');
+			if (digits.length !== 10) return fail('Please enter a 10-digit mobile number.');
+			var q = new URLSearchParams(location.search);
+			var body = {
+				name: name, email: email, phone: digits, website: form.website.value,
+				page: location.pathname, referrer: document.referrer,
+				utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '',
+			};
+			btn.disabled = true;
+			btn.textContent = 'Sending...';
+			fetch('/api/lead-fub/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+				.then(function (r) {
+					if (!r.ok) throw new Error(String(r.status));
+					set({ done: true });
+					track('Incentives Signup', { page: location.pathname });
+					location.href = '/builder-incentives/?from=' + encodeURIComponent(location.pathname);
+				})
+				.catch(function () {
+					btn.disabled = false;
+					btn.textContent = 'Send me the list';
+					fail('Something went wrong. Please try again, or text me at (512) 766-3188.');
+				});
+		});
+	})();
+</script>
