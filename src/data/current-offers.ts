@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The date the whole sheet was last reviewed. Shown on every incentives page. */
-export const OFFERS_AS_OF = '2026-10-04';
+export const OFFERS_AS_OF = '2026-10-14';
 
 export interface CurrentOffer {
 	/** Must match a slug in BUILDERS. */
@@ -33,10 +33,13 @@ export interface CurrentOffer {
 	source: string;
 	/** ISO date this specific offer was confirmed. */
 	verifiedOn: string;
+	/** ISO date the builder says the offer (or its contract window) ends. Past this, the
+	 * row drops off every page at the next build. */
+	endsOn?: string;
 }
 
 /**
- * Sourced 2026-09-23 and refreshed 2026-10-04 from builder emails sent directly to William's agent
+ * Sourced 2026-09-23 and refreshed 2026-10-04 and 2026-10-14 from builder emails sent directly to William's agent
  * address. Only buyer-facing terms are recorded.
  *
  * DELIBERATELY EXCLUDED, AND DO NOT ADD THEM: agent commission rates, BTSA
@@ -45,7 +48,7 @@ export interface CurrentOffer {
  * the brokerage, they are not a buyer benefit, and they do not belong on a
  * public page.
  */
-export const CURRENT_OFFERS: CurrentOffer[] = [
+const ALL_OFFERS: CurrentOffer[] = [
 	{
 		builderSlug: 'lennar',
 		headline: '5 percent toward closing costs, with an owner\'s title policy included.',
@@ -64,8 +67,9 @@ export const CURRENT_OFFERS: CurrentOffer[] = [
 		builderSlug: 'toll-brothers',
 		headline: '4.99 percent (5.76 percent APR) FHA 30-year fixed rate with as little as 3.5 percent down on select quick move-in homes.',
 		detail: 'Through Toll Brothers Mortgage Company, for buyers who sign on a select quick move-in home on or after 9/4/2026 and close by 10/30/2026. Toll\'s published example assumes a $509,224 price and a 660 minimum credit score; limited availability and subject to change. Toll is also running a National Sales Event for deposits 10/3 to 10/18 with savings that vary by home.',
-		source: 'Toll Brothers email',
-		verifiedOn: '2026-10-03',
+		source: 'Toll Brothers emails, 10/3 and 10/13/2026',
+		verifiedOn: '2026-10-13',
+		endsOn: '2026-10-30',
 	},
 	{
 		builderSlug: 'perry-homes',
@@ -77,10 +81,11 @@ export const CURRENT_OFFERS: CurrentOffer[] = [
 	},
 	{
 		builderSlug: 'highland-homes',
-		headline: 'Up to $50,000 in flex cash on to-be-built homes, or a reduced rate on quick move-in homes closing by 11/13/2026.',
-		detail: 'Flex cash applies to contracts from 10/1 to 10/31/2026 that close by 5/31/2027, and can go to design options or closing costs. The quick move-in rate is 4.49 percent in year one, then 5.49 percent fixed for years 2 to 30 (5.531 percent APR, conventional). Requires financing through Highland HomeLoans and cannot be combined with other offers.',
-		source: 'Highland Homes email',
-		verifiedOn: '2026-10-02',
+		headline: 'Up to $60,000 in flex cash plus a 1-0 rate buydown on to-be-built homes, or a 4.99 percent first-year rate on quick move-in homes.',
+		detail: 'To-be-built: contracts from 10/8 to 10/31/2026 that can close by 5/31/2027; flex cash goes to design options or closing costs. Quick move-in: 4.99 percent in year one, then 5.99 percent fixed for years 2 to 30 (6.032 percent APR, conventional), on homes that can close by 12/4/2026; an FHA/VA rate is also offered, so ask me for that number. Both require financing through Highland HomeLoans, funds are limited, and they cannot be combined with other offers.',
+		source: 'Highland Homes email, 10/14/2026',
+		verifiedOn: '2026-10-14',
+		endsOn: '2026-10-31',
 	},
 	{
 		builderSlug: 'dr-horton',
@@ -88,6 +93,7 @@ export const CURRENT_OFFERS: CurrentOffer[] = [
 		detail: 'Contracts during the event must close by 12/27/2026; first come, first served. The closing cost credit cannot exceed 2 percent of the final sales price and requires DHI Mortgage. Incentives vary by community and home.',
 		source: 'D.R. Horton Austin Division email',
 		verifiedOn: '2026-10-02',
+		endsOn: '2026-11-01',
 	},
 	{
 		builderSlug: 'meritage-homes',
@@ -95,6 +101,7 @@ export const CURRENT_OFFERS: CurrentOffer[] = [
 		detail: 'Requires financing through MTH Mortgage and using Carefree Title. The closing cost credit cannot exceed 3 percent of the base price. Meritage does not publish a single rate; ask me for the number on a specific home.',
 		source: 'Meritage Homes email',
 		verifiedOn: '2026-10-01',
+		endsOn: '2026-10-15',
 	},
 	{
 		builderSlug: 'coventry-homes',
@@ -102,8 +109,20 @@ export const CURRENT_OFFERS: CurrentOffer[] = [
 		detail: 'Applies to select inventory homes with contracts from 9/3 to 10/18/2026. Savings vary by home; in Coventry\'s own examples they ranged from $8,000 to $80,000.',
 		source: 'Coventry Homes email',
 		verifiedOn: '2026-10-01',
+		endsOn: '2026-10-18',
+	},
+	{
+		builderSlug: 'brohn-homes',
+		headline: 'Up to 6 percent flex cash on qualifying homes, usable for a promotional rate as low as 4.5 percent (6.480 percent APR, FHA 5/1 ARM).',
+		detail: 'Flex cash can buy down the rate when you finance with Brohn\'s preferred lender, CMG Financial. Brohn\'s "hot homes" get an extra 3 percent flex cash toward closing costs. At Cross Creek (Cedar Park), the final homes get the choice of up to 6 percent flex cash or a reduced rate. The 4.5 percent rate is an adjustable-rate loan fixed for five years: ask me to price it against a fixed rate before you decide.',
+		source: 'Brohn Homes Austin email (10/8/2026) and a Brohn sales executive (10/10/2026)',
+		verifiedOn: '2026-10-10',
 	},
 ];
+
+/** Live offers only: anything whose end date has passed drops off at build time. */
+const today = new Date().toISOString().slice(0, 10);
+export const CURRENT_OFFERS: CurrentOffer[] = ALL_OFFERS.filter((o) => !o.endsOn || o.endsOn >= today);
 
 export function offersForBuilder(builderSlug: string) {
 	return CURRENT_OFFERS.filter((o) => o.builderSlug === builderSlug);
