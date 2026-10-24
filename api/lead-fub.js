@@ -1,13 +1,20 @@
 // Site lead form -> Follow Up Boss (Vercel serverless function, POST /api/lead-fub/).
 //
-// The builder-incentives slide-in (src/components/IncentivesCapture.astro) posts
-// { name, email, phone, page, utm_*, website } here. We validate, drop bots, and create a
+// Two forms post here:
+//  - the builder-incentives slide-in (src/components/IncentivesCapture.astro)
+//  - the home-search page (src/pages/home-search.astro), form: "home-search", with quiz answers
+// Both send { name, email, phone, page, utm_*, website, sms_consent }. We validate, drop bots, and create a
 // "Registration" event in FUB, which creates or updates the person and fires FUB's own
 // new-lead alert and action plans.
 //
 // Env (Vercel, Sensitive): FUB_API_KEY (shared with api/tally-fub.js).
 
-const SOURCE = '512austinhome.com - Builder Incentives List';
+const FORMS = {
+	incentives: { source: '512austinhome.com - Builder Incentives List', tags: ['Buyer Lead', 'New Construction', 'Incentives List'], medium: 'slide-in', campaign: 'builder-incentives-list', description: 'Builder incentives list signup' },
+	'home-search': { source: '512austinhome.com - Home Search', tags: ['Buyer Lead', 'Home Search Form'], medium: 'home-search', campaign: 'home-search', description: 'Home search request' },
+};
+// Version of the consent wording (SMS_CONSENT in src/consts.ts) shown when the box was checked.
+const CONSENT_VERSION = '2026-10-24';
 const ALLOWED_ORIGINS = ['https://512austinhome.com', 'https://www.512austinhome.com'];
 
 function splitName(full = '') {
@@ -47,27 +54,36 @@ export default async function handler(req, res) {
 	if (digits.length !== 10) return res.status(400).json({ error: 'phone' });
 	const phone = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 
+	const form = FORMS[clean(b.form, 40)] ? clean(b.form, 40) : 'incentives';
+	const F = FORMS[form];
+	const smsConsent = b.sms_consent === true;
 	const page = clean(b.page, 300);
 	const campaign = clean(b.utm_campaign, 100);
-	const tags = ['Buyer Lead', 'New Construction', 'Incentives List'];
+	const tags = [...F.tags, smsConsent ? 'SMS Consent' : 'No SMS Consent'];
 	const pt = pageTag(page);
 	if (pt) tags.push(pt);
 	if (campaign) tags.push(campaign);
 
+	const a = b.answers && typeof b.answers === 'object' ? b.answers : {};
+	const answerLines = Object.entries(a).slice(0, 12).map(([k, v]) => `${clean(k, 40)}: ${clean(v, 100)}`);
 	const message = [
-		'Asked for the current Austin builder incentives list.',
+		form === 'home-search' ? 'Submitted the home search form.' : 'Asked for the current Austin builder incentives list.',
+		...answerLines,
 		`Signed up on: https://512austinhome.com${page}`,
 		`Came from: ${clean(b.utm_source, 100) || clean(b.referrer, 200) || 'direct / unknown'}`,
-		'Agreed to calls and texts about Austin homes (consent line on the form).',
-		'Next: call or text within the day and ask which builders/communities they are looking at.',
-	].join('\n');
+		smsConsent
+			? `SMS/call consent: CHECKED (wording version ${CONSENT_VERSION}) at ${new Date().toISOString()}.`
+			: 'SMS/call consent: NOT checked. Do not text; email or a direct reply only.',
+		b.fbclid ? `fbclid: ${clean(b.fbclid, 300)}` : '',
+		'Next: reach out within the day.',
+	].filter(Boolean).join('\n');
 
 	const event = {
-		source: SOURCE,
+		source: F.source,
 		system: '512austinhome.com',
 		type: 'Registration',
 		message,
-		description: 'Builder incentives list signup',
+		description: F.description,
 		pageUrl: `https://512austinhome.com${page}`,
 		person: {
 			...splitName(name),
@@ -77,8 +93,8 @@ export default async function handler(req, res) {
 		},
 		campaign: {
 			source: clean(b.utm_source, 100) || 'website',
-			medium: clean(b.utm_medium, 100) || 'slide-in',
-			campaign: campaign || 'builder-incentives-list',
+			medium: clean(b.utm_medium, 100) || F.medium,
+			campaign: campaign || F.campaign,
 		},
 	};
 

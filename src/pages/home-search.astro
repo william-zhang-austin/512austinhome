@@ -1,0 +1,126 @@
+---
+// Home-search request form. Posts to /api/lead-fub/ (form: "home-search") -> FUB Registration event.
+// This page is the live opt-in example named in the A2P 10DLC campaign registration, so the
+// consent checkbox wording must stay identical to SMS_CONSENT in src/consts.ts.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SMS_CONSENT } from '../consts';
+
+const areas = ['Austin', 'Round Rock', 'Pflugerville', 'Cedar Park', 'Leander', 'Georgetown', 'Hutto', 'Manor', 'Kyle / Buda', 'Liberty Hill', 'Not sure yet'];
+const budgets = ['Under $350K', '$350K - $450K', '$450K - $550K', '$550K - $700K', '$700K - $900K', '$900K+'];
+---
+
+<BaseLayout
+	title="Start Your Austin Home Search | William Zhang"
+	description="Tell William Zhang what you're looking for in an Austin home, new construction or resale, and get a short list of communities and homes that fit your budget and timeline."
+	canonical="https://512austinhome.com/home-search/"
+>
+	<main class="max-w-xl mx-auto px-4 py-12">
+		<h1 class="text-3xl font-bold text-slate-900 mb-3">Start your Austin home search</h1>
+		<p class="text-slate-600 mb-8">Answer a few quick questions. William will follow up with communities and homes that fit, plus what to know before you visit a builder.</p>
+
+		<form id="hs-form" novalidate class="space-y-4">
+			<div>
+				<label class="hs-label" for="hs-type">New construction or resale?</label>
+				<select class="hs-input" id="hs-type" name="new_or_resale">
+					<option>New construction</option><option>Resale</option><option>Either</option>
+				</select>
+			</div>
+			<div>
+				<label class="hs-label" for="hs-area">Area</label>
+				<select class="hs-input" id="hs-area" name="area">{areas.map((a) => <option>{a}</option>)}</select>
+			</div>
+			<div>
+				<label class="hs-label" for="hs-budget">Budget</label>
+				<select class="hs-input" id="hs-budget" name="budget">{budgets.map((b) => <option>{b}</option>)}</select>
+			</div>
+			<div>
+				<label class="hs-label" for="hs-time">When do you want to move?</label>
+				<select class="hs-input" id="hs-time" name="timeframe">
+					<option>As soon as possible</option><option>1-2 months</option><option>3-4 months</option><option>6 months or more</option>
+				</select>
+			</div>
+			<div>
+				<label class="hs-label" for="hs-pre">Pre-approved for a mortgage?</label>
+				<select class="hs-input" id="hs-pre" name="preapproved">
+					<option>Yes</option><option>No</option><option>Paying cash</option>
+				</select>
+			</div>
+			<div>
+				<label class="hs-label" for="hs-name">Name</label>
+				<input class="hs-input" id="hs-name" name="name" type="text" autocomplete="name" required />
+			</div>
+			<div>
+				<label class="hs-label" for="hs-email">Email</label>
+				<input class="hs-input" id="hs-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+			</div>
+			<div>
+				<label class="hs-label" for="hs-phone">Mobile number</label>
+				<input class="hs-input" id="hs-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(512) 555-0123" required />
+			</div>
+			<div class="hs-hp" aria-hidden="true">
+				<label for="hs-website">Website</label>
+				<input id="hs-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+			</div>
+			<label class="flex gap-3 items-start text-xs text-slate-600 leading-relaxed">
+				<input type="checkbox" id="hs-consent" name="sms_consent" class="mt-0.5 h-4 w-4 shrink-0" />
+				<span>{SMS_CONSENT} See our <a href="/privacy/">Privacy Policy</a> and <a href="/sms-terms/">SMS Terms</a>.</span>
+			</label>
+			<p id="hs-error" class="text-sm text-red-600 hidden" role="alert"></p>
+			<button type="submit" id="hs-submit" class="w-full px-5 py-3 text-base font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all">Send my home search</button>
+		</form>
+
+		<div id="hs-done" class="hidden rounded-lg border border-slate-200 p-6">
+			<h2 class="text-xl font-semibold text-slate-900 mb-2">Got it, thanks.</h2>
+			<p class="text-slate-600">William's team will reach out shortly. If you checked the box, that may be a text from (737) 358-8883.</p>
+		</div>
+	</main>
+</BaseLayout>
+
+<style>
+	.hs-label { display: block; font-size: 0.875rem; font-weight: 600; color: #0f172a; margin-bottom: 0.25rem; }
+	.hs-input { display: block; width: 100%; font-size: 16px; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; background: #fff; }
+	.hs-input:focus { outline: 2px solid #2563eb; outline-offset: 0; border-color: #2563eb; }
+	.hs-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+</style>
+
+<script is:inline>
+	(function () {
+		var form = document.getElementById('hs-form');
+		var err = document.getElementById('hs-error');
+		var btn = document.getElementById('hs-submit');
+		function fail(msg) { err.textContent = msg; err.classList.remove('hidden'); }
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			err.classList.add('hidden');
+			var name = form.name.value.trim();
+			var email = form.email.value.trim();
+			var digits = form.phone.value.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+			if (name.length < 2) return fail('Please enter your name.');
+			if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please enter a valid email.');
+			if (digits.length !== 10) return fail('Please enter a 10-digit mobile number.');
+			var q = new URLSearchParams(location.search);
+			var body = {
+				form: 'home-search', name: name, email: email, phone: digits, website: form.website.value,
+				sms_consent: form.sms_consent.checked,
+				answers: {
+					new_or_resale: form.new_or_resale.value, area: form.area.value, budget: form.budget.value,
+					timeframe: form.timeframe.value, preapproved: form.preapproved.value,
+				},
+				page: location.pathname, referrer: document.referrer,
+				utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '',
+				fbclid: q.get('fbclid') || '',
+			};
+			btn.disabled = true; btn.textContent = 'Sending...';
+			fetch('/api/lead-fub/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+				.then(function (r) {
+					if (!r.ok) throw new Error(String(r.status));
+					form.classList.add('hidden');
+					document.getElementById('hs-done').classList.remove('hidden');
+				})
+				.catch(function () {
+					btn.disabled = false; btn.textContent = 'Send my home search';
+					fail('Something went wrong. Please call or text (512) 766-3188.');
+				});
+		});
+	})();
+</script>

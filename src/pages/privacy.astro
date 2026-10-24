@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { EMAIL, PHONE } from '../consts';
+---
+
+<BaseLayout
+	title="Privacy Policy | 512 Austin Home"
+	description="How William Zhang (Your Millennial Real Estate LLC, brokered by eXp Realty) collects, uses and protects information submitted on 512austinhome.com."
+	canonical="https://512austinhome.com/privacy/"
+>
+	<main class="max-w-2xl mx-auto px-4 py-12 prose prose-slate">
+		<h1>Privacy Policy</h1>
+		<p>This site is operated by William Zhang, a Texas REALTOR with Your Millennial Real Estate LLC, brokered by eXp Realty. This policy covers 512austinhome.com and lifeinaustintx.com.</p>
+
+		<h2>What we collect</h2>
+		<p>Information you give us on our forms (name, email, phone number, and your answers about the home you're looking for), and basic site analytics (pages visited, how you arrived, approximate location from your browser). If you arrive from an ad, we may record the ad click ID.</p>
+
+		<h2>How we use it</h2>
+		<ul>
+			<li>To respond to your request and help you buy or sell a home, by email, phone call or text message.</li>
+			<li>To schedule calls and tours and send appointment confirmations and reminders.</li>
+			<li>To keep a record of our conversations in our CRM.</li>
+			<li>To measure and improve our advertising. We may share a hashed (scrambled) email or phone number and whether a request led to an appointment with ad platforms such as Meta, only to measure ad results.</li>
+		</ul>
+
+		<h2>Text messages</h2>
+		<p>We only text you if you checked the consent box on one of our forms. Message frequency varies. Message and data rates may apply. Reply STOP to stop or HELP for help. Full details are in our <a href="/sms-terms/">SMS Terms</a>.</p>
+		<p><strong>We do not sell, rent or share your mobile number or text messaging opt-in data and consent with any third party or affiliate for their marketing or promotional purposes.</strong> Information may be shared with service providers who help us operate (for example, our CRM and our text messaging provider), only to deliver our services to you.</p>
+
+		<h2>Your choices</h2>
+		<p>You can ask us to update or delete your information, or stop contacting you, at any time: email {EMAIL} or call {PHONE}.</p>
+
+		<h2>Contact</h2>
+		<p>William Zhang, Your Millennial Real Estate LLC (eXp Realty), {EMAIL}, {PHONE}.</p>
+		<p class="text-sm text-slate-500">Last updated October 24, 2026.</p>
+	</main>
+</BaseLayout>

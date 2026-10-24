@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SMS_CONSENT, EMAIL } from '../consts';
+---
+
+<BaseLayout
+	title="SMS Terms | 512 Austin Home"
+	description="Terms for text messages from William Zhang (Your Millennial Real Estate LLC, brokered by eXp Realty) about buying or selling a home in the Austin area."
+	canonical="https://512austinhome.com/sms-terms/"
+>
+	<main class="max-w-2xl mx-auto px-4 py-12 prose prose-slate">
+		<h1>SMS Terms</h1>
+		<p><strong>Program:</strong> Follow-up from William Zhang, Your Millennial Real Estate LLC, brokered by eXp Realty, for people who asked for help buying or selling a home in the Austin area. Texts and calls are about the help you asked for: questions about your plans, scheduling a call, tour or home visit, and appointment confirmations and reminders.</p>
+		<p><strong>How you opt in:</strong> by checking the consent box on a form on 512austinhome.com or lifeinaustintx.com. The box is never pre-checked, and you can submit the form without checking it. The box says:</p>
+		<blockquote>{SMS_CONSENT}</blockquote>
+		<p><strong>Message frequency:</strong> varies, usually a few messages in the first week and occasional check-ins after that.</p>
+		<p><strong>Cost:</strong> message and data rates may apply. We don't charge for messages.</p>
+		<p><strong>Opt out:</strong> reply STOP at any time. You'll get one confirmation and no more texts. Reply START to opt back in.</p>
+		<p><strong>Help:</strong> reply HELP, or email {EMAIL}.</p>
+		<p><strong>AI assistant:</strong> some messages and calls are handled by an AI assistant working for William Zhang. If you ask, it will tell you so. William handles every call and tour himself.</p>
+		<p><strong>Privacy:</strong> we don't sell or share your mobile number or text messaging consent with third parties for their marketing. See our <a href="/privacy/">Privacy Policy</a>.</p>
+		<p>Carriers are not liable for delayed or undelivered messages.</p>
+	</main>
+</BaseLayout>

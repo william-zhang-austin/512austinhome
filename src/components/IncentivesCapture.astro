@@ -9,6 +9,7 @@
 // Posts to /api/lead-fub/ (FUB "Registration" event), then sends the reader to
 // /builder-incentives/, which is the list itself.
 import { OFFERS_AS_OF } from '../data/current-offers';
+import { SMS_CONSENT } from '../consts';
 
 const month = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
 ---
@@ -43,13 +44,14 @@ const month = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', 
 				<label for="ic-website">Website</label>
 				<input id="ic-website" name="website" type="text" tabindex="-1" autocomplete="off" />
 			</div>
+			<label class="flex gap-2 items-start text-[11px] text-text-muted leading-snug mb-3">
+				<input type="checkbox" id="ic-consent" name="sms_consent" class="mt-0.5 h-3.5 w-3.5 shrink-0" />
+				<span>{SMS_CONSENT} <a href="/privacy/">Privacy</a> · <a href="/sms-terms/">SMS Terms</a>.</span>
+			</label>
 			<p id="ic-error" class="text-xs text-red-600 mb-2 hidden" role="alert"></p>
 			<button type="submit" id="ic-submit" class="w-full px-5 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all">
 				Send me the list
 			</button>
-			<p class="text-[11px] text-text-muted leading-snug mt-3">
-				By submitting, you agree that William Zhang (eXp Realty) may call or text you about Austin homes, including by automated means. Msg and data rates may apply. Reply STOP to opt out. Consent is not a condition of any purchase.
-			</p>
 		</form>
 	</div>
 </div>
@@ -142,7 +144,7 @@ const month = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', 
 			if (digits.length !== 10) return fail('Please enter a 10-digit mobile number.');
 			var q = new URLSearchParams(location.search);
 			var body = {
-				name: name, email: email, phone: digits, website: form.website.value,
+				name: name, email: email, phone: digits, website: form.website.value, sms_consent: form.sms_consent.checked,
 				page: location.pathname, referrer: document.referrer,
 				utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '',
 			};
