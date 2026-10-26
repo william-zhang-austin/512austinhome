@@ -103,7 +103,7 @@ export default async function handler(req, res) {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: 'Basic ' + Buffer.from(process.env.FUB_API_KEY + ':').toString('base64'),
-			'X-System': '512austinhome',
+			'X-System': '512austinhome', ...(process.env.FUB_SYSTEM_KEY ? { 'X-System-Key': process.env.FUB_SYSTEM_KEY } : {}),
 		},
 		body: JSON.stringify(event),
 	});

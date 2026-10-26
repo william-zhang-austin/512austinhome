@@ -53,7 +53,7 @@ const fubAuth = () => 'Basic ' + Buffer.from(process.env.FUB_API_KEY + ':').toSt
 async function fub(path, opts = {}) {
 	const r = await fetch('https://api.followupboss.com/v1' + path, {
 		...opts,
-		headers: { 'Content-Type': 'application/json', Authorization: fubAuth(), 'X-System': '512austinhome', ...(opts.headers || {}) },
+		headers: { 'Content-Type': 'application/json', Authorization: fubAuth(), 'X-System': '512austinhome', ...(process.env.FUB_SYSTEM_KEY ? { 'X-System-Key': process.env.FUB_SYSTEM_KEY } : {}), ...(opts.headers || {}) },
 	});
 	if (!r.ok) throw new Error(`FUB ${r.status} ${path}: ${(await r.text()).slice(0, 300)}`);
 	return r.json();

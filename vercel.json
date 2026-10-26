@@ -122,11 +122,5 @@
         }
       ]
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/ai-caller/",
-      "schedule": "*/2 * * * *"
-    }
   ]
 }
