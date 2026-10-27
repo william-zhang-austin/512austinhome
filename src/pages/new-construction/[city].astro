@@ -60,16 +60,16 @@ const comparisons = COMPARISONS.filter((c) => c.a === city.slug || c.b === city.
 	return { href: `/compare/${c.slug}/`, label: `${city.name} vs ${other?.name ?? otherSlug}` };
 });
 
-const title = isReferencePage
+const title = city.seoTitle ?? (isReferencePage
 	? (city.slug === 'austin'
 		? ['New Construction in the City of Austin, TX: Builders, Schools', 'New Construction in the City of Austin, TX']
 		: [`New Construction Homes in ${city.name}, TX: Builders, Schools, Taxes`, `New Construction Homes in ${city.name}, TX: Builders, Schools`, `New Construction Homes in ${city.name}, TX`]
 	  ).find((t) => t.length <= 60) ?? `New Construction Homes in ${city.name}, TX`
-	: `New Construction Homes in ${city.name}, TX — Save $5,000+ | 512 Austin Home`;
+	: `New Construction Homes in ${city.name}, TX — Save $5,000+ | 512 Austin Home`);
 
-const description = isReferencePage
+const description = city.seoDescription ?? (isReferencePage
 	? `New construction in ${city.name}, TX: the builders and communities here, school districts, MUD and PID taxes, commute times, honest tradeoffs, and buyer representation paid by the builder.`
-	: `New construction homes in ${city.name}, Texas from ${city.newConstructionPriceRange}. Save at least $5,000 when you buy with buyer's agent William Zhang. Free representation at every major builder. Call (512) 766-3188.`;
+	: `New construction homes in ${city.name}, Texas from ${city.newConstructionPriceRange}. Save at least $5,000 when you buy with buyer's agent William Zhang. Free representation at every major builder. Call (512) 766-3188.`);
 
 const updatedLabel = city.contentUpdated
 	? new Date(`${city.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })

@@ -51,7 +51,7 @@ const WATCHLIST = [
 
 function pull() {
   const raw = execSync(
-    `'${SEO}' run gsc_query.py query --property ${PROPERTY} --days ${days} --json`,
+    `'${SEO}' run gsc_query.py query --property ${PROPERTY} --days ${days} --limit 25000 --json`,
     { encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024 },
   );
   return JSON.parse(raw).rows || [];

@@ -45,6 +45,9 @@ export interface CityData {
 	agentWatchesFor?: string[];
 	/** ISO date of the last substantive content review. Rendered visibly. */
 	contentUpdated?: string;
+	/** Per-city search title/description, when GSC shows the template is not earning clicks. */
+	seoTitle?: string;
+	seoDescription?: string;
 }
 
 export const CITIES: CityData[] = [
@@ -609,6 +612,9 @@ export const CITIES: CityData[] = [
 		county: 'Williamson County (with sections in Travis County)',
 		location: 'Northwest metro, on the US-183A toll corridor',
 		contentUpdated: '2026-09-23',
+		// 2026-10-26: searchers say "new homes", not "new construction" (GSC, pos 12-15, 0 clicks on 439 impressions).
+		seoTitle: 'New Homes in Cedar Park, TX (2026): Communities From $370K',
+		seoDescription: 'Cedar Park is mostly built out, so few new home communities are left, from $370K to $1.4M+. Compare each one, Leander ISD schools and MUD taxes.',
 		shortAnswer: 'Cedar Park is an established northwest suburb on the US-183A toll corridor, zoned mainly to Leander ISD and close to Apple\'s Parmer Lane campus. It is largely built out, so new construction is extremely limited, with only a handful of active communities as of 2026. Most inventory is resale, in mature neighborhoods with existing amenities and a known tax history. It prices above Leander for comparable square footage, and a larger share of homes sit outside a MUD.',
 		taxNotes: 'Because Cedar Park is largely built out, many homes sit in established neighborhoods outside a Municipal Utility District, and the effective tax rate is often lower than a new build in a young Leander MUD one exit north. That difference is frequently large enough to reverse the apparent price advantage of the newer suburb on a monthly basis. Verify by address, since the few newer communities here do carry special districts.',
 		commuteNotes: 'Downtown Austin is 25 to 35 minutes, and as with Leander most buyers here are not commuting downtown. Apple\'s Parmer Lane campus is 15 to 20 minutes via US-183A or Parmer Lane itself, which is the shortest commute of any suburb to that campus. The toll corridor is fast and is not under reconstruction, which distinguishes it from the I-35 suburbs.',
