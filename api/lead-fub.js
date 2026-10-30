@@ -14,7 +14,7 @@ const FORMS = {
 	'home-search': { source: '512austinhome.com - Home Search', tags: ['Buyer Lead', 'Home Search Form'], medium: 'home-search', campaign: 'home-search', description: 'Home search request' },
 };
 // Version of the consent wording (SMS_CONSENT in src/consts.ts) shown when the box was checked.
-const CONSENT_VERSION = '2026-10-24';
+const CONSENT_VERSION = '2026-10-30';
 const ALLOWED_ORIGINS = ['https://512austinhome.com', 'https://www.512austinhome.com'];
 
 function splitName(full = '') {

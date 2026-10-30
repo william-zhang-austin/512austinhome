@@ -61,4 +61,4 @@ export const SERVICES = [
 // One consent wording for every form that collects a phone number. The A2P 10DLC campaign
 // registration quotes this exactly; change it here and update the registration together.
 export const SMS_BRAND = 'Your Millennial Real Estate LLC';
-export const SMS_CONSENT = "I agree to receive calls and text messages from William Zhang (Your Millennial Real Estate LLC, brokered by eXp Realty) about buying or selling a home, at the number I provided, including messages sent by automated means and calls using an artificial or AI voice. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of any purchase.";
+export const SMS_CONSENT = "I agree to receive calls and text messages from Your Millennial Real Estate LLC (William Zhang) about buying or selling a home, at the number I provided, including messages sent by automated means and calls using an artificial or AI voice. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of any purchase.";
