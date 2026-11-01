@@ -168,6 +168,28 @@ function zhLeadEvent(fields = []) {
 	};
 }
 
+function fubHeaders() {
+	return {
+		'Content-Type': 'application/json',
+		Authorization: 'Basic ' + Buffer.from(process.env.FUB_API_KEY + ':').toString('base64'),
+		'X-System': '512austinhome', ...(process.env.FUB_SYSTEM_KEY ? { 'X-System-Key': process.env.FUB_SYSTEM_KEY } : {}),
+	};
+}
+
+// A seller's property is their home: copy it onto the person's addresses (the event only
+// records it as the inquired property). Appends, never overwrites; failures don't fail the lead.
+async function saveHomeAddress(personId, property) {
+	if (!personId || !property?.street) return;
+	const url = `https://api.followupboss.com/v1/people/${personId}`;
+	const person = await (await fetch(`${url}?fields=addresses`, { headers: fubHeaders() })).json();
+	const existing = person.addresses || [];
+	const key = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+	if (existing.some((x) => key(x.street) === key(property.street))) return;
+	const home = { type: 'home', street: property.street, city: property.city || '', state: property.state || 'TX', code: property.code || '', country: 'United States' };
+	const r = await fetch(url, { method: 'PUT', headers: fubHeaders(), body: JSON.stringify({ addresses: [...existing, home] }) });
+	if (!r.ok) console.error('FUB address update failed', r.status, (await r.text()).slice(0, 300));
+}
+
 export default async function handler(req, res) {
 	if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 	if (!verify(req)) return res.status(401).json({ error: 'bad signature' });
@@ -178,17 +200,20 @@ export default async function handler(req, res) {
 
 	const r = await fetch('https://api.followupboss.com/v1/events', {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: 'Basic ' + Buffer.from(process.env.FUB_API_KEY + ':').toString('base64'),
-			'X-System': '512austinhome', ...(process.env.FUB_SYSTEM_KEY ? { 'X-System-Key': process.env.FUB_SYSTEM_KEY } : {}),
-		},
+		headers: fubHeaders(),
 		body: JSON.stringify(event),
 	});
 	const text = await r.text();
 	if (!r.ok) {
 		console.error('FUB error', r.status, text.slice(0, 500));
 		return res.status(502).json({ error: 'FUB rejected the lead', status: r.status });
+	}
+	if (event.type === 'Seller Inquiry') {
+		try {
+			await saveHomeAddress(JSON.parse(text || '{}').personId, event.property);
+		} catch (e) {
+			console.error('FUB address update failed', e.message);
+		}
 	}
 	return res.status(200).json({ ok: true });
 }
