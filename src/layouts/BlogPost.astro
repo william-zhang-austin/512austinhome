@@ -86,7 +86,7 @@ const newConstruction = /new-construction|builder|incentive/.test(Astro.url.path
 			<slot />
 		</div>
 
-		{newConstruction && <div class="mt-12"><IncentivesInline /></div>}
+		{newConstruction && <div class="mt-12"><IncentivesInline offer={/incentive/.test(Astro.url.pathname) ? 'incentives' : 'guide'} /></div>}
 
 		<!-- FAQ section (rendered from frontmatter, same source as schema) -->
 		{faqs && faqs.length > 0 && (

@@ -77,9 +77,9 @@ export default defineConfig({
 	trailingSlash: 'always',
 	integrations: [
 		mdx(),
-		// Exclude paid-ad landing pages (noindex) from the sitemap
+		// Exclude noindex pages (paid-ad landing pages, lead-magnet delivery pages) from the sitemap
 		sitemap({
-			filter: (page) => !page.includes('/home-value'),
+			filter: (page) => !['/home-value', '/builder-incentives/', '/negotiation-guide/'].some((p) => page.includes(p)),
 			serialize(item) {
 				let pathname = '/';
 				try {

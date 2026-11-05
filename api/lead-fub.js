@@ -2,7 +2,7 @@
 //
 // Forms that post here:
 //  - the builder-incentives slide-in (src/components/IncentivesCapture.astro)
-//  - the inline incentives form on ranking pages (src/components/IncentivesInline.astro), form: "incentives-inline"
+//  - the inline form on ranking pages (src/components/IncentivesInline.astro), form: "incentives-inline" or "negotiation-guide"
 //  - the home-search page (src/pages/home-search.astro), form: "home-search", with quiz answers
 // All send { name, email, phone, page, utm_*, website, sms_consent }. We validate, drop bots, and create a
 // "Registration" event in FUB, which creates or updates the person and fires FUB's own
@@ -14,6 +14,7 @@ const FORMS = {
 	incentives: { source: '512austinhome.com - Builder Incentives List', tags: ['Buyer Lead', 'New Construction', 'Incentives List'], medium: 'slide-in', campaign: 'builder-incentives-list', description: 'Builder incentives list signup' },
 	// Same source as the slide-in so FUB treats both alike; medium tells them apart.
 	'incentives-inline': { source: '512austinhome.com - Builder Incentives List', tags: ['Buyer Lead', 'New Construction', 'Incentives List'], medium: 'inline-form', campaign: 'builder-incentives-list', description: 'Builder incentives list signup (inline form)' },
+	'negotiation-guide': { source: '512austinhome.com - Negotiation Guide', tags: ['Buyer Lead', 'New Construction', 'Negotiation Guide'], medium: 'inline-form', campaign: 'builder-negotiation-guide', description: 'Builder negotiation guide download', message: 'Downloaded the new home builder negotiation guide.' },
 	'home-search': { source: '512austinhome.com - Home Search', tags: ['Buyer Lead', 'Home Search Form'], medium: 'home-search', campaign: 'home-search', description: 'Home search request' },
 };
 // Version of the consent wording (SMS_CONSENT in src/consts.ts) shown when the box was checked.
@@ -70,7 +71,7 @@ export default async function handler(req, res) {
 	const a = b.answers && typeof b.answers === 'object' ? b.answers : {};
 	const answerLines = Object.entries(a).slice(0, 12).map(([k, v]) => `${clean(k, 40)}: ${clean(v, 100)}`);
 	const message = [
-		form === 'home-search' ? 'Submitted the home search form.' : 'Asked for the current Austin builder incentives list.',
+		F.message || (form === 'home-search' ? 'Submitted the home search form.' : 'Asked for the current Austin builder incentives list.'),
 		...answerLines,
 		`Signed up on: https://512austinhome.com${page}`,
 		`Came from: ${clean(b.utm_source, 100) || clean(b.referrer, 200) || 'direct / unknown'}`,

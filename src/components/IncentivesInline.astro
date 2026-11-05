@@ -1,26 +1,48 @@
 ---
-// Inline "get the latest incentives" form, placed in the body of the pages that rank
-// (builder incentives, builder reviews, guides, new-construction posts). Same lead path
-// as the slide-in (IncentivesCapture.astro): posts to /api/lead-fub/ (form
-// "incentives-inline"), then sends the reader to /builder-incentives/, the list itself.
+// Inline lead form, placed in the body of the pages that rank. Two offers, matched to
+// the page's intent:
+//  - offer="incentives" (builder incentives + builder review pages, head-to-head guides,
+//    incentive posts): "Get the latest [Builder] incentives" -> /builder-incentives/
+//  - offer="guide" (other guides + new-construction posts): the builder negotiation
+//    guide -> /negotiation-guide/ (page + PDF)
+// Same lead path as the slide-in (IncentivesCapture.astro): posts to /api/lead-fub/.
 // No month in the copy, so it never reads stale.
 import { SMS_CONSENT } from '../consts';
+import { BUILDERS } from '../data/builders';
 
 interface Props {
-	/** Builder names to put in the heading, e.g. ['Toll Brothers'] or ['Lennar', 'D.R. Horton']. */
+	offer?: 'incentives' | 'guide';
+	/** Builder names to put in the incentives heading, e.g. ['Toll Brothers'] or ['Lennar', 'D.R. Horton']. */
 	builders?: string[];
 }
-const { builders = [] } = Astro.props;
+const { offer = 'incentives', builders = [] } = Astro.props;
 const who = builders.length ? builders.join(' and ') : 'Austin builder';
+
+const COPY = {
+	incentives: {
+		heading: `Get the latest ${who} incentives`,
+		sub: "Every current offer I've confirmed with the builders, on one page. I'll also tell you about the ones they don't advertise.",
+		button: 'Send me the latest incentives',
+		form: 'incentives-inline',
+		next: '/builder-incentives/',
+		event: 'Incentives Signup',
+	},
+	guide: {
+		heading: 'Get the new home builder negotiation guide',
+		sub: `What Austin builders will move on, what they won't, the questions to ask in the sales office, and how each of ${BUILDERS.length} builders negotiates. Free PDF.`,
+		button: 'Send me the guide',
+		form: 'negotiation-guide',
+		next: '/negotiation-guide/',
+		event: 'Negotiation Guide Signup',
+	},
+}[offer];
 ---
 
 <section class="bg-accent-light rounded-2xl p-6 sm:p-8 border-l-4 border-accent mb-12" aria-labelledby="ii-title">
-	<h2 id="ii-title" class="font-display text-xl sm:text-2xl font-bold text-primary mb-2">Get the latest {who} incentives</h2>
-	<p class="text-sm text-text-muted leading-relaxed mb-5">
-		Every current offer I've confirmed with the builders, on one page. I'll also tell you about the ones they don't advertise.
-	</p>
+	<h2 id="ii-title" class="font-display text-xl sm:text-2xl font-bold text-primary mb-2">{COPY.heading}</h2>
+	<p class="text-sm text-text-muted leading-relaxed mb-5">{COPY.sub}</p>
 
-	<form id="ii-form" novalidate>
+	<form id="ii-form" data-form={COPY.form} data-next={COPY.next} data-event={COPY.event} data-offer={offer} novalidate>
 		<div class="grid sm:grid-cols-3 gap-3 mb-3">
 			<div>
 				<label class="ii-label" for="ii-name">Name</label>
@@ -45,7 +67,7 @@ const who = builders.length ? builders.join(' and ') : 'Austin builder';
 		</label>
 		<p id="ii-error" class="text-xs text-red-600 mb-3 hidden" role="alert"></p>
 		<button type="submit" id="ii-submit" class="w-full sm:w-auto px-7 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all">
-			Send me the latest incentives
+			{COPY.button}
 		</button>
 	</form>
 </section>
@@ -77,7 +99,7 @@ const who = builders.length ? builders.join(' and ') : 'Austin builder';
 			if (digits.length !== 10) return fail('Please enter a 10-digit mobile number.');
 			var q = new URLSearchParams(location.search);
 			var body = {
-				form: 'incentives-inline',
+				form: form.dataset.form,
 				name: name, email: email, phone: digits, website: form.website.value, sms_consent: form.sms_consent.checked,
 				page: location.pathname, referrer: document.referrer,
 				utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '',
@@ -89,8 +111,8 @@ const who = builders.length ? builders.join(' and ') : 'Austin builder';
 					if (!r.ok) throw new Error(String(r.status));
 					// Signed up here, so the slide-in never shows again.
 					try { localStorage.setItem('ic-state', JSON.stringify({ done: true })); } catch (_) {}
-					track('Incentives Signup', { page: location.pathname, placement: 'inline' });
-					location.href = '/builder-incentives/?from=' + encodeURIComponent(location.pathname);
+					track(form.dataset.event, { page: location.pathname, placement: 'inline', offer: form.dataset.offer });
+					location.href = form.dataset.next + '?from=' + encodeURIComponent(location.pathname);
 				})
 				.catch(function () {
 					btn.disabled = false;

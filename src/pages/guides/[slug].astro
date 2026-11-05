@@ -20,7 +20,8 @@ const { guide } = Astro.props;
 const gi = GUIDES.findIndex((g) => g.slug === guide.slug);
 const siblings = [GUIDES[(gi + 1) % GUIDES.length], GUIDES[(gi + 2) % GUIDES.length]];
 
-// Head-to-head guides ("lennar-vs-dr-horton-austin") name both builders in the form.
+// Head-to-head guides ("lennar-vs-dr-horton-austin") offer both builders' incentives;
+// every other guide offers the negotiation guide.
 const versus = guide.slug.split('-vs-');
 const guideBuilders = versus.length === 2
 	? versus.map((part) => BUILDERS.find((b) => part === b.slug || part.startsWith(`${b.slug}-`))?.name).filter((n): n is string => Boolean(n))
@@ -78,7 +79,7 @@ const updatedLabel = new Date(`${guide.contentUpdated}T12:00:00Z`).toLocaleDateS
 					</ul>
 				)}
 			</section>
-			{i === 0 && <IncentivesInline builders={guideBuilders} />}
+			{i === 0 && <IncentivesInline offer={guideBuilders.length ? 'incentives' : 'guide'} builders={guideBuilders} />}
 			</>
 		))}
 
