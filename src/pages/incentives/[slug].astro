@@ -9,6 +9,7 @@ import { INCENTIVE_TYPES } from '../../data/incentives';
 import { offersForBuilder } from '../../data/current-offers';
 import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
 import InventoryCTA from '../../components/InventoryCTA.astro';
+import IncentivesInline from '../../components/IncentivesInline.astro';
 import { BUILDER_LINKS } from '../../data/search-links';
 import { COMMUNITIES } from '../../data/communities';
 
@@ -95,6 +96,8 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 				</div>
 			)}
 		</section>
+
+		<IncentivesInline builders={[builder.name]} />
 
 		{relevantTypes.length > 0 && (
 			<section class="mb-16">

@@ -8,6 +8,7 @@ import { BUILDERS, builderMentioned } from '../../data/builders';
 import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
 import { CITIES } from '../../data/cities';
 import InventoryCTA from '../../components/InventoryCTA.astro';
+import IncentivesInline from '../../components/IncentivesInline.astro';
 import { BUILDER_LINKS } from '../../data/search-links';
 
 export async function getStaticPaths() {
@@ -102,6 +103,8 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 				</div>
 			</div>
 		</section>
+
+		<IncentivesInline builders={[builder.name]} />
 
 		<section class="mb-16">
 			<h2 class="font-display text-2xl font-bold text-primary mb-4">Negotiating with {builder.name}</h2>

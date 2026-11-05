@@ -1,0 +1,102 @@
+---
+// Inline "get the latest incentives" form, placed in the body of the pages that rank
+// (builder incentives, builder reviews, guides, new-construction posts). Same lead path
+// as the slide-in (IncentivesCapture.astro): posts to /api/lead-fub/ (form
+// "incentives-inline"), then sends the reader to /builder-incentives/, the list itself.
+// No month in the copy, so it never reads stale.
+import { SMS_CONSENT } from '../consts';
+
+interface Props {
+	/** Builder names to put in the heading, e.g. ['Toll Brothers'] or ['Lennar', 'D.R. Horton']. */
+	builders?: string[];
+}
+const { builders = [] } = Astro.props;
+const who = builders.length ? builders.join(' and ') : 'Austin builder';
+---
+
+<section class="bg-accent-light rounded-2xl p-6 sm:p-8 border-l-4 border-accent mb-12" aria-labelledby="ii-title">
+	<h2 id="ii-title" class="font-display text-xl sm:text-2xl font-bold text-primary mb-2">Get the latest {who} incentives</h2>
+	<p class="text-sm text-text-muted leading-relaxed mb-5">
+		Every current offer I've confirmed with the builders, on one page. I'll also tell you about the ones they don't advertise.
+	</p>
+
+	<form id="ii-form" novalidate>
+		<div class="grid sm:grid-cols-3 gap-3 mb-3">
+			<div>
+				<label class="ii-label" for="ii-name">Name</label>
+				<input class="ii-input" id="ii-name" name="name" type="text" autocomplete="name" required />
+			</div>
+			<div>
+				<label class="ii-label" for="ii-email">Email</label>
+				<input class="ii-input" id="ii-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+			</div>
+			<div>
+				<label class="ii-label" for="ii-phone">Mobile number</label>
+				<input class="ii-input" id="ii-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(512) 555-0123" required />
+			</div>
+		</div>
+		<div class="ii-hp" aria-hidden="true">
+			<label for="ii-website">Website</label>
+			<input id="ii-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+		</div>
+		<label class="flex gap-2 items-start text-[11px] text-text-muted leading-snug mb-4">
+			<input type="checkbox" id="ii-consent" name="sms_consent" class="mt-0.5 h-3.5 w-3.5 shrink-0" />
+			<span>{SMS_CONSENT} <a href="/privacy/">Privacy</a> · <a href="/sms-terms/">SMS Terms</a>.</span>
+		</label>
+		<p id="ii-error" class="text-xs text-red-600 mb-3 hidden" role="alert"></p>
+		<button type="submit" id="ii-submit" class="w-full sm:w-auto px-7 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent-hover transition-all">
+			Send me the latest incentives
+		</button>
+	</form>
+</section>
+
+<style>
+	.ii-label { display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; }
+	.ii-input { display: block; width: 100%; font-size: 16px; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; background: #fff; }
+	.ii-input:focus { outline: 2px solid #2563eb; outline-offset: 0; border-color: #2563eb; }
+	.ii-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+</style>
+
+<script is:inline>
+	(function () {
+		var form = document.getElementById('ii-form');
+		if (!form) return;
+		var err = document.getElementById('ii-error');
+		var btn = document.getElementById('ii-submit');
+		var LABEL = btn.textContent.trim();
+		function track(n, p) { try { window.plausible && window.plausible(n, p ? { props: p } : undefined); } catch (_) {} }
+		function fail(msg) { err.textContent = msg; err.classList.remove('hidden'); }
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			err.classList.add('hidden');
+			var name = form.name.value.trim();
+			var email = form.email.value.trim();
+			var digits = form.phone.value.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+			if (name.length < 2) return fail('Please enter your name.');
+			if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please enter a valid email.');
+			if (digits.length !== 10) return fail('Please enter a 10-digit mobile number.');
+			var q = new URLSearchParams(location.search);
+			var body = {
+				form: 'incentives-inline',
+				name: name, email: email, phone: digits, website: form.website.value, sms_consent: form.sms_consent.checked,
+				page: location.pathname, referrer: document.referrer,
+				utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '',
+			};
+			btn.disabled = true;
+			btn.textContent = 'Sending...';
+			fetch('/api/lead-fub/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+				.then(function (r) {
+					if (!r.ok) throw new Error(String(r.status));
+					// Signed up here, so the slide-in never shows again.
+					try { localStorage.setItem('ic-state', JSON.stringify({ done: true })); } catch (_) {}
+					track('Incentives Signup', { page: location.pathname, placement: 'inline' });
+					location.href = '/builder-incentives/?from=' + encodeURIComponent(location.pathname);
+				})
+				.catch(function () {
+					btn.disabled = false;
+					btn.textContent = LABEL;
+					fail('Something went wrong. Please try again, or text me at (512) 766-3188.');
+				});
+		});
+	})();
+</script>

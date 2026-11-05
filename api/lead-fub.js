@@ -1,9 +1,10 @@
 // Site lead form -> Follow Up Boss (Vercel serverless function, POST /api/lead-fub/).
 //
-// Two forms post here:
+// Forms that post here:
 //  - the builder-incentives slide-in (src/components/IncentivesCapture.astro)
+//  - the inline incentives form on ranking pages (src/components/IncentivesInline.astro), form: "incentives-inline"
 //  - the home-search page (src/pages/home-search.astro), form: "home-search", with quiz answers
-// Both send { name, email, phone, page, utm_*, website, sms_consent }. We validate, drop bots, and create a
+// All send { name, email, phone, page, utm_*, website, sms_consent }. We validate, drop bots, and create a
 // "Registration" event in FUB, which creates or updates the person and fires FUB's own
 // new-lead alert and action plans.
 //
@@ -11,6 +12,8 @@
 
 const FORMS = {
 	incentives: { source: '512austinhome.com - Builder Incentives List', tags: ['Buyer Lead', 'New Construction', 'Incentives List'], medium: 'slide-in', campaign: 'builder-incentives-list', description: 'Builder incentives list signup' },
+	// Same source as the slide-in so FUB treats both alike; medium tells them apart.
+	'incentives-inline': { source: '512austinhome.com - Builder Incentives List', tags: ['Buyer Lead', 'New Construction', 'Incentives List'], medium: 'inline-form', campaign: 'builder-incentives-list', description: 'Builder incentives list signup (inline form)' },
 	'home-search': { source: '512austinhome.com - Home Search', tags: ['Buyer Lead', 'Home Search Form'], medium: 'home-search', campaign: 'home-search', description: 'Home search request' },
 };
 // Version of the consent wording (SMS_CONSENT in src/consts.ts) shown when the box was checked.

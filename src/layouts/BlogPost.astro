@@ -6,11 +6,13 @@ import FormattedDate from '../components/FormattedDate.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import ContactForm from '../components/ContactForm.astro';
+import IncentivesInline from '../components/IncentivesInline.astro';
 import { SITE_URL } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & { primaryGuide?: { href: string; label: string } };
 
 const { title, description, pubDate, updatedDate, heroImage, youtubeId, tags, canonical, faqs, primaryGuide } = Astro.props;
+const newConstruction = /new-construction|builder|incentive/.test(Astro.url.pathname);
 ---
 
 <BaseLayout title={`${title} | 512 Austin Home`} description={description} canonical={canonical} type="article">
@@ -83,6 +85,8 @@ const { title, description, pubDate, updatedDate, heroImage, youtubeId, tags, ca
 		<div class="prose">
 			<slot />
 		</div>
+
+		{newConstruction && <div class="mt-12"><IncentivesInline /></div>}
 
 		<!-- FAQ section (rendered from frontmatter, same source as schema) -->
 		{faqs && faqs.length > 0 && (
