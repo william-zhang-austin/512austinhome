@@ -76,6 +76,11 @@
       "source": "/wp-json/:path*",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/blog/new-construction-homes-cedar-park-2026/",
+      "destination": "/new-construction/cedar-park/",
+      "permanent": true
     }
   ],
   "headers": [

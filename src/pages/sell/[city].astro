@@ -32,7 +32,7 @@ const description = `Sell your home in ${city.name}, Texas. Free home valuation,
 
 		<!-- ABOVE THE FOLD: H1 + CTA -->
 		<header class="mb-6">
-			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Sell My House in {city.name}, TX</h1>
+			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">{city.slug === 'austin' ? 'Sell My House in the City of Austin' : `Sell My House in ${city.name}, TX`}</h1>
 			<p class="text-lg sm:text-xl text-text-muted max-w-2xl mb-8">Get a free home valuation for your {city.name} home. Data-driven pricing, professional video marketing, and honest guidance from listing to closing.</p>
 
 			<div class="flex flex-col sm:flex-row gap-4 mb-4">
@@ -178,6 +178,15 @@ const description = `Sell your home in ${city.name}, Texas. Free home valuation,
 				))}
 			</div>
 		</section>
+
+		<nav class="mb-12" aria-label="Selling elsewhere around Austin">
+			<p class="text-xs uppercase tracking-widest text-text-muted mb-3">Selling elsewhere around Austin</p>
+			<ul class="flex flex-wrap gap-x-4 gap-y-2 list-none pl-0 text-sm">
+				{CITIES.filter((c) => c.slug !== city.slug).map((x) => (
+					<li><a href={`/sell/${x.slug}/`} class="text-accent no-underline hover:underline">{x.name}</a></li>
+				))}
+			</ul>
+		</nav>
 
 		<!-- TIDYCAL -->
 		<div id="schedule" class="mb-10 scroll-mt-20">

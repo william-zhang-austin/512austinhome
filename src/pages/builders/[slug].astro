@@ -236,6 +236,17 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 
 		<ContactForm heading={`Questions about ${builder.name}?`} subheading={`Tell me which community you're looking at and I'll send you my notes on it, current incentives, and what I'd watch for in the contract.`} />
 
+		<nav class="mb-12" aria-label="Other Austin builders">
+			<p class="text-xs uppercase tracking-widest text-text-muted mb-3">Other Austin builders</p>
+			<ul class="flex flex-wrap gap-x-4 gap-y-2 list-none pl-0 text-sm">
+				{BUILDERS.filter((b) => b.slug !== builder.slug).map((x) => (
+					<li><a href={`/builders/${x.slug}/`} class="text-accent no-underline hover:underline">{x.name}</a></li>
+				))}
+			</ul>
+		</nav>
+
+		<p class="text-sm text-text-muted mb-12">Comparing builders by area? Start with <a href="/new-construction/austin/" class="text-accent no-underline hover:underline">new construction in Austin</a>, or see <a href="/deals/price-reductions/" class="text-accent no-underline hover:underline">price reductions on standing homes</a>.</p>
+
 		<p class="text-xs text-text-muted text-center mt-10">Review updated {updatedLabel}; offers verified {offersLabel}. Builder pricing, incentives and contract terms change frequently — confirm current terms before making decisions.</p>
 	</div>
 </BaseLayout>

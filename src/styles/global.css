@@ -2,8 +2,8 @@
 
 /* ── Theme tokens ── */
 @theme {
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, sans-serif;
 
   --color-primary: #1a2332;
   --color-primary-light: #2a3a4e;
