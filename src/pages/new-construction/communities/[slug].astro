@@ -8,7 +8,8 @@ import { COMMUNITIES, priceRangeLabel, sqftRangeLabel, bedsLabel, type Community
 import { PHONE, SITE_URL, TIDYCAL_URL } from '../../../consts';
 import { CITIES } from '../../../data/cities';
 import { videoUploadDate } from '../../../data/video-dates';
-import { matchBuilder } from '../../../data/builders';
+import { matchBuilder, BUILDERS, builderMentioned } from '../../../data/builders';
+import { offersForBuilder, OFFERS_AS_OF } from '../../../data/current-offers';
 
 export async function getStaticPaths() {
 	return COMMUNITIES.map((c) => ({
@@ -22,6 +23,11 @@ interface Props {
 }
 
 const { community: c } = Astro.props;
+
+// Dated, written builder offers for the builders at this community (src/data/current-offers.ts).
+// Replaces the old free-text `incentives` note, which could not expire.
+const communityOffers = BUILDERS.filter((b) => builderMentioned(c.builder, b)).flatMap((b) => offersForBuilder(b.slug).map((o) => ({ ...o, builderName: b.name })));
+const offersAsOfLabel = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 
 // Context is derived from the city and builder records rather than duplicated
 // into every community entry, so a correction in one place fixes all of them
@@ -112,6 +118,13 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 
 <BaseLayout title={title} description={description} canonical={canonical} image={c.heroImage}>
 	<SchemaMarkup type="faq" data={{ questions: faqs }} />
+	<SchemaMarkup type="article" data={{
+		title,
+		description,
+		pubDate: c.updatedDate,
+		updatedDate: [c.updatedDate, OFFERS_AS_OF].sort().at(-1),
+		url: `/new-construction/communities/${c.slug}/`,
+	}} />
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
@@ -186,14 +199,23 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 			</div>
 		</div>
 
-		<!-- Incentive callout -->
-		{c.incentives && (
-			<div class="bg-accent-light rounded-2xl p-6 mb-10 border-l-4 border-accent">
-				<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-2">Current Incentives</p>
-				<p class="text-primary text-sm leading-relaxed">{c.incentives}</p>
-				<p class="text-text-muted text-xs mt-3">Builder incentives change monthly. Text me before you visit so I can confirm what's currently stackable — on a $500K new build, combined incentives often reach $15K–$30K.</p>
-			</div>
-		)}
+		<!-- Builder offers: dated, from writing, expire on their own -->
+		<div class="bg-accent-light rounded-2xl p-6 mb-10 border-l-4 border-accent">
+			<p class="text-accent font-semibold text-xs uppercase tracking-widest mb-3">Builder offers · verified {offersAsOfLabel}</p>
+			{communityOffers.length > 0 ? (
+				<ul class="space-y-3 list-none pl-0 mb-0">
+					{communityOffers.map((o) => (
+						<li data-ends-on={o.endsOn}>
+							<a href={`/incentives/${o.builderSlug}/`} class="font-semibold text-primary no-underline hover:text-accent">{o.builderName}:</a>
+							<span class="text-primary text-sm leading-relaxed"> {o.headline}</span>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="text-primary text-sm leading-relaxed mb-0">No builder here has sent a published Austin offer in writing as of {offersAsOfLabel}. Incentives are often negotiated home by home, so text me the community and I will ask the rep.</p>
+			)}
+			<p class="text-text-muted text-xs mt-3 mb-0">Builder offers are usually builder-wide and change without notice. Text me before you visit so I can confirm what applies to a specific home here.</p>
+		</div>
 
 		<!-- THE SHORT ANSWER — citable block, stays first and stays factual -->
 		<section class="mb-10">
@@ -274,6 +296,7 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 					<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Home Types</dt>
 					<dd class="text-primary font-semibold">{c.homeTypes.join(', ')}</dd>
 				</div>
+				{c.amenities.length > 0 && (
 				<div class="sm:col-span-2">
 					<dt class="text-text-muted text-xs uppercase tracking-wider mb-1">Amenities</dt>
 					<dd class="text-primary">
@@ -284,6 +307,7 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 						</div>
 					</dd>
 				</div>
+				)}
 			</dl>
 		</section>
 
@@ -434,6 +458,6 @@ const videoLdString = videoSchema ? JSON.stringify(videoSchema) : null;
 			</div>
 		</section>
 
-		<p class="text-xs text-text-muted text-center mt-10">Community data last updated {c.updatedDate}. Prices, floor plans, and incentives change frequently — confirm current numbers before making decisions. Photos are property of {c.builder}.</p>
+		<p class="text-xs text-text-muted text-center mt-10">Community data last updated {c.updatedDate}; builder offers verified {offersAsOfLabel}. Prices, floor plans, and incentives change frequently — confirm current numbers before making decisions. Photos are property of {c.builder}.</p>
 	</article>
 </BaseLayout>

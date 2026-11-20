@@ -9,6 +9,14 @@ const pflugerville = communitiesByCity('Pflugerville');
 const leander = communitiesByCity('Leander');
 const manor = communitiesByCity('Manor');
 const cedarPark = communitiesByCity('Cedar Park');
+// Everything outside the four featured cities, grouped by city, so every community page has a link from here.
+const FEATURED = ['Pflugerville', 'Leander', 'Manor', 'Cedar Park'];
+const otherByCity = Object.entries(
+	COMMUNITIES.filter((c) => !FEATURED.includes(c.city)).reduce<Record<string, typeof COMMUNITIES>>((acc, c) => {
+		(acc[c.city] ||= []).push(c);
+		return acc;
+	}, {}),
+).sort(([a], [b]) => a.localeCompare(b));
 
 const title = 'New Construction Communities in Austin, TX | 512 Austin Home';
 const description = 'Current new construction home communities across the Austin metro — Pflugerville, Leander, Manor, Cedar Park, and more. Prices, builders, and an agent\'s honest take.';
@@ -209,6 +217,24 @@ const description = 'Current new construction home communities across the Austin
 				))}
 			</div>
 		</section>
+
+		{otherByCity.length > 0 && (
+			<section class="mb-16">
+				<h2 class="font-display text-2xl sm:text-3xl font-bold text-primary mb-6">More communities around Austin</h2>
+				<div class="grid sm:grid-cols-2 gap-8">
+					{otherByCity.map(([city, list]) => (
+						<div>
+							<h3 class="font-display text-lg font-bold text-primary mb-3">{city}</h3>
+							<ul class="space-y-2 list-none pl-0">
+								{list.map((c) => (
+									<li class="text-sm"><a href={`/new-construction/communities/${c.slug}/`} class="text-accent font-semibold no-underline hover:underline">{c.name}</a> <span class="text-text-muted">· {c.builder} · {priceRangeLabel(c)}</span></li>
+								))}
+							</ul>
+						</div>
+					))}
+				</div>
+			</section>
+		)}
 
 		<!-- CTA + TidyCal -->
 		<div class="bg-accent-light rounded-2xl p-8 sm:p-10 text-center mb-10">
