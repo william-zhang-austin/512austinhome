@@ -25,6 +25,8 @@ export interface Guide {
 	shortAnswer: string;
 	/** Optional hand-written meta description (<=150 chars). Falls back to shortAnswer. */
 	metaDescription?: string;
+	/** Optional <title> override (before the site suffix). The H1 stays `title`. */
+	seoTitle?: string;
 	sections: GuideSection[];
 	faqs: { question: string; answer: string }[];
 	/** Related blog posts already on the site. */
@@ -733,7 +735,8 @@ GUIDES.push(
 	},
 	{
 		slug: 'lennar-vs-dr-horton-austin',
-		metaDescription: 'Lennar vs D.R. Horton in Austin: how the two biggest entry-level builders compare on price, included features, incentives and locations.',
+		metaDescription: 'D.R. Horton usually starts lower, about $250K-$450K vs Lennar\'s $280K-$550K. Compare the monthly payment after buydowns, features and lot size.',
+		seoTitle: 'Lennar vs D.R. Horton in Austin: Which Is Cheaper?',
 		title: 'Lennar vs D.R. Horton in Austin',
 		subtitle: 'Two entry-level volume builders, compared from the buyer\'s side',
 		shortAnswer: 'Lennar and D.R. Horton are the two highest-volume entry-level builders in the Austin metro. D.R. Horton reaches lower prices, roughly $250,000 to $450,000, with a more basic finish and tighter lots. Lennar runs roughly $280,000 to $550,000 with its "Everything\'s Included" features. Both put most of their incentive money into rate buydowns tied to their own lenders, so compare the all-in monthly payment, not the price.',

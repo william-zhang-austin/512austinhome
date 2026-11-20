@@ -35,7 +35,7 @@ const offers = CURRENT_OFFERS.map((o) => ({ ...o, builder: BUILDERS.find((b) => 
 		) : (
 			<ol class="space-y-4 mb-12">
 				{offers.map((o) => (
-					<li class="bg-surface border border-border rounded-xl p-5">
+					<li class="bg-surface border border-border rounded-xl p-5" data-ends-on={o.endsOn}>
 						<div class="flex items-baseline justify-between gap-3 mb-1">
 							<a href={`/incentives/${o.builderSlug}/`} class="font-display text-base font-bold text-accent no-underline hover:underline">{o.builder?.name ?? o.builderSlug}</a>
 							<span class="text-xs text-text-muted whitespace-nowrap">Confirmed {fmt(o.verifiedOn)}</span>

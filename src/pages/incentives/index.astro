@@ -45,7 +45,7 @@ const description = 'Austin new construction builder incentives explained: rate 
 					{CURRENT_OFFERS.map((o) => {
 						const b = BUILDERS.find((x) => x.slug === o.builderSlug);
 						return (
-							<div class="bg-surface border border-border rounded-xl p-6">
+							<div class="bg-surface border border-border rounded-xl p-6" data-ends-on={o.endsOn}>
 								{b && <a href={`/incentives/${b.slug}/`} class="font-display text-base font-bold text-accent no-underline hover:underline">{b.name}</a>}
 								<p class="font-display text-lg font-bold text-primary mt-1 mb-2">{o.headline}</p>
 								{o.detail && <p class="text-sm text-text-muted leading-relaxed mb-3">{o.detail}</p>}

@@ -30,8 +30,10 @@ const communities = COMMUNITIES.filter(
 // Cities this builder has communities in, linked to their city pages.
 const builderCities = CITIES.filter((city) => communities.some((c) => c.city === city.name));
 
-const title = `${builder.name} Austin, TX | Honest Buyer-Side Review | 512 Austin Home`;
-const description = `A buyer-side look at ${builder.name} in Austin: price range, what they do well, what to watch for, where they build, and how to negotiate one.`;
+const title = builder.seoTitle
+	? `${builder.seoTitle} | 512 Austin Home`
+	: `${builder.name} Austin, TX | Honest Buyer-Side Review | 512 Austin Home`;
+const description = builder.metaDescription ?? `A buyer-side look at ${builder.name} in Austin: price range, what they do well, what to watch for, where they build, and how to negotiate one.`;
 
 const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
 	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',

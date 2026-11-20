@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The date the whole sheet was last reviewed. Shown on every incentives page. */
-export const OFFERS_AS_OF = '2026-10-14';
+export const OFFERS_AS_OF = '2026-11-20';
 
 export interface CurrentOffer {
 	/** Must match a slug in BUILDERS. */
@@ -39,8 +39,9 @@ export interface CurrentOffer {
 }
 
 /**
- * Sourced 2026-09-23 and refreshed 2026-10-04 and 2026-10-14 from builder emails sent directly to William's agent
- * address. Only buyer-facing terms are recorded.
+ * Sourced 2026-09-23 and refreshed 2026-10-04, 2026-10-14 and 2026-11-20 from builder emails sent directly to
+ * William's agent address. Only buyer-facing terms are recorded. A rate is only published when the builder
+ * gave its APR in writing.
  *
  * DELIBERATELY EXCLUDED, AND DO NOT ADD THEM: agent commission rates, BTSA
  * (bonus to selling agent), realtor bonuses and co-op splits. Several of the
@@ -51,72 +52,96 @@ export interface CurrentOffer {
 const ALL_OFFERS: CurrentOffer[] = [
 	{
 		builderSlug: 'lennar',
-		headline: '5 percent toward closing costs, with an owner\'s title policy included.',
-		detail: 'On eligible homes. Lennar states that incentives are subject to change and vary by home, and that its offers may require using its designated lender or closing agent. Ask me which homes qualify.',
-		source: 'Email from a Lennar Austin new home consultant',
-		verifiedOn: '2026-10-02',
+		headline: '$8,000 to $10,000 in flex cash, plus closing-cost help and an owner\'s title policy, depending on the community.',
+		detail: 'Lennar\'s Austin consultants quoted flex cash usable toward closing costs or a price reduction, 3.5 percent toward closing costs on some homes, appliances or blinds and a garage door opener included, and a $100 earnest money deposit on select homes. Lennar states its incentives are tied to using Lennar Mortgage and are subject to change, and the terms differ by community. Ask me which homes qualify and what applies to a specific one.',
+		source: 'Emails from two Lennar Austin new home consultants, 11/13 and 11/19/2026',
+		verifiedOn: '2026-11-19',
 	},
 	{
 		builderSlug: 'pulte-homes',
-		headline: 'Rates as low as 3.99 percent (5.362 percent APR) on a 7/6 ARM, fixed for the first seven years.',
-		detail: 'Through Pulte Mortgage. Their published example assumes a 780 FICO, a primary residence and 20 percent down, with all incentives applied toward closing costs; the rate adjusts every six months from year eight. Pulte states the rate was effective 9/17/2026, that loans must be locked and closed by 12/31/2026, and that it is offered first come first served. An ARM is not the right product for everyone — ask me to price it against a fixed rate before you decide.',
-		source: 'Pulte Homes Central Texas email',
-		verifiedOn: '2026-09-18',
+		headline: 'Hometown Heroes: up to $2,000 toward options or closing costs for teachers, nurses, EMS, police, firefighters and military.',
+		detail: 'On purchase agreements accepted in Pulte\'s Austin-area communities through 12/31/2026. Pulte lists active teachers, nurses, EMS, police, firefighters, veterans and active duty or retired military as eligible. One discount per home, not combined with other promotions, and unused credit cannot reduce the price. Pulte has also announced Black Friday pricing without published terms: ask me for the number on a specific home.',
+		source: 'Pulte Homes Austin email, 11/11/2026',
+		verifiedOn: '2026-11-11',
+		endsOn: '2026-12-31',
 	},
 	{
 		builderSlug: 'toll-brothers',
-		headline: '4.99 percent (5.76 percent APR) FHA 30-year fixed rate with as little as 3.5 percent down on select quick move-in homes.',
-		detail: 'Through Toll Brothers Mortgage Company, for buyers who sign on a select quick move-in home on or after 9/4/2026 and close by 10/30/2026. Toll\'s published example assumes a $509,224 price and a 660 minimum credit score; limited availability and subject to change. Toll is also running a National Sales Event for deposits 10/3 to 10/18 with savings that vary by home.',
-		source: 'Toll Brothers emails, 10/3 and 10/13/2026',
-		verifiedOn: '2026-10-13',
-		endsOn: '2026-10-30',
+		headline: '5.49 percent (5.76 percent APR) 30-year fixed rate on select quick move-in homes.',
+		detail: 'Through Toll Brothers Mortgage Company, for new buyers who sign on a select home on or after 10/8/2026 and close by 1/8/2027. Toll\'s example assumes a 740 credit score and at least 10 percent down; FHA and VA loans are not eligible, primary residences only, limited availability, and it cannot be combined with other offers.',
+		source: 'Toll Brothers email, 11/19/2026',
+		verifiedOn: '2026-11-19',
+		endsOn: '2027-01-08',
+	},
+	{
+		builderSlug: 'toll-brothers',
+		headline: 'National Kitchen & Bath Event: savings on design finishes for deposits from 11/7 to 11/22/2026.',
+		detail: 'On build-to-order, design-ready and quick move-in homes in participating communities. Toll does not publish a dollar amount; savings vary by community and home site, and the event cannot be combined with other offers.',
+		source: 'Toll Brothers email, 11/19/2026',
+		verifiedOn: '2026-11-19',
+		endsOn: '2026-11-22',
+	},
+	{
+		builderSlug: 'toll-brothers',
+		headline: 'Jumbo 5/1 ARM with a 2/1 buydown: 4.625 percent in year one, 5.625 percent in year two, 6.625 percent in years 3 to 5 (7.33 percent APR).',
+		detail: 'For loans from $650,000 to $2,000,000 on select quick move-in homes, signed 11/1 to 11/30/2026 and closed by 1/29/2027, through Toll Brothers Mortgage Company. Toll\'s example assumes a 740 credit score and 20 percent down; the rate adjusts every year after year five, up to a maximum of 11.625 percent. An ARM is not the right product for everyone, so ask me to price it against a fixed rate.',
+		source: 'Toll Brothers email, 11/14/2026',
+		verifiedOn: '2026-11-14',
+		endsOn: '2026-11-30',
 	},
 	{
 		builderSlug: 'perry-homes',
-		headline: 'Year End Sales Event: choose up to $50,000 in flex cash or a 5.49 percent rate (6.278 percent APR, 30-year fixed), plus a move-in package.',
-		detail: 'On qualifying inventory homes, which must close by 12/31/2026. Perry has also cut prices on inventory homes near Georgetown.',
-		communities: ['Parmer Ranch, Georgetown', 'Parkside on the River, Georgetown'],
-		source: 'Email from a Perry Homes Austin new home sales counselor',
-		verifiedOn: '2026-10-03',
+		headline: 'Flex cash on Perry inventory homes, usable to buy down the rate, lower the price or pay closing costs.',
+		detail: 'The amount is set home by home on Perry\'s current inventory sheet, and Perry is pushing to close homes before the end of 2026. Ask me for the flex cash on a specific home.',
+		source: 'Email from a Perry Homes Austin sales counselor, 11/14/2026',
+		verifiedOn: '2026-11-14',
 	},
 	{
 		builderSlug: 'highland-homes',
-		headline: 'Up to $60,000 in flex cash plus a 1-0 rate buydown on to-be-built homes, or a 4.99 percent first-year rate on quick move-in homes.',
-		detail: 'To-be-built: contracts from 10/8 to 10/31/2026 that can close by 5/31/2027; flex cash goes to design options or closing costs. Quick move-in: 4.99 percent in year one, then 5.99 percent fixed for years 2 to 30 (6.032 percent APR, conventional), on homes that can close by 12/4/2026; an FHA/VA rate is also offered, so ask me for that number. Both require financing through Highland HomeLoans, funds are limited, and they cannot be combined with other offers.',
-		source: 'Highland Homes email, 10/14/2026',
-		verifiedOn: '2026-10-14',
-		endsOn: '2026-10-31',
+		headline: 'Up to $15,000 toward closing costs plus a 4.99 percent first-year rate (5.99 percent in years 2 to 30, 6.032 percent APR) on select inventory homes.',
+		detail: 'Contracts from 11/5 to 11/29/2026 that close by 12/29/2026. Conventional 30-year fixed only, through Highland HomeLoans, and you must apply with them within 5 days of the contract. Highland\'s rate example assumes a 740 or higher credit score and 20 percent down. Funds are limited and the offer cannot be combined with other offers. Highland featured 6 Creeks in Kyle and Lariat.',
+		source: 'Highland Homes emails, 11/11 and 11/16/2026',
+		verifiedOn: '2026-11-16',
+		endsOn: '2026-11-29',
 	},
 	{
 		builderSlug: 'dr-horton',
-		headline: 'Red Tag Event, 10/9 to 11/1/2026: special pricing on select homes, plus up to $10,000 in closing costs with DHI Mortgage.',
-		detail: 'Contracts during the event must close by 12/27/2026; first come, first served. The closing cost credit cannot exceed 2 percent of the final sales price and requires DHI Mortgage. Incentives vary by community and home.',
-		source: 'D.R. Horton Austin Division email',
-		verifiedOn: '2026-10-02',
-		endsOn: '2026-11-01',
+		headline: 'Lower prices on select homes, up to $10,000 toward closing costs, and a 4.99 percent (6.031 percent APR) FHA 30-year fixed rate with DHI Mortgage.',
+		detail: 'Contracts from 11/16 to 11/30/2026 that close by 12/31/2026, first come, first served. To get the advertised rate the buyer must pay a 3.5 percent discount point, which the builder\'s incentive can cover; VA and USDA versions are also offered. The closing cost help requires DHI Mortgage, varies by community, cannot be combined with other offers and cannot be used to cut the price. Primary residences only, and buyers who already registered with D.R. Horton may not qualify.',
+		source: 'D.R. Horton Austin email, 11/16/2026',
+		verifiedOn: '2026-11-16',
+		endsOn: '2026-11-30',
 	},
 	{
 		builderSlug: 'meritage-homes',
-		headline: 'Below-market rates and up to $10,000 in closing costs on select quick move-in homes, contracts through 10/15/2026.',
-		detail: 'Requires financing through MTH Mortgage and using Carefree Title. The closing cost credit cannot exceed 3 percent of the base price. Meritage does not publish a single rate; ask me for the number on a specific home.',
-		source: 'Meritage Homes email',
-		verifiedOn: '2026-10-01',
-		endsOn: '2026-10-15',
+		headline: '4.25 percent (6.2 percent APR) 5/1 ARM, fixed for five years, plus up to $10,000 in closing costs on select quick move-in homes.',
+		detail: 'Meritage extended its sales event in Austin to full-price contracts accepted 11/5 to 11/30/2026 that close by 12/31/2026. Requires an FHA, VA or conforming loan through MTH Mortgage and Carefree Title; the closing cost credit cannot exceed 3 percent of the base price, and it cannot be combined with other promotions. An ARM is not the right product for everyone, so ask me to price it against a fixed rate.',
+		source: 'Meritage Homes email, 11/17/2026',
+		verifiedOn: '2026-11-17',
+		endsOn: '2026-11-30',
 	},
 	{
 		builderSlug: 'coventry-homes',
-		headline: 'National Sales Event extended through 10/18/2026: savings on select quick move-in homes.',
-		detail: 'Applies to select inventory homes with contracts from 9/3 to 10/18/2026. Savings vary by home; in Coventry\'s own examples they ranged from $8,000 to $80,000.',
-		source: 'Coventry Homes email',
-		verifiedOn: '2026-10-01',
-		endsOn: '2026-10-18',
+		headline: 'Black Friday savings on select move-in ready homes, from $10,000 to $105,000 depending on the home.',
+		detail: 'For contracts dated 11/2 to 11/30/2026 on select inventory homes in the Austin area. Coventry does not say how much of the savings is a price cut versus a credit, and the offer may not combine with other promotions. Ask me what the savings are on a specific home.',
+		source: 'Coventry Homes email, 11/19/2026',
+		verifiedOn: '2026-11-19',
+		endsOn: '2026-11-30',
 	},
 	{
 		builderSlug: 'brohn-homes',
-		headline: 'Up to 6 percent flex cash on qualifying homes, usable for a promotional rate as low as 4.5 percent (6.480 percent APR, FHA 5/1 ARM).',
-		detail: 'Flex cash can buy down the rate when you finance with Brohn\'s preferred lender, CMG Financial. Brohn\'s "hot homes" get an extra 3 percent flex cash toward closing costs. At Cross Creek (Cedar Park), the final homes get the choice of up to 6 percent flex cash or a reduced rate. The 4.5 percent rate is an adjustable-rate loan fixed for five years: ask me to price it against a fixed rate before you decide.',
-		source: 'Brohn Homes Austin email (10/8/2026) and a Brohn sales executive (10/10/2026)',
-		verifiedOn: '2026-10-10',
+		headline: 'Price cuts of up to $41,000 on select homes, plus 6 percent flex cash usable for a 4.5 percent (6.480 percent APR) FHA 5/1 ARM.',
+		detail: 'The flex cash can buy down the rate when you finance with Brohn\'s preferred lender, CMG Financial, and Brohn\'s "hot homes" get an extra 3 percent flex cash toward closing costs. Brohn quoted the rate as of 10/1/2026, and it may change at lock. The 4.5 percent rate is an adjustable-rate loan fixed for five years: ask me to price it against a fixed rate before you decide.',
+		source: 'Brohn Homes Austin email, 11/19/2026',
+		verifiedOn: '2026-11-19',
+	},
+	{
+		builderSlug: 'gfo-home',
+		headline: '5.49 percent (6.949 percent APR) 7/6 ARM, fixed for the first seven years, on eligible quick move-in homes.',
+		detail: 'Contracts accepted 11/5 to 11/30/2026 on eligible inventory homes that close by 12/30/2026, financing through a GFO preferred lender and using Capital Title. GFO\'s example assumes a 780 credit score and 10 percent down; after year seven the rate can adjust every six months. Not all homes qualify. An ARM is not the right product for everyone, so ask me to price it against a fixed rate.',
+		source: 'GFO Home email, 11/18/2026',
+		verifiedOn: '2026-11-18',
+		endsOn: '2026-11-30',
 	},
 ];
 

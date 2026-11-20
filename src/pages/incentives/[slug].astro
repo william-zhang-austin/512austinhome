@@ -78,7 +78,7 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 			{offers.length > 0 ? (
 				<div class="space-y-4">
 					{offers.map((o) => (
-						<div class="bg-surface border border-border rounded-xl p-6">
+						<div class="bg-surface border border-border rounded-xl p-6" data-ends-on={o.endsOn}>
 							<p class="font-display text-lg font-bold text-primary mb-2">{o.headline}</p>
 							{o.detail && <p class="text-sm text-text-muted leading-relaxed mb-3">{o.detail}</p>}
 							{o.communities && o.communities.length > 0 && (

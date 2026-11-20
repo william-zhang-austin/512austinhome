@@ -38,11 +38,17 @@ export interface Builder {
 	firstHand: boolean;
 	faqs: { question: string; answer: string }[];
 	contentUpdated: string;
+	/** Optional <title> override (before the site suffix), e.g. to match a question searchers ask. */
+	seoTitle?: string;
+	/** Optional hand-written meta description (<=150 chars). */
+	metaDescription?: string;
 }
 
 export const BUILDERS: Builder[] = [
 	{
 		slug: 'lennar',
+		seoTitle: 'Is Lennar a Good Builder in Austin? Buyer-Side Review',
+		metaDescription: 'Lennar in Austin from a buyer\'s agent who has closed with them: $280K-$550K, what is included, what to watch for, and how to negotiate one.',
 		name: 'Lennar',
 		priceRange: '$280K-$550K',
 		segment: 'High-volume entry-level and first move-up',

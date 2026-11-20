@@ -34,5 +34,16 @@ const showIncentivesCapture = /^\/(new-construction|builders|incentives|deals|co
 		</main>
 		<Footer />
 		{showIncentivesCapture && <IncentivesCapture />}
+		<script is:inline>
+			// Backstop for builder offers: hide any offer whose end date (data-ends-on, YYYY-MM-DD) has
+			// passed in Austin time, even if the site has not been rebuilt since. The daily rebuild
+			// (/api/rebuild/ cron) removes them from the HTML itself.
+			(function () {
+				var els = document.querySelectorAll('[data-ends-on]');
+				if (!els.length) return;
+				var today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+				els.forEach(function (el) { if (el.getAttribute('data-ends-on') < today) el.remove(); });
+			})();
+		</script>
 	</body>
 </html>

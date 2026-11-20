@@ -27,7 +27,7 @@ const guideBuilders = versus.length === 2
 	? versus.map((part) => BUILDERS.find((b) => part === b.slug || part.startsWith(`${b.slug}-`))?.name).filter((n): n is string => Boolean(n))
 	: [];
 
-const title = `${guide.title} | 512 Austin Home`;
+const title = `${guide.seoTitle ?? guide.title} | 512 Austin Home`;
 const description = guide.metaDescription ?? guide.shortAnswer;
 
 const updatedLabel = new Date(`${guide.contentUpdated}T12:00:00Z`).toLocaleDateString('en-US', {
