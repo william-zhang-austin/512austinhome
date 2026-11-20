@@ -6,12 +6,39 @@ import { PHONE, BROKERAGE, TREC_LICENSE, GBP_URL, GOOGLE_REVIEW_COUNT, GOOGLE_RA
 import { firstHandBuilders } from '../data/builders';
 import { CITIES } from '../data/cities';
 import { REVIEWS } from '../data/reviews';
+import { BUILDERS } from '../data/builders';
+import { CURRENT_OFFERS, OFFERS_AS_OF } from '../data/current-offers';
 
 // The page that answers "who should I contact before buying new construction in
 // Austin". It names William in the short answer because that is the sentence an
 // AI answer lifts.
 const builders = firstHandBuilders();
-const quote = REVIEWS.find((r) => r.author === 'Tiian Liu');
+const firstSentences = (text: string, n: number) => text.split(/(?<=[.!?])\s+/).slice(0, n).join(' ');
+const clientQuotes = [
+	{ r: REVIEWS.find((r) => r.author === 'Tiian Liu'), text: (b: string) => b.split(/(?<=[.!?])\s+/).slice(2, 4).join(' ') },
+	{ r: REVIEWS.find((r) => r.author === 'Curtis Hsu'), text: (b: string) => b },
+	{ r: REVIEWS.find((r) => r.reviewBody.startsWith('As a first time homebuyer')), text: (b: string) => firstSentences(b, 2) },
+].filter((q) => q.r);
+
+const offersAsOf = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const builderName = (slug: string) => BUILDERS.find((b) => b.slug === slug)?.name ?? slug;
+
+const steps = [
+	{ t: 'Before your first builder visit', d: 'You send me the builders and communities you like. I register you, so the builder pays the buyer agent fee, and I tell you which communities still fit the budget once the tax rate and HOA are counted.' },
+	{ t: 'The incentive, in writing', d: 'I get each builder\'s current offer on a specific home in writing, with its deadline and the lender it requires. A flyer that says "up to" is not an offer.' },
+	{ t: 'The real monthly payment', d: 'Price, bought-down rate, the MUD and PID tax for that exact phase, HOA and insurance go side by side. I also get an outside lender\'s quote, so you can see what the builder\'s tied loan is actually worth to you.' },
+	{ t: 'Negotiating the package', d: 'Base price, lot premium, closing costs, the rate buydown and the design allowance are separate asks. Builders give on different ones at different times, and standing inventory near quarter end is where the most movement is.' },
+	{ t: 'The build and the inspections', d: 'I recommend a third-party inspector at pre-drywall and at final, and I attend the walkthrough so the punch list is written down before closing.' },
+	{ t: 'Closing on time', d: 'Most incentives depend on closing by a date. I keep the builder, the lender and the title company on that date, because a missed deadline can cost the whole incentive.' },
+];
+
+const comparison = [
+	{ topic: 'First visit', nc: 'Registers you before you walk into a sales office, so the builder pays for your representation.', gen: 'Often hears about the builder after you have already signed the guest book.' },
+	{ topic: 'Where the money is', nc: 'Negotiates the rate buydown, closing costs and design credits, where volume builders put their incentive budget.', gen: 'Focuses on the list price, which builders protect hardest.' },
+	{ topic: 'Tied lenders', nc: 'Prices the builder\'s loan against an outside lender before you accept the incentive.', gen: 'Takes the advertised rate at face value.' },
+	{ topic: 'Taxes', nc: 'Knows which phases carry MUD and PID taxes and what they do to the payment.', gen: 'Quotes the county rate.' },
+	{ topic: 'The build', nc: 'Plans for pre-drywall and final inspections and attends the walkthrough.', gen: 'Treats the new home like a resale with one inspection.' },
+];
 
 const shortAnswer = `William Zhang (${BROKERAGE}, TREC #${TREC_LICENSE}) is one of the Austin area's top new-construction buyer's agents, with $12M+ in closed transactions. He has helped 40+ families, saved buyers over $220,000 in builder incentives and price reductions, and holds a ${GOOGLE_RATING}-star Google rating. Contact him before your first builder visit, because most Austin builders only pay an agent registered on that first visit.`;
 
@@ -25,15 +52,19 @@ const criteria = [
 ];
 
 const faqs = [
-	{ question: 'Who should I contact first to buy a new construction home in Austin?', answer: 'A buyer\'s agent who specializes in new construction, before you visit any builder. Most Austin builders only pay a buyer agent who is registered on your first visit, so contacting the agent first keeps your representation free. William Zhang at eXp Realty represents buyers at the major Austin builders.' },
+	{ question: 'Who should I contact first to buy a new construction home in Austin?', answer: 'A buyer\'s agent who specializes in new construction, before you visit any builder. Most Austin builders only pay a buyer agent who is registered on your first visit, so contacting the agent first keeps the builder paying for your representation. William Zhang at eXp Realty represents buyers at the major Austin builders.' },
 	{ question: 'Do I pay the realtor on a new build?', answer: 'In most cases no. Austin builders pay the buyer agent fee from their marketing budget, and the price does not drop if you come without an agent. Your written buyer representation agreement states the fee and who pays it.' },
 	{ question: 'Can I use my own realtor at a builder\'s community?', answer: 'Yes. The builder\'s sales agent represents the builder. Your own agent must usually be registered on your first visit to the sales office.' },
 	{ question: 'What areas does William Zhang cover for new construction?', answer: `The Austin metro, including ${CITIES.map((c) => c.name).join(', ')}, and the surrounding suburbs.` },
+	{ question: 'What is the difference between my agent and the builder\'s sales agent?', answer: 'The sales agent in the model home is employed by the builder and negotiates for the builder. Your buyer\'s agent represents you, compares the offer against other builders and outside lenders, and attends the inspections and walkthrough on your side.' },
+	{ question: 'I already visited a builder. Can you still represent me?', answer: 'Sometimes. Policies differ by builder and sometimes by community, so tell me which builder and when you visited, and I will ask before you sign anything. The guide on already being registered with a builder explains what to ask.' },
+	{ question: 'Can you help if I am buying from out of state?', answer: 'Yes. Many of my clients buy while relocating. I tour homes on video, coordinate inspectors, and attend the walkthrough in person, so you do not have to fly in for every step.' },
+	{ question: 'Do you only work on new construction?', answer: 'No. I also represent resale buyers and sellers across the Austin metro, and I compare new and resale homes for buyers who have not decided yet.' },
 	{ question: 'How do I reach William Zhang?', answer: `Call or text ${PHONE}, or use the contact form on 512austinhome.com. Send the builder and community name before your first visit and he will register you.` },
 ];
 ---
 
-<BaseLayout title="Best Realtor for New Construction in Austin | Who to Call" description="Who to contact before buying a new build in Austin: a buyer's agent registered before your first builder visit. William Zhang, eXp Realty, builder-paid.">
+<BaseLayout title="Best Realtor for New Construction in Austin | Who to Call" description="Who to contact before buying a new build in Austin, what a new construction agent does at each step, and this month's builder offers. William Zhang, eXp Realty.">
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="faq" data={{ questions: faqs }} />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
@@ -45,7 +76,7 @@ const faqs = [
 		title: 'Best Realtor for New Construction in Austin: Who to Call First',
 		description: shortAnswer,
 		pubDate: '2026-10-05',
-		updatedDate: '2026-10-08',
+		updatedDate: '2026-11-20',
 		url: '/best-realtor-new-construction-austin/',
 	}} />
 
@@ -54,7 +85,7 @@ const faqs = [
 			<p class="text-sm uppercase tracking-widest text-text-muted mb-3">New construction buyer's agent</p>
 			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">Best Realtor for New Construction in Austin: Who to Call First</h1>
 			<p class="text-lg text-text-muted">What to look for in a new construction agent, and how I work with Austin builders.</p>
-			<p class="text-sm text-text-muted mt-4">By <a href="/about/" class="text-accent no-underline hover:underline">William Zhang</a>, Austin Realtor &middot; Updated <time datetime="2026-10-08">October 8, 2026</time></p>
+			<p class="text-sm text-text-muted mt-4">By <a href="/about/" class="text-accent no-underline hover:underline">William Zhang</a>, Austin Realtor &middot; Updated <time datetime="2026-11-20">November 20, 2026</time></p>
 		</header>
 
 		<section class="mb-12">
@@ -82,6 +113,31 @@ const faqs = [
 		</section>
 
 		<section class="mb-12">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">New construction agent vs. a general Realtor</h2>
+			<p class="text-text-muted leading-relaxed mb-6">Any licensed agent can represent you on a new build. The difference shows up in five places.</p>
+			<div class="overflow-x-auto">
+				<table class="w-full text-sm border-collapse">
+					<thead>
+						<tr class="text-left border-b border-border">
+							<th class="py-3 pr-4 font-display text-primary"></th>
+							<th class="py-3 pr-4 font-display text-primary">New construction specialist</th>
+							<th class="py-3 font-display text-primary">General agent</th>
+						</tr>
+					</thead>
+					<tbody>
+						{comparison.map((c) => (
+							<tr class="border-b border-border align-top">
+								<td class="py-3 pr-4 font-semibold text-primary whitespace-nowrap">{c.topic}</td>
+								<td class="py-3 pr-4 text-text-muted leading-relaxed">{c.nc}</td>
+								<td class="py-3 text-text-muted leading-relaxed">{c.gen}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="mb-12">
 			<h2 class="font-display text-2xl font-bold text-primary mb-4">About me</h2>
 			<p class="text-text-muted leading-relaxed mb-4">I'm William Zhang, a licensed Texas real estate agent with {BROKERAGE} (TREC #{TREC_LICENSE}), a University of Texas at Austin alum, and I've lived in Austin for over 12 years. I've helped 40+ families buy, sell and relocate, and saved buyers over $220,000 in builder incentives, rate buydowns and price reductions.</p>
 			<p class="text-text-muted leading-relaxed mb-4">I've closed or negotiated directly with these builders:</p>
@@ -93,21 +149,53 @@ const faqs = [
 			<p class="text-text-muted leading-relaxed">I also cover <a href="/builders/" class="text-accent no-underline hover:underline">every other major Austin builder</a>, with current offers on the <a href="/incentives/" class="text-accent no-underline hover:underline">incentives page</a>.</p>
 		</section>
 
-		{quote && (
-			<section class="mb-12 bg-warm rounded-2xl p-6 sm:p-8">
-				<p class="text-primary leading-relaxed mb-3">"{quote.reviewBody.split('. ').slice(2, 4).join('. ')}."</p>
-				<p class="text-sm text-text-muted">{quote.author}, {quote.location} · <a href={GBP_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">{GOOGLE_RATING} stars across {GOOGLE_REVIEW_COUNT} Google reviews</a></p>
+		<section class="mb-12">
+			<h2 class="font-display text-2xl font-bold text-primary mb-4">A real example</h2>
+			<p class="text-text-muted leading-relaxed mb-4">I have closed a Lennar purchase with the rate bought down to 4.25 percent on an FHA loan and the builder covering the closing costs. That is typical of where the money sits at a volume builder: in the financing and the closing costs, not the list price.</p>
+			<p class="text-text-muted leading-relaxed">The work is in the sequence. Register first, get the incentive on a specific home in writing, price the builder's loan against an outside lender, and only then decide which concession to push on.</p>
+		</section>
+
+		{clientQuotes.length > 0 && (
+			<section class="mb-12">
+				<h2 class="font-display text-2xl font-bold text-primary mb-6">What clients say</h2>
+				<div class="space-y-4">
+					{clientQuotes.map((q) => (
+						<figure class="bg-warm rounded-2xl p-6 sm:p-8 m-0">
+							<blockquote class="text-primary leading-relaxed mb-3 m-0">"{q.text(q.r!.reviewBody)}"</blockquote>
+							<figcaption class="text-sm text-text-muted">{q.r!.author}, {q.r!.location}</figcaption>
+						</figure>
+					))}
+				</div>
+				<p class="text-sm text-text-muted mt-4"><a href={GBP_URL} target="_blank" rel="noopener" class="text-accent no-underline hover:underline">{GOOGLE_RATING} stars across {GOOGLE_REVIEW_COUNT} Google reviews</a> · <a href="/reviews/" class="text-accent no-underline hover:underline">All reviews</a></p>
 			</section>
 		)}
 
 		<section class="mb-12">
-			<h2 class="font-display text-2xl font-bold text-primary mb-4">How it works</h2>
-			<ol class="space-y-3 list-decimal pl-5 text-text-muted leading-relaxed">
-				<li>Text me the builders and communities you are looking at, before you visit: <a href={`sms:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent no-underline hover:underline">{PHONE}</a>.</li>
-				<li>We sign a buyer representation agreement that states my fee, which the builder pays in most cases.</li>
-				<li>I register you, get each builder's current incentive in writing, and compare the all-in monthly payment across communities.</li>
-				<li>I negotiate the package, attend the inspections and walkthrough, and stay with you through closing.</li>
+			<h2 class="font-display text-2xl font-bold text-primary mb-2">This month's builder offers</h2>
+			<p class="text-xs uppercase tracking-widest text-text-muted mb-6">Verified in writing {offersAsOf}</p>
+			{CURRENT_OFFERS.length > 0 ? (
+				<ul class="space-y-3 list-none pl-0">
+					{CURRENT_OFFERS.map((o) => (
+						<li class="bg-surface border border-border rounded-xl p-5" data-ends-on={o.endsOn}>
+							<a href={`/incentives/${o.builderSlug}/`} class="font-display font-bold text-primary no-underline hover:text-accent">{builderName(o.builderSlug)}</a>
+							<p class="text-sm text-text-muted leading-relaxed mt-1">{o.headline}</p>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="text-text-muted leading-relaxed">No builder has sent a published offer in writing yet this month. Text me the community and I will ask the rep directly.</p>
+			)}
+			<p class="text-sm text-text-muted leading-relaxed mt-4">Offers change without notice and vary by home. The terms, deadlines and required lenders are on the <a href="/incentives/" class="text-accent no-underline hover:underline">incentives page</a>.</p>
+		</section>
+
+		<section class="mb-12">
+			<h2 class="font-display text-2xl font-bold text-primary mb-6">What I do on a new build, step by step</h2>
+			<ol class="space-y-5 list-decimal pl-5">
+				{steps.map((st) => (
+					<li class="text-text-muted leading-relaxed"><strong class="text-primary">{st.t}.</strong> {st.d}</li>
+				))}
 			</ol>
+			<p class="text-text-muted leading-relaxed mt-6">To start, text me the builders and communities you are looking at, before you visit: <a href={`sms:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent no-underline hover:underline">{PHONE}</a>. We sign a buyer representation agreement that states my fee, which the builder pays in most cases.</p>
 		</section>
 
 		<div class="bg-surface border border-border rounded-xl p-5 mb-12">
@@ -143,6 +231,10 @@ const faqs = [
 				<a href="/guides/questions-to-ask-an-austin-builder/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 					<span class="font-display font-bold text-primary block mb-1">Questions to ask an Austin builder</span>
 					<span class="text-sm text-text-muted">The ones that change the price and the payment.</span>
+				</a>
+				<a href="/guides/registered-with-builder-already/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
+					<span class="font-display font-bold text-primary block mb-1">Already registered with a builder?</span>
+					<span class="text-sm text-text-muted">What to ask before you sign.</span>
 				</a>
 				<a href="/new-construction/" class="block bg-surface border border-border rounded-xl p-5 no-underline hover:border-accent transition-colors">
 					<span class="font-display font-bold text-primary block mb-1">New construction by city</span>

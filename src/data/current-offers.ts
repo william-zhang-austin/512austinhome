@@ -143,6 +143,13 @@ const ALL_OFFERS: CurrentOffer[] = [
 		verifiedOn: '2026-11-18',
 		endsOn: '2026-11-30',
 	},
+	{
+		builderSlug: 'taylor-morrison',
+		headline: 'Price cuts on select ready-now homes, such as an Eagle plan reduced $35,000 to $294,990 on Taylor Morrison\'s 11/19 list.',
+		detail: 'Taylor Morrison sends a weekly list of available Austin homes with the reductions marked, and it has also announced early Black Friday offers without published terms. Prices change week to week, so ask me for the current list and what applies to a specific home.',
+		source: 'Taylor Morrison Austin weekly available-homes email, 11/19/2026',
+		verifiedOn: '2026-11-19',
+	},
 ];
 
 /** Live offers only: anything whose end date has passed drops off at build time. */

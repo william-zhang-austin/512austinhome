@@ -6,7 +6,8 @@ import TidyCalEmbed from '../../components/TidyCalEmbed.astro';
 import { PHONE } from '../../consts';
 import { BUILDERS, builderMentioned } from '../../data/builders';
 import { INCENTIVE_TYPES } from '../../data/incentives';
-import { offersForBuilder } from '../../data/current-offers';
+import { offersForBuilder, OFFERS_AS_OF } from '../../data/current-offers';
+import CurrentOffers from '../../components/CurrentOffers.astro';
 import IncentiveDisclosure from '../../components/IncentiveDisclosure.astro';
 import InventoryCTA from '../../components/InventoryCTA.astro';
 import IncentivesInline from '../../components/IncentivesInline.astro';
@@ -52,6 +53,13 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 <BaseLayout title={title} description={description}>
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="faq" data={{ questions: builder.faqs }} />
+	<SchemaMarkup type="article" data={{
+		title,
+		description,
+		pubDate: builder.contentUpdated,
+		updatedDate: [builder.contentUpdated, OFFERS_AS_OF].sort().at(-1),
+		url: `/incentives/${builder.slug}/`,
+	}} />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
 		{ name: 'Builder Incentives', url: '/incentives/' },
@@ -73,29 +81,7 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 
 		<InventoryCTA link={BUILDER_LINKS[builder.slug]} />
 
-		<section class="mb-16">
-			<h2 class="font-display text-2xl font-bold text-primary mb-6">What {builder.name} is offering</h2>
-			{offers.length > 0 ? (
-				<div class="space-y-4">
-					{offers.map((o) => (
-						<div class="bg-surface border border-border rounded-xl p-6" data-ends-on={o.endsOn}>
-							<p class="font-display text-lg font-bold text-primary mb-2">{o.headline}</p>
-							{o.detail && <p class="text-sm text-text-muted leading-relaxed mb-3">{o.detail}</p>}
-							{o.communities && o.communities.length > 0 && (
-								<p class="text-sm text-text-muted mb-3"><strong class="text-primary">Where:</strong> {o.communities.join(', ')}</p>
-							)}
-							<p class="text-xs text-text-muted">Confirmed {o.verifiedOn} · {o.source}</p>
-						</div>
-					))}
-				</div>
-			) : (
-				<div class="bg-surface border border-border rounded-xl p-6">
-					<p class="font-display text-lg font-bold text-primary mb-2">{builder.name} has not sent agents a published Austin offer this month.</p>
-					<p class="text-sm text-text-muted leading-relaxed mb-3">That usually means the incentive is negotiated home by home rather than advertised. How {builder.name} typically structures it: {builder.incentiveStyle}</p>
-					<p class="text-sm text-text-muted leading-relaxed">Text me the community you are looking at and I will call their rep and come back with what is actually available on that home, usually the same day. <a href={`sms:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent font-semibold no-underline hover:underline">Text {PHONE}</a></p>
-				</div>
-			)}
-		</section>
+		<CurrentOffers builder={builder} />
 
 		<IncentivesInline builders={[builder.name]} />
 

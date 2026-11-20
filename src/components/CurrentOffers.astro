@@ -1,0 +1,41 @@
+---
+// This month's written offers for one builder, from src/data/current-offers.ts.
+// Used on /builders/[slug]/ and /incentives/[slug]/ so both pages carry the same dated offers.
+import { offersForBuilder, OFFERS_AS_OF } from '../data/current-offers';
+import { PHONE } from '../consts';
+
+interface Props {
+	builder: { slug: string; name: string; incentiveStyle: string };
+	heading?: string;
+}
+const { builder, heading } = Astro.props;
+const offers = offersForBuilder(builder.slug);
+const fmt = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const asOf = fmt(OFFERS_AS_OF);
+---
+
+<section class="mb-16">
+	<h2 class="font-display text-2xl font-bold text-primary mb-2">{heading ?? `What ${builder.name} is offering`}</h2>
+	<p class="text-xs uppercase tracking-widest text-text-muted mb-6">Offers verified {asOf}</p>
+	{offers.length > 0 ? (
+		<div class="space-y-4">
+			{offers.map((o) => (
+				<div class="bg-surface border border-border rounded-xl p-6" data-ends-on={o.endsOn}>
+					<p class="font-display text-lg font-bold text-primary mb-2">{o.headline}</p>
+					{o.detail && <p class="text-sm text-text-muted leading-relaxed mb-3">{o.detail}</p>}
+					{o.communities && o.communities.length > 0 && (
+						<p class="text-sm text-text-muted mb-3"><strong class="text-primary">Where:</strong> {o.communities.join(', ')}</p>
+					)}
+					<p class="text-xs text-text-muted">Confirmed in writing {fmt(o.verifiedOn)} · {o.source}</p>
+				</div>
+			))}
+			<p class="text-xs text-text-muted leading-relaxed">Builder offers change without notice and vary by home. Text me the address and I will confirm what applies before you visit.</p>
+		</div>
+	) : (
+		<div class="bg-surface border border-border rounded-xl p-6">
+			<p class="font-display text-lg font-bold text-primary mb-2">{builder.name} has not sent agents a published Austin offer in writing as of {asOf}.</p>
+			<p class="text-sm text-text-muted leading-relaxed mb-3">That usually means the incentive is negotiated home by home rather than advertised. How {builder.name} typically structures it: {builder.incentiveStyle}</p>
+			<p class="text-sm text-text-muted leading-relaxed">Text me the community you are looking at and I will call their rep and come back with what is actually available on that home, usually the same day. <a href={`sms:${PHONE.replace(/[^0-9+]/g, '')}`} class="text-accent font-semibold no-underline hover:underline">Text {PHONE}</a></p>
+		</div>
+	)}
+</section>

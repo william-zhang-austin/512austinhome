@@ -9,6 +9,8 @@ import { COMMUNITIES, priceRangeLabel } from '../../data/communities';
 import { CITIES } from '../../data/cities';
 import InventoryCTA from '../../components/InventoryCTA.astro';
 import IncentivesInline from '../../components/IncentivesInline.astro';
+import CurrentOffers from '../../components/CurrentOffers.astro';
+import { OFFERS_AS_OF } from '../../data/current-offers';
 import { BUILDER_LINKS } from '../../data/search-links';
 
 export async function getStaticPaths() {
@@ -39,6 +41,10 @@ const updatedLabel = new Date(`${builder.contentUpdated}T12:00:00Z`).toLocaleDat
 	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
 
+const offersLabel = new Date(`${OFFERS_AS_OF}T12:00:00Z`).toLocaleDateString('en-US', {
+	year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+
 // Builders with a head-to-head guide link to it from Keep exploring.
 const COMPARISONS: Record<string, { slug: string; label: string }> = {
 	lennar: { slug: 'lennar-vs-dr-horton-austin', label: 'Lennar vs D.R. Horton' },
@@ -51,6 +57,13 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 <BaseLayout title={title} description={description}>
 	<SchemaMarkup type="agent" />
 	<SchemaMarkup type="faq" data={{ questions: builder.faqs }} />
+	<SchemaMarkup type="article" data={{
+		title,
+		description,
+		pubDate: builder.contentUpdated,
+		updatedDate: [builder.contentUpdated, OFFERS_AS_OF].sort().at(-1),
+		url: `/builders/${builder.slug}/`,
+	}} />
 	<SchemaMarkup type="breadcrumb" data={{ items: [
 		{ name: 'Home', url: '/' },
 		{ name: 'Builders', url: '/builders/' },
@@ -68,6 +81,7 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 		<header class="mb-8">
 			<h1 class="font-display text-3xl sm:text-5xl font-bold text-primary tracking-tight mb-4">{builder.name} in Austin</h1>
 			<p class="text-sm uppercase tracking-widest text-text-muted">{builder.segment} · {builder.priceRange}</p>
+			<p class="text-xs text-text-muted mt-2">Offers verified {offersLabel} · Review updated {updatedLabel}</p>
 		</header>
 
 		<section class="mb-12">
@@ -105,6 +119,8 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 				</div>
 			</div>
 		</section>
+
+		<CurrentOffers builder={builder} heading={`What ${builder.name} is offering this month`} />
 
 		<IncentivesInline builders={[builder.name]} />
 
@@ -220,6 +236,6 @@ const COMPARISONS: Record<string, { slug: string; label: string }> = {
 
 		<ContactForm heading={`Questions about ${builder.name}?`} subheading={`Tell me which community you're looking at and I'll send you my notes on it, current incentives, and what I'd watch for in the contract.`} />
 
-		<p class="text-xs text-text-muted text-center mt-10">Reviewed and updated {updatedLabel}. Builder pricing, incentives and contract terms change frequently — confirm current terms before making decisions.</p>
+		<p class="text-xs text-text-muted text-center mt-10">Review updated {updatedLabel}; offers verified {offersLabel}. Builder pricing, incentives and contract terms change frequently — confirm current terms before making decisions.</p>
 	</div>
 </BaseLayout>
