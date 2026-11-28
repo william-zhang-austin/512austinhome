@@ -176,18 +176,32 @@ function fubHeaders() {
 	};
 }
 
+// Adding this tag enrolls the person in Homebot's seller digest. Homebot reads the person's
+// home address when the tag lands, so the tag must go on in the same write as the address.
+const HOMEBOT_TAG = '#Seller_Homebot';
+
 // A seller's property is their home: copy it onto the person's addresses (the event only
-// records it as the inquired property). Appends, never overwrites; failures don't fail the lead.
-async function saveHomeAddress(personId, property) {
+// records it as the inquired property), and with `homebot` add the Homebot tag in the same PUT.
+// Appends, never overwrites; failures don't fail the lead.
+async function saveHomeAddress(personId, property, { homebot = false } = {}) {
 	if (!personId || !property?.street) return;
 	const url = `https://api.followupboss.com/v1/people/${personId}`;
-	const person = await (await fetch(`${url}?fields=addresses`, { headers: fubHeaders() })).json();
+	const person = await (await fetch(`${url}?fields=allFields`, { headers: fubHeaders() })).json();
 	const existing = person.addresses || [];
+	const tags = person.tags || [];
 	const key = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-	if (existing.some((x) => key(x.street) === key(property.street))) return;
-	const home = { type: 'home', street: property.street, city: property.city || '', state: property.state || 'TX', code: property.code || '', country: 'United States' };
-	const r = await fetch(url, { method: 'PUT', headers: fubHeaders(), body: JSON.stringify({ addresses: [...existing, home] }) });
-	if (!r.ok) console.error('FUB address update failed', r.status, (await r.text()).slice(0, 300));
+
+	const update = {};
+	if (!existing.some((x) => key(x.street) === key(property.street))) {
+		const home = { type: 'home', street: property.street, city: property.city || '', state: property.state || 'TX', code: property.code || '', country: 'United States' };
+		update.addresses = [...existing, home];
+	}
+	// Homebot needs an email to send the digest to. PUT replaces the tag list, so send all of it.
+	if (homebot && (person.emails || []).length && !tags.includes(HOMEBOT_TAG)) update.tags = [...tags, HOMEBOT_TAG];
+	if (!Object.keys(update).length) return;
+
+	const r = await fetch(url, { method: 'PUT', headers: fubHeaders(), body: JSON.stringify(update) });
+	if (!r.ok) console.error('FUB address/tag update failed', r.status, (await r.text()).slice(0, 300));
 }
 
 export default async function handler(req, res) {
@@ -196,7 +210,8 @@ export default async function handler(req, res) {
 	if (!process.env.FUB_API_KEY) return res.status(500).json({ error: 'FUB_API_KEY not set' });
 
 	const data = req.body?.data || {};
-	const event = data.formId === 'VpLZDv' ? zhLeadEvent(data.fields) : homeValueEvent(data.fields);
+	const isChinese = data.formId === 'VpLZDv';
+	const event = isChinese ? zhLeadEvent(data.fields) : homeValueEvent(data.fields);
 
 	const r = await fetch('https://api.followupboss.com/v1/events', {
 		method: 'POST',
@@ -213,7 +228,8 @@ export default async function handler(req, res) {
 			// FUB answers POST /events with the person record (its `id`), not a `personId` field.
 			// 204 (lead flow ignored) has no body, so nothing is saved.
 			const p = JSON.parse(text || '{}');
-			await saveHomeAddress(p.personId || (p.stage !== undefined ? p.id : null), event.property);
+			// Homebot's digest is English-only, so only the English home-value form enrolls sellers.
+			await saveHomeAddress(p.personId || (p.stage !== undefined ? p.id : null), event.property, { homebot: !isChinese });
 		} catch (e) {
 			console.error('FUB address update failed', e.message);
 		}
