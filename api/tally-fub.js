@@ -210,7 +210,10 @@ export default async function handler(req, res) {
 	}
 	if (event.type === 'Seller Inquiry') {
 		try {
-			await saveHomeAddress(JSON.parse(text || '{}').personId, event.property);
+			// FUB answers POST /events with the person record (its `id`), not a `personId` field.
+			// 204 (lead flow ignored) has no body, so nothing is saved.
+			const p = JSON.parse(text || '{}');
+			await saveHomeAddress(p.personId || (p.stage !== undefined ? p.id : null), event.property);
 		} catch (e) {
 			console.error('FUB address update failed', e.message);
 		}
